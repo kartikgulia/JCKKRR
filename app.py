@@ -9,14 +9,14 @@ def home():
     return render_template("home.html")
 
 @app.route("/login")
-def home():
+def login():
     return render_template("login.html")
 
 @app.route("/signup")
-def home():
+def signup():
     return render_template("signup.html")
 
 
 @app.route("/")
-def home():
+def splash():
     return render_template("splash.html")
