@@ -6,9 +6,9 @@ CS180 Project
 
 # Frontend
 
-1. In terminal, run : cd frontend
+1. In terminal, run : `cd frontend`
 
-2. In terminal type : npm start
+2. In terminal type : `npm start`
 
 # Backend
 
