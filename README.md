@@ -16,5 +16,3 @@ CS180 Project
 2. Run the automation script
    a. For Windows: In terminal: ./for_windows_setup_and_run.bat
    b. For Mac : In terminal: chmod +x for_mac_setup_and_run.sh && ./for_mac_setup_and_run.sh
-
-3. Run the app.py file (make sure virtual env is activated)
