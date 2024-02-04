@@ -1,22 +1,31 @@
 import requests
 import json
+import re
+
+# file creates a json file of images from flickr api
 
 # links to API Documentation:
-# https://www.loc.gov/apis/json-and-yaml/requests/endpoints/
-# https://unsplash.com/documentation
+# https://api.flickr.com/services
 
-AccessKey = "OBSBheYhY94ttpR6yi1LeWuHvucFCnYXGzz6IFuCEWw"
 
-# NOTE: Quality of the images are not great. Need to find another API with better photos
-# GETrequest = requests.get("https://www.loc.gov/photos/?q=FilePaths&fo=json")
+AccessKey = '2df9cf762ba619075f2827fea8edff89'
 
-# NOTE: Image Quality is better but not sure if there are historical photos in this API
 GETrequest = requests.get(
-    f"https://api.unsplash.com/photos/random?client_id={AccessKey}")
+    f"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key={AccessKey}&format=json&tags=Historical")
 
-FilePaths = GETrequest.json()
+filterJSON = re.search(r'jsonFlickrApi\((.*)\)', GETrequest.text)
 
-file = 'FilePaths_JSON'
+# solution to formatting issue with json file returned by flickr
+if filterJSON:
+    jsonText = filterJSON.group(1)
+    filepaths = json.loads(jsonText)
+
+# print(filepaths)
+# print(GETrequest.text)
+# FilePaths = GETrequest.json()
+
+# for some reason API is not returning the urls to the images. Need to look into this
+file = 'ImageData'
 
 with open(file, 'w') as json_file:
-    json.dump(FilePaths, json_file)
+    json.dump(filepaths, json_file)
