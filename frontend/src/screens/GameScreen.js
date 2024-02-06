@@ -8,11 +8,39 @@ class Game extends Component {
     year: 0, // Initial slider value
   };
 
+  minYear = 0;
+  maxYear = 2024;
+
   handleYearChange = (value) => {
     this.setState({ year: value });
   };
 
-  submitYearGuess = () => {};
+  calculateScoreForYearGuess = (yearGuessed, yearActual) => {
+    // 1. Take the year range
+
+    let yearRange = this.maxYear - this.minYear;
+
+    // 2. Get how much they were off by
+
+    let offBy = Math.abs(yearGuessed - yearActual);
+    // 3. Subtract how much they were off by from yearRange
+
+    let score = (yearRange - offBy) / 30;
+
+    return score;
+  };
+  submitYearGuess = () => {
+    console.log("Selected Year:", this.state.year);
+
+    // Calcuate score for year guess
+
+    let actualYear = 2000;
+    let score = this.calculateScoreForYearGuess(this.state.year, actualYear);
+
+    // Waiting for Ryan
+
+    console.log(score);
+  };
 
   render() {
     return (
@@ -20,10 +48,14 @@ class Game extends Component {
         <h1>Guess what year this image is from?</h1>
         <BackgroundImage src={"https://picsum.photos/500/500"} />
 
-        <YearSlider min={0} max={2024} onChange={this.handleYearChange} />
+        <YearSlider
+          min={this.minYear}
+          max={this.maxYear}
+          onChange={this.handleYearChange}
+        />
 
         <SubmitButton
-          onClick={() => console.log("Selected Year:", this.state.year)}
+          onClick={this.submitYearGuess}
           text={"Submit Year Guess"}
           color={"dodgerblue"}
         />
