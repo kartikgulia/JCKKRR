@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import SubmitButton from "../components/SubmitButton";
 import YearSlider from "../components/YearSlider";
+import BackgroundImage from "../components/BackgroundImage";
 
 class Game extends Component {
   state = {
@@ -16,10 +17,10 @@ class Game extends Component {
   render() {
     return (
       <div style={container}>
-        <h1>Game Screen</h1>
-        <h3>Image</h3>
+        <h1>Guess what year this image is from?</h1>
+        <BackgroundImage src={"https://picsum.photos/500/500"} />
 
-        <YearSlider min={0} max={2000} onChange={this.handleYearChange} />
+        <YearSlider min={0} max={2024} onChange={this.handleYearChange} />
 
         <SubmitButton
           onClick={() => console.log("Selected Year:", this.state.year)}

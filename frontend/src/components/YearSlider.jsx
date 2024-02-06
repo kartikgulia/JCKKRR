@@ -10,9 +10,6 @@ const YearSlider = ({ min, max, onChange }) => {
     onChange(validValue);
   };
 
-  // Calculate the middle value for display
-  const middle = min + (max - min) / 2;
-
   return (
     <div style={{ padding: "20px" }}>
       <input
@@ -39,7 +36,7 @@ const YearSlider = ({ min, max, onChange }) => {
         }}
       >
         <span>{min}</span>
-        <span>{middle}</span>
+
         <span>{max}</span>
       </div>
     </div>
