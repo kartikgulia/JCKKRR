@@ -1,16 +1,26 @@
-import React from "react";
+import React, { Component } from "react";
 import SubmitButton from "../components/SubmitButton";
+import YearSlider from "../components/YearSlider";
 
-class Game extends React.Component {
+class Game extends Component {
+  state = {
+    year: 0, // Initial slider value
+  };
+
+  handleYearChange = (value) => {
+    this.setState({ year: value });
+  };
+
   render() {
     return (
       <div style={container}>
         <h1>Game Screen</h1>
         <h3>Image</h3>
-        <h3>Slider</h3>
-        <h3>Submit Button</h3>
+
+        <YearSlider min={0} max={2000} onChange={this.handleYearChange} />
+
         <SubmitButton
-          onClick={() => console.log("hi")}
+          onClick={() => console.log("Selected Year:", this.state.year)}
           text={"Submit Year Guess"}
           color={"dodgerblue"}
         />
@@ -21,9 +31,9 @@ class Game extends React.Component {
 
 const container = {
   display: "flex",
-  flexDirection: "column", // Stack items vertically
-  justifyContent: "center", // Center vertically in the container
-  alignItems: "center", // Center horizontally in the container
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
   height: "100vh",
 };
 
