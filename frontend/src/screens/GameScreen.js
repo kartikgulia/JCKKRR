@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import YearGuess from "../components/GameScreen/YearGuess"; // Import the YearGuess component
+import Round from "../components/GameScreen/Round";
 
 class Game extends Component {
   state = {
     year: 0, // Initial slider value
+    onYearGuessPage: true,
   };
 
   minYear = 0;
@@ -38,18 +40,23 @@ class Game extends Component {
     // Waiting for Ryan
 
     console.log(score);
+    this.setState({ onYearGuessPage: false });
   };
 
   render() {
     return (
       <div style={container}>
-        <YearGuess
-          year={this.state.year}
-          onYearChange={this.handleYearChange}
-          onSubmitYearGuess={this.submitYearGuess}
-          minYear={this.minYear}
-          maxYear={this.maxYear}
-        />
+        {this.state.onYearGuessPage ? (
+          <YearGuess
+            year={this.state.year}
+            onYearChange={this.handleYearChange}
+            onSubmitYearGuess={this.submitYearGuess}
+            minYear={this.minYear}
+            maxYear={this.maxYear}
+          />
+        ) : (
+          <Round />
+        )}
       </div>
     );
   }
