@@ -4,29 +4,44 @@ import PropTypes from "prop-types";
 const YearSlider = ({ min, max, onChange }) => {
   const [value, setValue] = useState(min);
 
-  const handleChange = (e) => {
-    const newValue = e.target.value;
-    setValue(newValue);
-    onChange(newValue); // Propagate change to parent
+  const handleChange = (newValue) => {
+    const validValue = Math.max(min, Math.min(max, Number(newValue)));
+    setValue(validValue);
+    onChange(validValue);
   };
 
+  // Calculate the middle value for display
+  const middle = min + (max - min) / 2;
+
   return (
-    <div className="YearSliderContainer">
-      <div className="CurrentValue">{value}</div>
+    <div style={{ padding: "20px" }}>
+      <input
+        type="number"
+        value={value}
+        onChange={(e) => handleChange(e.target.value)}
+        min={min}
+        max={max}
+        style={{ marginBottom: "20px", width: "100%" }}
+      />
       <input
         type="range"
         min={min}
         max={max}
         value={value}
-        onChange={handleChange}
-        className="YearSlider"
-        list="tickmarks"
+        onChange={(e) => handleChange(e.target.value)}
+        style={{ width: "100%" }}
       />
-      <datalist id="tickmarks">
-        <option value={min} label={min}></option>
-        <option value={(max + min) / 2} label={(max + min) / 2}></option>
-        <option value={max} label={max}></option>
-      </datalist>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginTop: "8px",
+        }}
+      >
+        <span>{min}</span>
+        <span>{middle}</span>
+        <span>{max}</span>
+      </div>
     </div>
   );
 };

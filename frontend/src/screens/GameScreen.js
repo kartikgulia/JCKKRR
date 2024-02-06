@@ -11,6 +11,8 @@ class Game extends Component {
     this.setState({ year: value });
   };
 
+  submitYearGuess = () => {};
+
   render() {
     return (
       <div style={container}>
