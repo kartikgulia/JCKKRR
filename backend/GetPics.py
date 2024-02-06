@@ -12,7 +12,7 @@ def GetJSON():
     AccessKey = '2df9cf762ba619075f2827fea8edff89'
 
     GETrequest = requests.get(
-        f"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key={AccessKey}&format=json&tags=Historical")
+        f"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key={AccessKey}&format=json&tags=British Library")
 
     filterJSON = re.search(r'jsonFlickrApi\((.*)\)', GETrequest.text)
 
