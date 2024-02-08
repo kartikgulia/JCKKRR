@@ -5,14 +5,18 @@ import re
 # file creates a json file of images from flickr api
 
 # links to API Documentation:
-# https://api.flickr.com/services
+# https://www.flickr.com/services/api/flickr.photos.search.html
 
 
 def GetJSON():
     AccessKey = '2df9cf762ba619075f2827fea8edff89'
+    tags = "20th century, Old Historical Photography"  # search terms
+    per_page = 300  # number of images returned
+    # min_taken_date = 1950
+    # max_taken_date = 1970
 
     GETrequest = requests.get(
-        f"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key={AccessKey}&format=json&tags=British Library")
+        f"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key={AccessKey}&format=json&extras=date_taken,url-l&per_page={per_page}&tags={tags}")
 
     filterJSON = re.search(r'jsonFlickrApi\((.*)\)', GETrequest.text)
 
