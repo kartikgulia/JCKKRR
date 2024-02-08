@@ -10,11 +10,12 @@ const YearGuess = ({
   onSubmitYearGuess,
   minYear,
   maxYear,
+  backgroundImageSRC,
 }) => {
   return (
     <div style={container}>
       <h1>Guess what year this image is from?</h1>
-      <BackgroundImage src={"https://picsum.photos/500/500"} />
+      <BackgroundImage src={backgroundImageSRC} />
       <YearSlider
         min={minYear}
         max={maxYear}

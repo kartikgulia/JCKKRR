@@ -11,6 +11,9 @@ class Game extends Component {
   minYear = 0;
   maxYear = 2024;
 
+  gameID = this.props.gameID;
+  backgroundImageSRC = this.props.backgroundImageSRC;
+
   handleYearChange = (value) => {
     this.setState({ year: value });
   };
@@ -43,6 +46,14 @@ class Game extends Component {
     this.setState({ onYearGuessPage: false });
   };
 
+  getTargetImage = () => {
+    console.log("Get target image from database using game id");
+
+    console.log(this.gameID);
+
+    return "";
+  };
+
   render() {
     return (
       <div style={container}>
@@ -53,9 +64,13 @@ class Game extends Component {
             onSubmitYearGuess={this.submitYearGuess}
             minYear={this.minYear}
             maxYear={this.maxYear}
+            backgroundImageSRC={this.backgroundImageSRC}
           />
         ) : (
-          <Round />
+          <Round
+            backgroundImageSRC={this.backgroundImageSRC}
+            targetImage={this.getTargetImage()}
+          />
         )}
       </div>
     );
