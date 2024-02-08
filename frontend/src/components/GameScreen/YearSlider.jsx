@@ -5,7 +5,12 @@ const YearSlider = ({ min, max, onChange }) => {
   const [value, setValue] = useState(min);
 
   const handleChange = (newValue) => {
-    const validValue = Math.max(min, Math.min(max, Number(newValue)));
+    let validValue;
+    if (newValue === "" || newValue === null) {
+      validValue = null;
+    } else {
+      validValue = Math.max(min, Math.min(max, Number(newValue)));
+    }
     setValue(validValue);
     onChange(validValue);
   };
@@ -14,7 +19,7 @@ const YearSlider = ({ min, max, onChange }) => {
     <div style={{ padding: "20px" }}>
       <input
         type="number"
-        value={value}
+        value={value === null ? "" : value}
         onChange={(e) => handleChange(e.target.value)}
         min={min}
         max={max}
@@ -24,7 +29,7 @@ const YearSlider = ({ min, max, onChange }) => {
         type="range"
         min={min}
         max={max}
-        value={value}
+        value={value === null ? "" : value}
         onChange={(e) => handleChange(e.target.value)}
         style={{ width: "100%" }}
       />
