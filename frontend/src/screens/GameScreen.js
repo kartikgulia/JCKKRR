@@ -9,31 +9,56 @@ class Game extends Component {
     backgroundImageSRC: "", // Moved initialization to state
     targetImageSRC: "",
     targetImageCoordinates: {},
+    imagesLoaded: false, // New state to track image loading
+    difficulty: null,
   };
 
   minYear = 0;
   maxYear = 2024;
 
   componentDidMount() {
-    this.initializeGame();
+    const route = window.location.pathname;
+    const parts = route.split("/"); // Split the pathname by '/'
+    const difficulty = parts[parts.length - 1];
+
+    console.log(difficulty); // Output the difficulty level
+
+    this.setState({ difficulty: difficulty }, () => {
+      console.log("Difficulty updated:", this.state.difficulty);
+      this.initializeGame(); // Ensure initializeGame is called after difficulty is set
+    });
   }
 
   initializeGame = () => {
     console.log("Game component has been mounted.");
     // Print out the gameID
-    console.log("Game ID:", this.props.gameID);
 
-    // Using the Game ID, fetch game information from Firebase and set the state
-    // Ex.
+    console.log("Use difficulty to retrieve a game from Firestore");
 
-    this.setState({
-      backgroundImageSRC: "https://picsum.photos/1000/500",
-      targetImageSRC: "https://picsum.photos/500/500",
-      targetImageCoordinates: {
-        x: 100,
-        y: 200,
-      },
-    });
+    // Here is the difficulty
+
+    console.log(this.state.difficulty);
+
+    // All this data below should be retrieved from firestore. i just put in some mock data
+
+    // Use the difficulty to get the game info from firestore
+    const backgroundImage = new Image();
+    backgroundImage.src = "https://picsum.photos/1000/500";
+    backgroundImage.onload = () => {
+      const targetImage = new Image();
+      targetImage.src = "https://picsum.photos/500/500";
+      targetImage.onload = () => {
+        this.setState({
+          backgroundImageSRC: backgroundImage.src,
+          targetImageSRC: targetImage.src,
+          targetImageCoordinates: {
+            x: 100,
+            y: 200,
+          },
+          imagesLoaded: true,
+        });
+      };
+    };
   };
 
   handleYearChange = (value) => {
@@ -56,8 +81,17 @@ class Game extends Component {
   };
 
   render() {
-    const { backgroundImageSRC, targetImageSRC, targetImageCoordinates } =
-      this.state; // Use backgroundImageSRC from state
+    const {
+      backgroundImageSRC,
+      targetImageSRC,
+      targetImageCoordinates,
+      imagesLoaded,
+    } = this.state; // Use backgroundImageSRC from state
+
+    if (!imagesLoaded) {
+      return <div>Loading...</div>; // Render a loading indicator until images are loaded
+    }
+
     return (
       <div style={container}>
         {this.state.onYearGuessPage ? (
