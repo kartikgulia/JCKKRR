@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import BackgroundImage from "./BackgroundImage";
 
-const Round = ({ backgroundImageSRC, targetImage }) => {
+const Round = ({ backgroundImageSRC, targetImage, targetImageCoordinates }) => {
   const [clickPosition, setClickPosition] = useState({ x: null, y: null });
 
   const handleBackgroundImageClick = (event) => {
@@ -18,6 +18,9 @@ const Round = ({ backgroundImageSRC, targetImage }) => {
   // Optionally, define what happens when the submit button is clicked
   const handleSubmitClick = () => {
     console.log(`Submit click at x: ${clickPosition.x}, y: ${clickPosition.y}`);
+    console.log(
+      `Target Image coordinates at x: ${targetImageCoordinates.x}, y: ${targetImageCoordinates.y}`
+    );
     // Here you can add the logic for what should happen on submit, like verifying the click position
   };
 

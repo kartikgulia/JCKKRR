@@ -8,6 +8,7 @@ class Game extends Component {
     onYearGuessPage: true,
     backgroundImageSRC: "", // Moved initialization to state
     targetImageSRC: "",
+    targetImageCoordinates: {},
   };
 
   minYear = 0;
@@ -23,11 +24,15 @@ class Game extends Component {
     console.log("Game ID:", this.props.gameID);
 
     // Using the Game ID, fetch game information from Firebase and set the state
-    // Ex. Rayyan - I did it for the backgroundImageSRC and targetImageSRC
+    // Ex.
 
     this.setState({
       backgroundImageSRC: "https://picsum.photos/1000/500",
       targetImageSRC: "https://picsum.photos/500/500",
+      targetImageCoordinates: {
+        x: 100,
+        y: 200,
+      },
     });
   };
 
@@ -51,7 +56,8 @@ class Game extends Component {
   };
 
   render() {
-    const { backgroundImageSRC, targetImageSRC } = this.state; // Use backgroundImageSRC from state
+    const { backgroundImageSRC, targetImageSRC, targetImageCoordinates } =
+      this.state; // Use backgroundImageSRC from state
     return (
       <div style={container}>
         {this.state.onYearGuessPage ? (
@@ -67,6 +73,7 @@ class Game extends Component {
           <Round
             backgroundImageSRC={backgroundImageSRC} // Use state value
             targetImage={targetImageSRC}
+            targetImageCoordinates={targetImageCoordinates}
           />
         )}
       </div>
