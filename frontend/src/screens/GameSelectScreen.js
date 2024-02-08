@@ -6,15 +6,15 @@ const GameSelectScreen = () => {
     <div style={container}>
       <h1>Select Difficulty</h1>
 
-      <Link to="/playGame" style={buttonLink}>
+      <Link to="/playGame/Easy" style={buttonLink}>
         <button style={buttonStyle}>Easy</button>
       </Link>
 
-      <Link to="/playGame" style={buttonLink}>
+      <Link to="/playGame/Normal" style={buttonLink}>
         <button style={buttonStyle}>Normal</button>
       </Link>
 
-      <Link to="/playGame" style={buttonLink}>
+      <Link to="/playGame/Hard" style={buttonLink}>
         <button style={buttonStyle}>Hard</button>
       </Link>
 
@@ -42,11 +42,11 @@ const buttonStyle = {
   padding: "10px 20px",
   fontSize: "16px",
   cursor: "pointer",
-  backgroundColor: "#3498db", 
-  color: "#fff", 
+  backgroundColor: "#3498db",
+  color: "#fff",
   border: "none",
   borderRadius: "5px",
-  width: "200px", 
+  width: "200px",
   textAlign: "center",
 };
 

@@ -12,7 +12,7 @@ function App() {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="playGame" element={<Game gameID="1" />} />
+          <Route path="playGame/:difficulty" element={<Game />} />
           <Route index element={<Splash />} />
           <Route path="signIn" element={<SignInPage />} />
           <Route path="leaderboard" element={<LeaderboardScreen />} />
