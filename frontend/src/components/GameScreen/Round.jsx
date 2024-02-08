@@ -35,7 +35,6 @@ const Round = ({ backgroundImageSRC, targetImage, targetImageCoordinates }) => {
         style={backgroundImageContainerStyle}
         onClick={handleBackgroundImageClick}
       >
-        <h1>Round</h1>
         <BackgroundImage src={backgroundImageSRC} />
         {/* Conditionally render the red circle if coordinates are available */}
         {clickPosition.x !== null && clickPosition.y !== null && (
