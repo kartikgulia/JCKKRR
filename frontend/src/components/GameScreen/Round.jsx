@@ -11,7 +11,7 @@ const Round = ({ backgroundImageSRC, targetImage, targetImageCoordinates }) => {
     const offsetX = circleDiameter / 2;
     const offsetY = circleDiameter / 2;
     const x = event.clientX - rect.left - offsetX;
-    const y = event.clientY - rect.top - offsetY + 80;
+    const y = event.clientY - rect.top - offsetY;
 
     setClickPosition({ x, y });
   };
