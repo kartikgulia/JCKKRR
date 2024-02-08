@@ -14,6 +14,8 @@ class Game extends Component {
   minYear = 0;
   maxYear = 2024;
 
+  errorText = null;
+
   componentDidMount() {
     this.initializeGame();
   }
@@ -49,26 +51,47 @@ class Game extends Component {
 
   submitYearGuess = () => {
     console.log("Selected Year:", this.state.year);
+
+    if (this.state.year == null) {
+      this.setState({
+        errorText: `Please enter a year in between ${this.minYear} and ${this.maxYear}.`,
+      });
+      return;
+    }
     let actualYear = 2000;
     let score = this.calculateScoreForYearGuess(this.state.year, actualYear);
     console.log(score);
-    this.setState({ onYearGuessPage: false });
+
+    // If everything is successful
+    // If everything is successful, clear the errorText
+    this.setState({
+      onYearGuessPage: false,
+      errorText: null,
+    });
   };
 
   render() {
-    const { backgroundImageSRC, targetImageSRC, targetImageCoordinates } =
-      this.state; // Use backgroundImageSRC from state
+    const {
+      backgroundImageSRC,
+      targetImageSRC,
+      targetImageCoordinates,
+      errorText,
+    } = this.state; // Use backgroundImageSRC from state
     return (
-      <div style={container}>
+      <div>
         {this.state.onYearGuessPage ? (
-          <YearGuess
-            year={this.state.year}
-            onYearChange={this.handleYearChange}
-            onSubmitYearGuess={this.submitYearGuess}
-            minYear={this.minYear}
-            maxYear={this.maxYear}
-            backgroundImageSRC={backgroundImageSRC} // Use state value
-          />
+          <div style={container}>
+            <YearGuess
+              year={this.state.year}
+              onYearChange={this.handleYearChange}
+              onSubmitYearGuess={this.submitYearGuess}
+              minYear={this.minYear}
+              maxYear={this.maxYear}
+              backgroundImageSRC={backgroundImageSRC} // Use state value
+            />
+
+            <h2 style={errorTextStyle}>{errorText}</h2>
+          </div>
         ) : (
           <Round
             backgroundImageSRC={backgroundImageSRC} // Use state value
@@ -84,9 +107,13 @@ class Game extends Component {
 const container = {
   display: "flex",
   flexDirection: "column",
-  justifyContent: "center",
+  justifyContent: "flex-start", // Align items at the top
   alignItems: "center",
   height: "100vh",
+};
+
+const errorTextStyle = {
+  color: "red",
 };
 
 export default Game;
