@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import BackgroundImage from "./BackgroundImage";
+import SubmitButton from "./SubmitButton";
 
 const Round = ({ backgroundImageSRC, targetImage, targetImageCoordinates }) => {
   const [clickPosition, setClickPosition] = useState({ x: null, y: null });
@@ -47,9 +48,12 @@ const Round = ({ backgroundImageSRC, targetImage, targetImageCoordinates }) => {
           ></div>
         )}
       </div>
-      <button onClick={handleSubmitClick} style={submitButtonStyle}>
-        Submit
-      </button>
+
+      <SubmitButton
+        onClick={handleSubmitClick}
+        text={"Submit Your Guess"}
+        color={"dodgerblue"}
+      />
     </div>
   );
 };
@@ -87,10 +91,6 @@ const redCircleStyle = {
   borderRadius: "50%",
   backgroundColor: "red",
   // Removed the transform property for direct alignment
-};
-
-const submitButtonStyle = {
-  marginTop: "20px", // Added margin top for spacing
 };
 
 export default Round;
