@@ -1,14 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const BackgroundImage = ({ src }) => {
+const BackgroundImage = ({ src, onClick }) => {
   const style = {
     maxWidth: "100%",
     maxHeight: "100vh",
     position: "relative",
   };
 
-  return <img src={src} style={style} alt="" />;
+  return <img src={src} style={style} onClick={onClick} alt="" />;
 };
 
 BackgroundImage.propTypes = {

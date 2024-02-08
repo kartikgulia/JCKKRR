@@ -1,60 +1,57 @@
 import React, { Component } from "react";
-import YearGuess from "../components/GameScreen/YearGuess"; // Import the YearGuess component
+import YearGuess from "../components/GameScreen/YearGuess";
 import Round from "../components/GameScreen/Round";
 
 class Game extends Component {
   state = {
     year: 0, // Initial slider value
     onYearGuessPage: true,
+    backgroundImageSRC: "", // Moved initialization to state
+    targetImageSRC: "",
   };
 
   minYear = 0;
   maxYear = 2024;
 
-  gameID = this.props.gameID;
-  backgroundImageSRC = this.props.backgroundImageSRC;
+  componentDidMount() {
+    this.initializeGame();
+  }
+
+  initializeGame = () => {
+    console.log("Game component has been mounted.");
+    // Print out the gameID
+    console.log("Game ID:", this.props.gameID);
+
+    // Using the Game ID, fetch game information from Firebase and set the state
+    // Ex. Rayyan - I did it for the backgroundImageSRC and targetImageSRC
+
+    this.setState({
+      backgroundImageSRC: "https://picsum.photos/1000/500",
+      targetImageSRC: "https://picsum.photos/500/500",
+    });
+  };
 
   handleYearChange = (value) => {
     this.setState({ year: value });
   };
 
   calculateScoreForYearGuess = (yearGuessed, yearActual) => {
-    // 1. Take the year range
-
     let yearRange = this.maxYear - this.minYear;
-
-    // 2. Get how much they were off by
-
     let offBy = Math.abs(yearGuessed - yearActual);
-    // 3. Subtract how much they were off by from yearRange
-
     let score = yearRange - offBy;
-
     return score;
   };
+
   submitYearGuess = () => {
     console.log("Selected Year:", this.state.year);
-
-    // Calcuate score for year guess
-
     let actualYear = 2000;
     let score = this.calculateScoreForYearGuess(this.state.year, actualYear);
-
-    // Waiting for Ryan
-
     console.log(score);
     this.setState({ onYearGuessPage: false });
   };
 
-  getTargetImage = () => {
-    console.log("Get target image from database using game id");
-
-    console.log(this.gameID);
-
-    return "";
-  };
-
   render() {
+    const { backgroundImageSRC, targetImageSRC } = this.state; // Use backgroundImageSRC from state
     return (
       <div style={container}>
         {this.state.onYearGuessPage ? (
@@ -64,12 +61,12 @@ class Game extends Component {
             onSubmitYearGuess={this.submitYearGuess}
             minYear={this.minYear}
             maxYear={this.maxYear}
-            backgroundImageSRC={this.backgroundImageSRC}
+            backgroundImageSRC={backgroundImageSRC} // Use state value
           />
         ) : (
           <Round
-            backgroundImageSRC={this.backgroundImageSRC}
-            targetImage={this.getTargetImage()}
+            backgroundImageSRC={backgroundImageSRC} // Use state value
+            targetImage={targetImageSRC}
           />
         )}
       </div>

@@ -10,15 +10,7 @@ function App() {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route
-            path="playGame"
-            element={
-              <Game
-                backgroundImageSRC="https://picsum.photos/1000/500"
-                gameID="1"
-              />
-            }
-          />
+          <Route path="playGame" element={<Game gameID="1" />} />
           <Route index element={<Splash />} />
           <Route path="signIn" element={<SignInPage />} />
         </Routes>
