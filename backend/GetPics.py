@@ -10,13 +10,14 @@ import re
 
 def GetJSON():
     AccessKey = '2df9cf762ba619075f2827fea8edff89'
-    tags = "20th century, Old Historical Photography"  # search terms
+    tags = "The National Archives UK, historical photos"  # search terms
     per_page = 300  # number of images returned
     # min_taken_date = 1950
     # max_taken_date = 1970
+    user_id = "35740357@N03"
 
     GETrequest = requests.get(
-        f"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key={AccessKey}&format=json&extras=date_taken,url-l&per_page={per_page}&tags={tags}")
+        f"https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key={AccessKey}&format=json&extras=date_taken&per_page={per_page}&user_id={user_id}")
 
     filterJSON = re.search(r'jsonFlickrApi\((.*)\)', GETrequest.text)
 
@@ -44,14 +45,15 @@ def GetURLS(JsonFile):
 
     photos = data["photos"]["photo"]
 
-    with open('URLS', 'w') as file:
-        for dict in photos:
-            server_id = dict["server"]
-            id = dict["id"]
-            secret = dict["secret"]
-            url = f"https://live.staticflickr.com/{server_id}/{id}_{secret}.jpg"
-            url += '\n'
-            file.write(url)
+    for dict in photos:
+        server_id = dict["server"]
+        id = dict["id"]
+        secret = dict["secret"]
+        url = f"https://live.staticflickr.com/{server_id}/{id}_{secret}.jpg"
+        dict["url"] = url
+
+    with open(JsonFile, 'w') as file:
+        json.dump(data, file)
 
 
 file = GetJSON()
