@@ -1,53 +1,29 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "../styles/GameSelectScreen.css"
 
 const GameSelectScreen = () => {
   return (
-    <div style={container}>
-      <h1>Select Difficulty</h1>
+    <div className="container">
+      <h1 className="title">Select Difficulty</h1>
 
-      <Link to="/playGame/Easy" style={buttonLink}>
-        <button style={buttonStyle}>Easy</button>
+      <Link to="/playGame/Easy" className="button-link">
+        <button className="button-style">Easy</button>
       </Link>
 
-      <Link to="/playGame/Normal" style={buttonLink}>
-        <button style={buttonStyle}>Normal</button>
+      <Link to="/playGame/Normal" className="button-link">
+        <button className="button-style">Normal</button>
       </Link>
 
-      <Link to="/playGame/Hard" style={buttonLink}>
-        <button style={buttonStyle}>Hard</button>
+      <Link to="/playGame/Hard" className="button-link">
+        <button className="button-style">Hard</button>
       </Link>
 
-      <Link to="/leaderboard" style={buttonLink}>
-        <button style={buttonStyle}>Leaderboard</button>
+      <Link to="/leaderboard" className="button-link">
+        <button className="button-style">Leaderboard</button>
       </Link>
     </div>
   );
-};
-
-const container = {
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "100vh",
-};
-
-const buttonLink = {
-  textDecoration: "none",
-  margin: "10px",
-};
-
-const buttonStyle = {
-  padding: "10px 20px",
-  fontSize: "16px",
-  cursor: "pointer",
-  backgroundColor: "#3498db",
-  color: "#fff",
-  border: "none",
-  borderRadius: "5px",
-  width: "200px",
-  textAlign: "center",
-};
+}; 
 
 export default GameSelectScreen;

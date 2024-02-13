@@ -1,0 +1,40 @@
+.title {
+    color: #b76fe4;
+    background-color: #4d0066;
+    border-color: #1a1a1a;
+    border-width: thick;
+    border-style: outset; 
+    padding: 20px 40px;
+}
+  
+.container {
+    background-color: #3a3a3a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+  
+.button-link {
+    text-decoration: none;
+    margin: 10px;
+}
+  
+.button-style {
+    padding: 20px 40px;
+    font-size: 32px;
+    cursor: pointer;
+    background-color: #4d0066;
+    color: #b76fe4;
+    border: solid;
+    border-radius: 10px;
+    border-color: #1a1a1a;
+    border-width: 5px;
+    width: 400px;
+    text-align: center;
+}
+
+.button-style:hover{
+    background-color: #9900ff;
+}

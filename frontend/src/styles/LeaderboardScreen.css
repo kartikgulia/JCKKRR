@@ -1,0 +1,55 @@
+.leaderboard-screen {
+    background-color: #3a3a3a; 
+    min-height: 100vh; 
+    color: #fff; 
+    padding: 20px; 
+    text-align: center;
+  }
+
+.leaderboard-title {
+    font-size: 30px;
+    margin-bottom: 20px;
+    color: #b76fe4; 
+    text-decoration: underline ;
+}
+
+.leaderboard-table {
+    margin: 0 auto;
+    border-collapse: collapse;
+    width: 80%;
+    background-color: #1a1a1a;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+    border: 5px solid #4d0066;
+    padding: 8px;
+    text-align: center;
+    color: #fff; 
+}
+
+.leaderboard-table th {
+    background-color: #1a1a1a; 
+    color: #b76fe4; 
+    font-size: 25px;
+}
+  
+.back-button{
+    padding: 10px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #1a1a1a;
+    color: #b76fe4;
+    border: solid;
+    border-radius: 5px;
+    border-color: #4d0066;
+    border-width: 5px;
+    width: 200px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+
+.back-button:hover{
+    background-color: #9900ff;
+}
