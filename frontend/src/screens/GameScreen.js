@@ -41,11 +41,6 @@ class Game extends Component {
 
     // All this data below should be retrieved from firestore. i just put in some mock data
 
-    const fs = require('fs');
-    const csv = require('csv-parser');
-
-   
-
     // Use the difficulty to get the game info from firestore
     const backgroundImage = new Image();
     backgroundImage.src = "https://picsum.photos/1000/500";

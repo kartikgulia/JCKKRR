@@ -14,7 +14,7 @@ CORS(app)
 load_dotenv()
 
 # Initialize Firebase with credentials from environment variable
-cred = credentials.Certificate(os.getenv('FIREBASE_CREDENTIALS_PATH'))
+cred = credentials.Certificate('backend/jokerker-d9272-firebase-adminsdk-sbyd5-fda51193ba.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 images_ref = db.collection('images')
@@ -29,14 +29,12 @@ def get_images_data():
     return documents_dict
 
 
+@app.route('/getImages', methods=['GET'])
 
-
-@app.route('/')
-def hello_world():
+def getImages():
     print(get_images_data())
-    return 'Hello, World!'
 
-
+    
 @app.route('/signin', methods=['POST'])
 def signin():
     # THIS IS JUST AN EXAMPLE. WE SHOULD NOT HAVE VALIDATION HERE. IT SHOULD BE ANOTHER FUNCTION IN ANOTHER FILE.
