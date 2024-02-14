@@ -41,33 +41,6 @@ class Game extends Component {
 
     // All this data below should be retrieved from firestore. i just put in some mock data
 
-    const fs = require('fs');
-    const csv = require('csv-parser');
-
-   
-    let urls = [];
-
-   
-    fs.createReadStream('random_document_data.csv')
-      .pipe(csv())
-      .on('data', (row) => {
-  
-        urls.push(row.url);
-      })
-      .on('end', () => {
-     
-        console.log("URLs extracted from CSV:", urls[0]);
-
-
-        fs.unlink('url.csv', (err) => {
-          if (err) {
-            console.error('Error deleting file:', err);
-            return;
-          }
-          console.log('CSV file deleted successfully.');
-        });
-      });
-
     // Use the difficulty to get the game info from firestore
     const backgroundImage = new Image();
     backgroundImage.src = "https://picsum.photos/1000/500";
