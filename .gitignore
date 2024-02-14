@@ -1,3 +1,4 @@
 /backend/jckkrr_venv
 /backend/__pycache__
 backend/jokerker-d9272-firebase-adminsdk-sbyd5-fda51193ba.json
+*.env
