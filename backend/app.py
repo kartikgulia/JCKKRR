@@ -17,10 +17,20 @@ load_dotenv()
 cred = credentials.Certificate('backend/jokerker-d9272-firebase-adminsdk-sbyd5-fda51193ba.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
+games_ref = db.collection('games')
 images_ref = db.collection('images')
+leaderboard_ref = db.collection('leaderboard')
+players_ref = db.collection('players')
 
 
 # Function to retrieve data from Firestore
+def get_games_data():
+    docs = games_ref.get()
+    documents_dict = {}
+    for idx, doc in enumerate(docs, start=1):
+        documents_dict[idx] = doc.to_dict()
+    return documents_dict
+
 def get_images_data():
     docs = images_ref.get()
     documents_dict = {}
@@ -29,10 +39,35 @@ def get_images_data():
     return documents_dict
 
 
-@app.route('/getImages', methods=['GET'])
+def get_leaderboard_data():
+    docs = leaderboard_ref.get()
+    documents_dict = {}
+    for idx, doc in enumerate(docs, start=1):
+        documents_dict[idx] = doc.to_dict()
+    return documents_dict
 
+def get_players_data():
+    docs = players_ref.get()
+    documents_dict = {}
+    for idx, doc in enumerate(docs, start=1):
+        documents_dict[idx] = doc.to_dict()
+    return documents_dict
+
+@app.route('/getGames', methods=['GET'])
+def getGames():
+    print(get_games_data())
+
+@app.route('/getImages', methods=['GET'])
 def getImages():
     print(get_images_data())
+
+@app.route('/getLeaderboard', methods=['GET'])
+def getLeaderboard():
+    print(get_leaderboard_data())
+
+@app.route('/getPlayers', methods=['GET'])
+def getPlayers():
+    print(get_players_data())
 
     
 @app.route('/signin', methods=['POST'])
@@ -56,6 +91,21 @@ def signin():
 def get_images():
     images_data = get_images_data()
     return jsonify(images_data)
+
+@app.route('/leaderboard', methods=['GET'])
+def get_leaderboard():
+    leaderboard_data = get_leaderboard_data()
+    return jsonify(leaderboard_data)
+
+@app.route('/games', methods=['GET'])
+def get_games():
+    games_data = get_games_data()
+    return jsonify(games_data)
+
+@app.route('/players', methods=['GET'])
+def get_players():
+    players_data = get_players_data()
+    return jsonify(players_data)
 
 
 if __name__ == '__main__':
