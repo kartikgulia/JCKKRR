@@ -17,15 +17,23 @@ load_dotenv()
 cred = credentials.Certificate('backend/jokerker-d9272-firebase-adminsdk-sbyd5-fda51193ba.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
-games_ref = db.collection('games')
+EasyGames_ref = db.collection('EasyGames')
+EasyRounds_ref = db.collection('EasyRounds')
 images_ref = db.collection('images')
 leaderboard_ref = db.collection('leaderboard')
 players_ref = db.collection('players')
 
 
 # Function to retrieve data from Firestore
-def get_games_data():
-    docs = games_ref.get()
+def get_EasyGames_ref_data():
+    docs = EasyGames_ref.get()
+    documents_dict = {}
+    for idx, doc in enumerate(docs, start=1):
+        documents_dict[idx] = doc.to_dict()
+    return documents_dict
+
+def get_EasyRounds_ref_data():
+    docs = EasyRounds_ref.get()
     documents_dict = {}
     for idx, doc in enumerate(docs, start=1):
         documents_dict[idx] = doc.to_dict()
@@ -53,9 +61,13 @@ def get_players_data():
         documents_dict[idx] = doc.to_dict()
     return documents_dict
 
-@app.route('/getGames', methods=['GET'])
-def getGames():
-    print(get_games_data())
+@app.route('/getEasyGames', methods=['GET'])
+def getEasyGames():
+    print(get_EasyGames_ref_data())
+
+@app.route('/getEasyRounds', methods=['GET'])
+def getEasyRounds():
+    print(get_EasyRounds_ref_data())
 
 @app.route('/getImages', methods=['GET'])
 def getImages():
@@ -97,10 +109,15 @@ def get_leaderboard():
     leaderboard_data = get_leaderboard_data()
     return jsonify(leaderboard_data)
 
-@app.route('/games', methods=['GET'])
-def get_games():
-    games_data = get_games_data()
-    return jsonify(games_data)
+@app.route('/easyGames', methods=['GET'])
+def get_easyGames():
+    easyGames_data = getEasyGames()
+    return jsonify(easyGames_data)
+
+@app.route('/easyRounds', methods=['GET'])
+def get_easyRounds():
+    easyRounds_data = getEasyRounds()
+    return jsonify(easyRounds_data)
 
 @app.route('/players', methods=['GET'])
 def get_players():
