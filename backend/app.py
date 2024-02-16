@@ -20,7 +20,9 @@ db = firestore.client()
 EasyGames_ref = db.collection('EasyGames')
 EasyRounds_ref = db.collection('EasyRounds')
 images_ref = db.collection('images')
-leaderboard_ref = db.collection('leaderboard')
+easyleaderboard_ref = db.collection('Easyleaderboard')
+normalleaderboard_ref = db.collection('NormalLeaderboard')
+hardleaderboard_ref = db.collection('Hardleaderboard')
 players_ref = db.collection('players')
 
 
@@ -47,8 +49,22 @@ def get_images_data():
     return documents_dict
 
 
-def get_leaderboard_data():
-    docs = leaderboard_ref.get()
+def get_easy_leaderboard_data():
+    docs = easyleaderboard_ref.get()
+    documents_dict = {}
+    for idx, doc in enumerate(docs, start=1):
+        documents_dict[idx] = doc.to_dict()
+    return documents_dict
+
+def get_normal_leaderboard_data():
+    docs = normalleaderboard_ref.get()
+    documents_dict = {}
+    for idx, doc in enumerate(docs, start=1):
+        documents_dict[idx] = doc.to_dict()
+    return documents_dict
+
+def get_hard_leaderboard_data():
+    docs = hardleaderboard_ref.get()
     documents_dict = {}
     for idx, doc in enumerate(docs, start=1):
         documents_dict[idx] = doc.to_dict()
@@ -73,9 +89,17 @@ def getEasyRounds():
 def getImages():
     print(get_images_data())
 
-@app.route('/getLeaderboard', methods=['GET'])
-def getLeaderboard():
-    print(get_leaderboard_data())
+@app.route('/getEasyLeaderboard', methods=['GET'])
+def getEasyLeaderboard():
+    print(get_easy_leaderboard_data())
+
+@app.route('/getNomralLeaderboard', methods=['GET'])
+def getNormalLeaderboard():
+    print(get_normal_leaderboard_data())
+
+@app.route('/getHardLeaderboard', methods=['GET'])
+def getHardLeaderboard():
+    print(get_hard_leaderboard_data())
 
 @app.route('/getPlayers', methods=['GET'])
 def getPlayers():
@@ -104,10 +128,20 @@ def get_images():
     images_data = get_images_data()
     return jsonify(images_data)
 
-@app.route('/leaderboard', methods=['GET'])
-def get_leaderboard():
-    leaderboard_data = get_leaderboard_data()
-    return jsonify(leaderboard_data)
+@app.route('/easyleaderboard', methods=['GET'])
+def get_easyleaderboard():
+    easyleaderboard_data = get_easy_leaderboard_data()
+    return jsonify(easyleaderboard_data)
+
+@app.route('/normalleaderboard', methods=['GET'])
+def get_normalleaderboard():
+    normalleaderboard_data = get_normal_leaderboard_data()
+    return jsonify(normalleaderboard_data)
+
+@app.route('/hardleaderboard', methods=['GET'])
+def get_hardleaderboard():
+    hardleaderboard_data = get_hard_leaderboard_data()
+    return jsonify(hardleaderboard_data)
 
 @app.route('/easyGames', methods=['GET'])
 def get_easyGames():
