@@ -124,10 +124,19 @@ def get_randImages():
 def get_TargetBgImages():
     image_data = get_randImage()
     backgroundImage = image_data['url']
+    im = Image.open(image_data['url'])
+    width, height = im.size
+    TL = (random.randint(1,width-20), random.randint(1,height-20))
+    TR = TL + (20,0)
+    BL = TL + (0,20)
+    BR = TL + (20,20)
     #backgroundImage.show()
     return jsonify({
         "backgroundImage" : backgroundImage,
-        "targetImage" : "url"
+        "TL" : TL,
+        "TR" : TR,
+        "BL" : BL,
+        "BR" : BR
     })
 
 @app.route('/leaderboard', methods=['GET'])

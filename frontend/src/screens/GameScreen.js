@@ -40,7 +40,6 @@ function Game() {
       const data = await response.json();
       console.log(data["backgroundImage"]);
       setBackgroundImageSRC(data["backgroundImage"]);
-
       const backgroundImage = new Image();
       backgroundImage.src = data["backgroundImage"];
       backgroundImage.onload = () => {
