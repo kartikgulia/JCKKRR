@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import YearGuess from "../components/GameScreen/YearGuess";
 import Round from "../components/GameScreen/Round";
+import SERVER_URL from "../config";
+//import get_TargetBgImages from "../backend/app.py" ;
 
 class Game extends Component {
   state = {
@@ -29,7 +31,7 @@ class Game extends Component {
     });
   }
 
-  initializeGame = () => {
+  initializeGame = async (e) => {
     console.log("Game component has been mounted.");
     // Print out the gameID
 
@@ -42,8 +44,25 @@ class Game extends Component {
     // All this data below should be retrieved from firestore. i just put in some mock data
 
     // Use the difficulty to get the game info from firestore
+    const [imageURL, setMessageFromBackend] = useState("");
+    try {
+      const response = await fetch(`${SERVER_URL}/bg_target`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error during image processing", error);
+      setMessageFromBackend("Error during Image Processing");
+    }
+
     const backgroundImage = new Image();
-    backgroundImage.src = "https://picsum.photos/1000/500";
+    //backgroundImage.src = "https://picsum.photos/1000/500";
+    backgroundImage.src = data;
     backgroundImage.onload = () => {
       const targetImage = new Image();
       targetImage.src = "https://picsum.photos/500/500";
