@@ -123,7 +123,8 @@ def get_randImages():
 @app.route('/bg_target', methods=['GET'])
 def get_TargetBgImages():
     image_data = get_randImage()
-    backgroundImage = image_data['url']
+    backgroundImage = Image.open(image_data['url'])
+    #backgroundImage.show()
     return jsonify(backgroundImage)
 
 @app.route('/leaderboard', methods=['GET'])
