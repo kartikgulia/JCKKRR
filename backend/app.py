@@ -17,7 +17,7 @@ CORS(app)
 load_dotenv()
 
 # Initialize Firebase with credentials from environment variable
-cred = credentials.Certificate('jokerker-d9272-firebase-adminsdk-sbyd5-fda51193ba.json')
+cred = credentials.Certificate('backend/jokerker-d9272-firebase-adminsdk-sbyd5-fda51193ba.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 EasyGames_ref = db.collection('EasyGames')
@@ -123,10 +123,12 @@ def get_randImages():
 @app.route('/bg_target', methods=['GET'])
 def get_TargetBgImages():
     image_data = get_randImage()
-    #backgroundImage = Image.open(image_data['url'])
     backgroundImage = image_data['url']
     #backgroundImage.show()
-    return jsonify(backgroundImage)
+    return jsonify({
+        "backgroundImage" : backgroundImage,
+        "targetImage" : "url"
+    })
 
 @app.route('/leaderboard', methods=['GET'])
 def get_leaderboard():
