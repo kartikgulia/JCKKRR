@@ -5,7 +5,10 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import os
 from dotenv import load_dotenv
-
+import random
+from PIL import Image
+import requests
+from io import BytesIO
 
 app = Flask(__name__)
 CORS(app)
@@ -46,6 +49,14 @@ def get_images_data():
         documents_dict[idx] = doc.to_dict()
     return documents_dict
 
+def get_randImage():
+    docs = images_ref.get()
+    documents_list = [doc.to_dict() for doc in docs]
+    if documents_list:  
+        random_image_data = random.choice(documents_list)
+        return random_image_data
+    else:
+        return None
 
 def get_leaderboard_data():
     docs = leaderboard_ref.get()
@@ -103,6 +114,17 @@ def signin():
 def get_images():
     images_data = get_images_data()
     return jsonify(images_data)
+
+@app.route('/rand_image', methods=['GET'])
+def get_randImages():
+    image_data = get_randImage()
+    return jsonify(image_data)
+
+@app.route('/bg_target', methods=['GET'])
+def get_TargetBgImages():
+    image_data = get_randImage()
+    backgroundImage = image_data['url']
+    return jsonify(backgroundImage)
 
 @app.route('/leaderboard', methods=['GET'])
 def get_leaderboard():
