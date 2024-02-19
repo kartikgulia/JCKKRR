@@ -134,7 +134,16 @@ def getGameInfo():
     gameID : str = data["gameDifficultyLevel"]
     userID : str = data["userID"]
 
+
+    # 3 functions will be called in order to get the game information. (This corresponds to the Game Select System Design I created)
+
+
+    # 1) Get games played -- get the array of game ids the user played 
+
     
+    # 2) Check if any games left -- for the selected difficulty, go through the corresponding "Games" collection and check if there's at least 1 game left. Return array of games left.
+
+    # 3) Randomly return a game from the array of games left.
 
     return jsonify({"message" : "Either successfully got a game, or no more games available to play for this difficulty"})
 
