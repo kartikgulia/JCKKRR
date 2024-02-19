@@ -23,6 +23,12 @@ leaderboard_ref = db.collection('leaderboard')
 players_ref = db.collection('players')
 
 
+# Active player sessions
+
+
+
+
+
 # Function to retrieve data from Firestore
 def get_EasyGames_ref_data():
     docs = EasyGames_ref.get()

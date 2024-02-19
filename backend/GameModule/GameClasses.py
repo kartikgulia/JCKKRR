@@ -5,7 +5,7 @@ import firebase_admin
 import random
 
 import sys
-sys.path.append('/')
+sys.path.append('')
 
 from DifficultyModule.Difficulty import DifficultyEnum
 
