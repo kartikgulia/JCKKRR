@@ -125,5 +125,19 @@ def get_players():
     return jsonify(players_data)
 
 
+@app.route('/getGameID' , methods = ['GET'])
+
+def getGameInfo():
+
+    data = request.json
+
+    gameID : str = data["gameDifficultyLevel"]
+    userID : str = data["userID"]
+
+    
+
+    return jsonify({"message" : "Either successfully got a game, or no more games available to play for this difficulty"})
+
+
 if __name__ == '__main__':
     app.run(port=5000)
