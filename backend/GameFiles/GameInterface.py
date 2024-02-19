@@ -8,7 +8,7 @@ class Game(ABC):
         pass
 
     @abstractmethod
-    def getGameID(self):
+    def setGameID(self):
         pass
 
     @abstractmethod

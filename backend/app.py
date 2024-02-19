@@ -6,7 +6,6 @@ from firebase_admin import credentials, firestore
 import os
 from dotenv import load_dotenv
 
-
 app = Flask(__name__)
 CORS(app)
 
@@ -14,7 +13,7 @@ CORS(app)
 load_dotenv()
 
 # Initialize Firebase with credentials from environment variable
-cred = credentials.Certificate('jokerker-d9272-firebase-adminsdk-sbyd5-fda51193ba.json')
+cred = credentials.Certificate('backend\jokerker-d9272-firebase-adminsdk-sbyd5-fda51193ba.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 EasyGames_ref = db.collection('EasyGames')
