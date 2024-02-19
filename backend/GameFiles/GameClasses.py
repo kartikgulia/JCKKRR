@@ -1,33 +1,13 @@
-from abc import ABC, abstractmethod
+from GameInterface import Game
 from enum import Enum
+from app import db
 
-# Interface for the game
-class Game(ABC):
-    @abstractmethod
-    def startGame(self):
-        pass
-
-    @abstractmethod
-    def getRounds(self):
-        pass
-
-    @abstractmethod
-    def playRounds(self):
-        pass
-
-    @abstractmethod
-    def playRound(self):
-        pass
-
-    @abstractmethod
-    def endGame(self):
-        pass
 
 # Enum for Difficulty Levels
 class Difficulty(Enum):
-    EASY = 1
-    NORMAL = 2
-    HARD = 3
+    EASY = "Easy"
+    NORMAL = "Medium"
+    HARD = "Hard"
 
 # Classes for different types of games
 class EasyGame(Game):
@@ -41,9 +21,26 @@ class EasyGame(Game):
 
         pass
 
-    def getRounds(self):
+    def getGameID(self):
 
-        pass
+        # 3 steps will be performed in order to get the game ID. (This corresponds to the Game Select System Design I created)
+
+        
+        game_ref = db.collection("EasyGames")
+
+        
+        # 1) Get games played -- get the array of game ids the user played. Get games of the Easy difficulty
+
+        player_ref = db.collection("players")
+
+        docs = game_ref.get()
+
+        
+        
+
+        # 2) Check if any games left -- for the selected difficulty, go through the corresponding "Games" collection and check if there's at least 1 game left. Return array of games left.
+
+        # 3) Randomly return a game from the array of games left.
 
     def playRounds(self):
 
