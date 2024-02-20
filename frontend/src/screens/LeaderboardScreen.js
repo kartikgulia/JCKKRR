@@ -29,7 +29,7 @@ const LeaderboardTable = ({ data, difficulty }) => (
 const LeaderboardScreen = () => {
   const [leaderboardData, setLeaderboardData] = useState({
     easy: [],
-    normal: [],
+    medium: [],
     hard: [],
   });
   const [loading, setLoading] = useState(true);
@@ -52,16 +52,16 @@ const LeaderboardScreen = () => {
         }));
 
 
-        // Fetch normal data
-        const normalResponse = await fetch('http://localhost:5000/normalleaderboard');
-        const normalData = await normalResponse.json();
+        // Fetch medium data
+        const mediumResponse = await fetch('http://localhost:5000/mediumleaderboard');
+        const mediumData = await mediumResponse.json();
 
         // Convert to array and sort by score
-        const normalArray = Object.values(normalData);
-        const sortedDataNormal = normalArray.filter(entry => entry.Score).sort((a, b) => b.Score - a.Score);
+        const mediumArray = Object.values(mediumData);
+        const sortedDataMedium = mediumArray.filter(entry => entry.Score).sort((a, b) => b.Score - a.Score);
 
         // Map array values
-        const processedNormalData = sortedDataNormal.map((entry, index) => ({
+        const processedMediumData = sortedDataMedium.map((entry, index) => ({
           rank: index + 1,
           playerName: entry.Name, 
           score: entry.Score, 
@@ -84,7 +84,7 @@ const LeaderboardScreen = () => {
   
         setLeaderboardData({
           easy: processedEasyData,
-          normal: processedNormalData,
+          medium: processedMediumData,
           hard: processedHardData,
         });
 
@@ -107,7 +107,7 @@ const LeaderboardScreen = () => {
       ) : (
         <div className="leaderboards-wrapper">
           <LeaderboardTable data={leaderboardData.easy} difficulty="Easy" />
-          <LeaderboardTable data={leaderboardData.normal} difficulty="Normal" />
+          <LeaderboardTable data={leaderboardData.medium} difficulty="Medium" />
           <LeaderboardTable data={leaderboardData.hard} difficulty="Hard" />
         </div>
       )}

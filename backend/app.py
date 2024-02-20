@@ -21,7 +21,7 @@ EasyGames_ref = db.collection('EasyGames')
 EasyRounds_ref = db.collection('EasyRounds')
 images_ref = db.collection('images')
 easyleaderboard_ref = db.collection('EasyLeaderboard')
-normalleaderboard_ref = db.collection('NormalLeaderboard')
+mediumleaderboard_ref = db.collection('MediumLeaderboard')
 hardleaderboard_ref = db.collection('HardLeaderboard')
 players_ref = db.collection('players')
 
@@ -56,8 +56,8 @@ def get_easy_leaderboard_data():
         documents_dict[idx] = doc.to_dict()
     return documents_dict
 
-def get_normal_leaderboard_data():
-    docs = normalleaderboard_ref.get()
+def get_medium_leaderboard_data():
+    docs = mediumleaderboard_ref.get()
     documents_dict = {}
     for idx, doc in enumerate(docs, start=1):
         documents_dict[idx] = doc.to_dict()
@@ -93,9 +93,9 @@ def getImages():
 def getEasyLeaderboard():
     print(get_easy_leaderboard_data())
 
-@app.route('/getNormalLeaderboard', methods=['GET'])
-def getNormalLeaderboard():
-    print(get_normal_leaderboard_data())
+@app.route('/getMediumLeaderboard', methods=['GET'])
+def getMediumLeaderboard():
+    print(get_medium_leaderboard_data())
 
 @app.route('/getHardLeaderboard', methods=['GET'])
 def getHardLeaderboard():
@@ -133,10 +133,10 @@ def get_easyleaderboard():
     easyleaderboard_data = get_easy_leaderboard_data()
     return jsonify(easyleaderboard_data)
 
-@app.route('/normalleaderboard', methods=['GET'])
-def get_normalleaderboard():
-    normalleaderboard_data = get_normal_leaderboard_data()
-    return jsonify(normalleaderboard_data)
+@app.route('/mediumleaderboard', methods=['GET'])
+def get_mediumleaderboard():
+    mediumleaderboard_data = get_medium_leaderboard_data()
+    return jsonify(mediumleaderboard_data)
 
 @app.route('/hardleaderboard', methods=['GET'])
 def get_hardleaderboard():
