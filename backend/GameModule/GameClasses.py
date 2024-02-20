@@ -15,7 +15,7 @@ from FirebaseAccess.firebase import db
 
 # Classes for different types of games
 class EasyGame(Game):
-    def __init__(self, player, rounds):
+    def __init__(self, player):
         
 
         easyGamesRef = db.collection("EasyGames")
@@ -25,7 +25,7 @@ class EasyGame(Game):
 
         # Properties
         self.player : Player = player
-        self.rounds = rounds
+        self.rounds = []
         self.currentRoundNumber = 1
         
         self.easyGamesDict = {}
@@ -98,17 +98,17 @@ class EasyGame(Game):
         pass
 
 class MediumGame(Game):
-    def __init__(self, player, rounds):
+    def __init__(self, player):
         self.player = player
-        self.rounds = rounds
+        self.rounds = []
 
     # The methods would have their own implementations similar to EasyGame
     # ...
 
 class HardGame(Game):
-    def __init__(self, player, rounds):
+    def __init__(self, player):
         self.player = player
-        self.rounds = rounds
+        self.rounds = []
 
     # The methods would have their own implementations similar to EasyGame
     # ...
@@ -120,11 +120,11 @@ class GameFactory:
 
     def create_game(self, difficulty):
         if difficulty == "Easy":
-            return EasyGame(self.player, [])
+            return EasyGame(self.player)
         elif difficulty == "Medium":
-            return MediumGame(self.player, [])
+            return MediumGame(self.player)
         elif difficulty == "Hard":
-            return HardGame(self.player, [])
+            return HardGame(self.player)
         else:
             raise ValueError("Unknown difficulty level")
 
