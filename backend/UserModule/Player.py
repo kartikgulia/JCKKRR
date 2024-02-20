@@ -1,6 +1,7 @@
 import sys
 
 from UserModule.UserInterface import UserInterface
+from GameModule.GameInterface import Game
 from DifficultyModule.Difficulty import DifficultyEnum
 from FirebaseAccess.firebase import db
 
@@ -22,6 +23,7 @@ class Player(UserInterface):
         self.gameIDsPlayed : str = []
         self.name : str = ""
         self.email : str = ""
+        self.currentGame : Game = None
         self.score : int = 0
 
     def signIn(self, email: str, password: str):

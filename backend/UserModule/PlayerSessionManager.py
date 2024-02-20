@@ -1,4 +1,4 @@
-from Player import Player
+from UserModule.Player import Player
 
 
 # This file is to store players that have recently been on the website.
@@ -27,3 +27,4 @@ class PlayerSessionManager:
 
     def getPlayer(self, playerID: str) -> Player:
         return self.activePlayerSessions.get(playerID, None)
+    

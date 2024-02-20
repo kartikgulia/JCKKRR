@@ -1,4 +1,4 @@
-from GameInterface import Game
+from GameModule.GameInterface import Game
 from enum import Enum
 
 import random
@@ -6,7 +6,7 @@ import random
 
 import sys
 
-sys.path.append("")
+
 from DifficultyModule.Difficulty import DifficultyEnum
 
 
