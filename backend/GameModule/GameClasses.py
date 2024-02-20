@@ -1,32 +1,34 @@
 from GameInterface import Game
 from enum import Enum
-import firebase_admin
 
 import random
 
-import sys
-sys.path.append('')
 
+import sys
+
+sys.path.append("")
 from DifficultyModule.Difficulty import DifficultyEnum
 
-from firebase_admin import credentials, firestore
-cred = credentials.Certificate('jokerker-d9272-firebase-adminsdk-sbyd5-fda51193ba.json')
-firebase_admin.initialize_app(cred)
-db = firestore.client()
 
+from UserModule.Player import Player
 
-
+from FirebaseAccess.firebase import db
 
 # Classes for different types of games
 class EasyGame(Game):
     def __init__(self, player, rounds):
-        self.player = player
+        
+
+        easyGamesRef = db.collection("EasyGames")
+
+        docs = easyGamesRef.get()
+
+
+        # Properties
+        self.player : Player = player
         self.rounds = rounds
-        EasyGames_ref = db.collection("EasyGames")
-
-        docs = EasyGames_ref.get()
-
-
+        self.currentRoundNumber = 1
+        
         self.easyGamesDict = {}
         for idx, doc in enumerate(docs, start=1):
             self.easyGamesDict[idx] = doc.to_dict()
@@ -42,6 +44,7 @@ class EasyGame(Game):
 
     def startGame(self):
 
+        # This will start the Game progress
         pass
 
 
@@ -58,7 +61,8 @@ class EasyGame(Game):
         # access player attribute's array of game ids played
 
 
-        mockGamesPlayed : set[str] = {"EasyGame1"}
+        gamesPlayed = self.player.gameIDsPlayed
+        gamesPlayedSet = set(gamesPlayed)
     
         
 
@@ -71,7 +75,7 @@ class EasyGame(Game):
 
             gameID = gameDoc['gameID']
 
-            if gameID not in mockGamesPlayed:
+            if gameID not in gamesPlayedSet:
 
                 gameIDsLeft.append(gameID)
 
@@ -133,7 +137,10 @@ class GameFactory:
             raise ValueError("Unknown difficulty level")
 
 # Usage
-player = "John Doe"  # Example player, could be an instance of a User class
-factory = GameFactory(player)
-easy_game = factory.create_game(DifficultyEnum.EASY)
-easy_game.setGameID()
+        
+if __name__ == "__main__":
+    player = Player(userID="bo3bw4GUJdFhTp6aEqiD")  # Example player
+    factory = GameFactory(player)
+    easy_game = factory.create_game(DifficultyEnum.EASY)
+    easy_game.setGameID()
+    print()

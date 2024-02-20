@@ -1,13 +1,10 @@
-from UserInterface import UserInterface
+import sys
 
+from UserModule.UserInterface import UserInterface
 from DifficultyModule.Difficulty import DifficultyEnum
+from FirebaseAccess.firebase import db
 
-import firebase_admin
 
-from firebase_admin import credentials, firestore
-cred = credentials.Certificate('jokerker-d9272-firebase-adminsdk-sbyd5-fda51193ba.json')
-firebase_admin.initialize_app(cred)
-db = firestore.client()
 
 players_ref = db.collection('players')
 
