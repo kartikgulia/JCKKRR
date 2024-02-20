@@ -44,10 +44,11 @@ from UserModule.Player import Player
 playerManager : PlayerSessionManager = PlayerSessionManager() # SINGLETON
 userID : str = "bo3bw4GUJdFhTp6aEqiD"
 tempPlayer : Player = Player(userID=userID)
+tempPlayer.name = "Rayyan"
 playerManager.addPlayer(userID,tempPlayer)
 
 
-@app.route('/getGameID' , methods = ['GET'])
+@app.route('/setGameForPlayer' , methods = ['GET'])
 
 def getGameInfo():
 
@@ -65,6 +66,9 @@ def getGameInfo():
 
     print(currentPlayer.userID)
 
+    createGameForPlayer(currentPlayer,gameDifficultyLevel)
+
+    print(f"Created {gameDifficultyLevel} game for {currentPlayer.name}")
     
 
     

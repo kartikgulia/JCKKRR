@@ -3,4 +3,9 @@ from UserModule.Player import Player
 
 def createGameForPlayer(player : Player, gameDifficulty : str):
 
-    pass
+    factory = GameFactory(player)
+    game = factory.create_game(gameDifficulty)
+
+    player.currentGame = game
+    
+    return ""

@@ -7,7 +7,6 @@ import random
 import sys
 
 
-from DifficultyModule.Difficulty import DifficultyEnum
 
 
 from UserModule.Player import Player
@@ -127,11 +126,11 @@ class GameFactory:
         self.player = player
 
     def create_game(self, difficulty):
-        if difficulty == DifficultyEnum.EASY:
+        if difficulty == "Easy":
             return EasyGame(self.player, [])
-        elif difficulty == DifficultyEnum.NORMAL:
+        elif difficulty == "Medium":
             return MediumGame(self.player, [])
-        elif difficulty == DifficultyEnum.HARD:
+        elif difficulty == "Hard":
             return HardGame(self.player, [])
         else:
             raise ValueError("Unknown difficulty level")
@@ -141,6 +140,6 @@ class GameFactory:
 if __name__ == "__main__":
     player = Player(userID="bo3bw4GUJdFhTp6aEqiD")  # Example player
     factory = GameFactory(player)
-    easy_game = factory.create_game(DifficultyEnum.EASY)
+    easy_game = factory.create_game("Easy")
     easy_game.setGameID()
     print()

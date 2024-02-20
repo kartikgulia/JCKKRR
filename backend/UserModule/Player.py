@@ -2,7 +2,6 @@ import sys
 
 from UserModule.UserInterface import UserInterface
 from GameModule.GameInterface import Game
-from DifficultyModule.Difficulty import DifficultyEnum
 from FirebaseAccess.firebase import db
 
 
@@ -54,6 +53,6 @@ class Player(UserInterface):
         # Implement password change logic here
         pass
 
-    def displayLeaderboard(self, difficulty: DifficultyEnum):
+    def displayLeaderboard(self, difficulty: str):
         # Implement leaderboard display logic here, possibly filtering by difficulty
         pass
