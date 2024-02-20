@@ -51,7 +51,7 @@ playerManager.addPlayer(userID,tempPlayer)
 
 @app.route('/setGameForPlayer' , methods = ['GET'])
 
-def getGameInfo():
+def setGameInfo():
 
     data = request.json
 
