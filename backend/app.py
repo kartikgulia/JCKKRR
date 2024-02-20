@@ -20,9 +20,9 @@ db = firestore.client()
 EasyGames_ref = db.collection('EasyGames')
 EasyRounds_ref = db.collection('EasyRounds')
 images_ref = db.collection('images')
-easyleaderboard_ref = db.collection('Easyleaderboard')
+easyleaderboard_ref = db.collection('EasyLeaderboard')
 normalleaderboard_ref = db.collection('NormalLeaderboard')
-hardleaderboard_ref = db.collection('Hardleaderboard')
+hardleaderboard_ref = db.collection('HardLeaderboard')
 players_ref = db.collection('players')
 
 
@@ -93,7 +93,7 @@ def getImages():
 def getEasyLeaderboard():
     print(get_easy_leaderboard_data())
 
-@app.route('/getNomralLeaderboard', methods=['GET'])
+@app.route('/getNormalLeaderboard', methods=['GET'])
 def getNormalLeaderboard():
     print(get_normal_leaderboard_data())
 
