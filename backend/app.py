@@ -64,16 +64,14 @@ def getGameInfo():
 
     currentPlayer : Player = playerManager.getPlayer(playerID=userID)
 
-    print(currentPlayer.userID)
-
-    createGameForPlayer(currentPlayer,gameDifficultyLevel)
+    message = createGameForPlayer(currentPlayer,gameDifficultyLevel)
 
     print(f"Created {gameDifficultyLevel} game for {currentPlayer.name}")
     
 
-    
+    if currentPlayer.currentGame != None:
 
-    return jsonify({"message" : "Either successfully got a game, or no more games available to play for this difficulty"})
+        return jsonify({"message" : message})
 
 
 if __name__ == '__main__':

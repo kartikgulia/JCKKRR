@@ -34,15 +34,10 @@ class EasyGame(Game):
         
         self.gameID : str = None
 
-
-
-    
-
     # Implementation of each function for EasyGame
             
 
     def startGame(self):
-
         # This will start the Game progress
         pass
 
@@ -52,9 +47,7 @@ class EasyGame(Game):
         # 3 steps will be performed in order to set the game ID. (This corresponds to the Game Select System Design I created)
 
         
-        
-
-        
+      
         # 1) Get games played -- get the array of game ids the user played.
 
         # access player attribute's array of game ids played
@@ -80,7 +73,7 @@ class EasyGame(Game):
 
 
         if len(gameIDsLeft) == 0:
-            return 
+            return
 
 
         # 3) Randomly return a game from the array of games left.
