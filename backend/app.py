@@ -45,6 +45,7 @@ playerManager : PlayerSessionManager = PlayerSessionManager() # SINGLETON
 userID : str = "bo3bw4GUJdFhTp6aEqiD"
 tempPlayer : Player = Player(userID=userID)
 tempPlayer.name = "Rayyan"
+tempPlayer.gameIDsPlayed = ["EasyGame1" , "EasyGame2"]
 playerManager.addPlayer(userID,tempPlayer)
 
 
@@ -65,13 +66,20 @@ def getGameInfo():
     currentPlayer : Player = playerManager.getPlayer(playerID=userID)
 
     message = createGameForPlayer(currentPlayer,gameDifficultyLevel)
-
-    print(f"Created {gameDifficultyLevel} game for {currentPlayer.name}")
     
 
     if currentPlayer.currentGame != None:
+        print(f"Created {gameDifficultyLevel} game for {currentPlayer.name}")
+    
+    else:
+        print(f"Could not create {gameDifficultyLevel} game for {currentPlayer.name}")
+    
 
-        return jsonify({"message" : message})
+
+        
+    return jsonify({"message" : message})
+    
+
 
 
 if __name__ == '__main__':
