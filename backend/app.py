@@ -82,7 +82,7 @@ def getGameInfo():
         
         
         # Need to return the JSONIFY of game info   
-        return jsonify({"message" : "Yay" , "gameObject" : "actualGameObject"})
+        return jsonify({"message" : "Yay" , "gamesArray" : "arrayOfRoundDictionaries"})
 
 
     
