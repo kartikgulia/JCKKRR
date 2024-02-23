@@ -10,8 +10,6 @@ def createGameForPlayer(player : Player, gameDifficulty : str):
     game.setGameID()
 
     if game.gameID == None:
-        return f"No more {gameDifficulty} games left for you. Haha, sucks to be you!"
+        return
     
     player.currentGame = game
-    
-    return "Success"

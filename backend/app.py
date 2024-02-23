@@ -19,10 +19,7 @@ load_dotenv()
 
 @app.route('/signin', methods=['POST'])
 def signin():
-    # THIS IS JUST AN EXAMPLE. WE SHOULD NOT HAVE VALIDATION HERE. IT SHOULD BE ANOTHER FUNCTION IN ANOTHER FILE.
-    # We would just call it here. This example is just to show u guys how everything works.
     
-    # Extract the username and password from the request
     data = request.json
     username = data.get('username')
     password = data.get('password')
@@ -49,9 +46,13 @@ tempPlayer.gameIDsPlayed = ["EasyGame1" , "EasyGame2"]
 playerManager.addPlayer(userID,tempPlayer)
 
 
-@app.route('/getGame' , methods = ['GET'])
+@app.route('/getGameInfo' , methods = ['GET'])
+# This route does the following:
 
-def setGameInfo():
+# 1) Creates a Game Object for the currentPlayer
+# 2) Sets the game ID of the game they're going to play
+# 3) Calls the startGame() function which uses the game ID to get game information from the database, save the array of Round objects dictionary to Game Object, and return the information
+def getGameInfo():
 
     data = request.json
 
@@ -65,21 +66,38 @@ def setGameInfo():
 
     currentPlayer : Player = playerManager.getPlayer(playerID=userID)
 
-    message = createGameForPlayer(currentPlayer,gameDifficultyLevel)
-    
 
+    # Sets the Game ID for the game object
+    
+    createGameForPlayer(currentPlayer,gameDifficultyLevel)
+    
     if currentPlayer.currentGame != None:
         print(f"Created {gameDifficultyLevel} game for {currentPlayer.name}")
+
+        
+        # Now go to the Game Interface and complete the startGame function
+
+        # Call startGame() which returns the game info
+        
+        
+        
+        # Need to return the JSONIFY of game info   
+        return jsonify({"message" : "Yay" , "gameObject" : "actualGameObject"})
+
+
     
+
+
+
+
+
+
+
+
     else:
         print(f"Could not create {gameDifficultyLevel} game for {currentPlayer.name}")
-    
-
-
-    
-    # Need to return the game info
-        
-    return jsonify({"message" : message})
+            
+        return jsonify({"message" : "No more games left"})
     
 
 

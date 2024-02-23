@@ -13,83 +13,41 @@ from UserModule.Player import Player
 
 from FirebaseAccess.firebase import db
 
-# Classes for different types of games
+
+
+
+
+
+
+
+
+
+
+
+
 class EasyGame(Game):
     def __init__(self, player):
         
 
-        easyGamesRef = db.collection("EasyGames")
-
-        docs = easyGamesRef.get()
-
-
         # Properties
         self.player : Player = player
         self.rounds = []
-        self.currentRoundNumber = 1
-        
-        self.easyGamesDict = {}
-        for idx, doc in enumerate(docs, start=1):
-            self.easyGamesDict[idx] = doc.to_dict()
-        
+        self.currentRoundNumber = None
         self.gameID : str = None
 
     # Implementation of each function for EasyGame
-            
+
+
+    def getGameCollectionRef(self):
+        easyGamesRef = db.collection("EasyGames")
+        return easyGamesRef
+
 
     def startGame(self):
         # This will start the Game progress
         pass
 
-
-    def setGameID(self):
-
-        # 3 steps will be performed in order to set the game ID. (This corresponds to the Game Select System Design I created)
-
-        
-      
-        # 1) Get games played -- get the array of game ids the user played.
-
-        # access player attribute's array of game ids played
-
-
-        gamesPlayed = self.player.gameIDsPlayed
-        gamesPlayedSet = set(gamesPlayed)
-    
-        
-
-        # 2) Check if any games left -- for the selected difficulty, go through the corresponding "Games" collection and check if there's at least 1 game left. Return array of games left.
-
-        gameIDsLeft : list[str] = []
-
-
-        for num, gameDoc in self.easyGamesDict.items():
-
-            gameID = gameDoc['gameID']
-
-            if gameID not in gamesPlayedSet:
-
-                gameIDsLeft.append(gameID)
-
-
-        if len(gameIDsLeft) == 0:
-            return
-
-
-        # 3) Randomly return a game from the array of games left.
-
-        random_index = random.randint(0, len(gameIDsLeft)-1)
-
-        randomGameID : str = gameIDsLeft[random_index]
-
-        self.gameID = randomGameID
-
-
-    def playRounds(self):
-
-        pass
-
-    def playRound(self):
+    def scoreRound(self):
 
         pass
 
@@ -102,16 +60,45 @@ class MediumGame(Game):
         self.player = player
         self.rounds = []
 
-    # The methods would have their own implementations similar to EasyGame
-    # ...
+    def getGameCollectionRef(self):
+        mediumGamesRef = db.collection("MediumGames") 
+        return mediumGamesRef
+    
+
+    def startGame(self):
+        # This will start the Game progress
+        pass
+
+    def scoreRound(self):
+
+        pass
+
+    def endGame(self):
+
+        pass
 
 class HardGame(Game):
     def __init__(self, player):
         self.player = player
         self.rounds = []
 
-    # The methods would have their own implementations similar to EasyGame
-    # ...
+    def getGameCollectionRef(self):
+        hardGamesRef = db.collection("HardGames")
+        return hardGamesRef
+    
+
+    def startGame(self):
+        # This will start the Game progress
+        pass
+
+    def scoreRound(self):
+
+        pass
+
+    def endGame(self):
+
+        pass
+    
 
 # Factory class to create game objects
 class GameFactory:
