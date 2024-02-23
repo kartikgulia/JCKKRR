@@ -49,7 +49,7 @@ tempPlayer.gameIDsPlayed = ["EasyGame1" , "EasyGame2"]
 playerManager.addPlayer(userID,tempPlayer)
 
 
-@app.route('/setGameForPlayer' , methods = ['GET'])
+@app.route('/getGame' , methods = ['GET'])
 
 def setGameInfo():
 
@@ -76,6 +76,8 @@ def setGameInfo():
     
 
 
+    
+    # Need to return the game info
         
     return jsonify({"message" : message})
     
