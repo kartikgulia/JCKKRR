@@ -141,7 +141,7 @@ def get_TargetBgImages():
     backgroundImage = image_data['url']
     im = Image.open(image_data['url'])
     width, height = im.size
-    dateTaken = image_data["dateTaken"]  # got date from json
+    dateTaken = image_data["datetaken"]  # got date from json
     dateTaken = dateTaken[0:4]
     TL = (random.randint(1, width-20), random.randint(1, height-20))
     TR = TL + (20, 0)
