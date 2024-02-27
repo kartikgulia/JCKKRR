@@ -20,7 +20,7 @@ load_dotenv()
 
 # Initialize Firebase with credentials from environment variable
 cred = credentials.Certificate(
-    'backend/jokerker-d9272-firebase-adminsdk-sbyd5-fda51193ba.json')
+    'jokerker-d9272-firebase-adminsdk-sbyd5-fda51193ba.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 EasyGames_ref = db.collection('EasyGames')
@@ -148,14 +148,31 @@ def get_TargetBgImages():
     BL = TL + (0, 20)
     BR = TL + (20, 20)
     # backgroundImage.show()
-    return jsonify({
-        "backgroundImage": backgroundImage,
+    data = {
+        "id": image_data['id'],
+        "owner": image_data['owner'],
+        "secret": image_data['secret'],
+        "server": image_data['server'],
+        "farm": image_data['farm'],
+        "title": image_data['title'],
+        "ispublic": image_data['ispublic'],
+        "isfriend": image_data['isfriend'],
+        "isfamily": image_data['isfamily'],
+        "datetaken": image_data['datetaken'],
+        "datetakengranularity": image_data['datetakengranularity'],
+        "datetakenunknown": image_data['datetakenunknown'],
+        "url": backgroundImage,
         "TL": TL,
         "TR": TR,
         "BL": BL,
         "BR": BR,
         "date": dateTaken
-    })
+    }
+
+    doc_ref = db.collection('images').document(image_data['id'])
+    doc_ref.set(data)
+    print('Document successfully replaced!')
+
 
 
 @app.route('/leaderboard', methods=['GET'])
