@@ -1,16 +1,9 @@
 
-import os
-import random
-from io import BytesIO
-
-import firebase_admin
-import requests
-from dotenv import load_dotenv
-from firebase_admin import credentials, firestore
-from flask import Flask, jsonify, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
-from PIL import Image
-from Round import BackgroundImage, Round
+from FirebaseAccess.firebase import db
+import os
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 CORS(app)
@@ -19,14 +12,119 @@ CORS(app)
 load_dotenv()
 
 # Initialize Firebase with credentials from environment variable
-cred = credentials.Certificate(
-    'backend/jokerker-d9272-firebase-adminsdk-sbyd5-fda51193ba.json')
-firebase_admin.initialize_app(cred)
-db = firestore.client()
+
+
+# Active player sessions
+
+
+@app.route('/signin', methods=['POST'])
+def signin():
+    
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+
+    print("Hi Ryan")
+    if username == "admin" and password == "password":
+        return jsonify({"message": "Successfully signed in"}), 200
+    else:
+        return jsonify({"message": "Invalid credentials"}), 401
+
+
+from GameModule.gameCreationFunctions import createGameForPlayer
+
+
+from UserModule.PlayerSessionManager import PlayerSessionManager
+from UserModule.Player import Player
+
+
+playerManager : PlayerSessionManager = PlayerSessionManager() # SINGLETON
+userID : str = "bo3bw4GUJdFhTp6aEqiD"
+tempPlayer : Player = Player(userID=userID)
+tempPlayer.name = "Rayyan"
+tempPlayer.gameIDsPlayed = ["EasyGame1" , "EasyGame2"]
+playerManager.addPlayer(userID,tempPlayer)
+
+
+@app.route('/getGameInfo' , methods = ['GET'])
+# This route does the following:
+
+# 1) Creates a Game Object for the currentPlayer
+# 2) Sets the game ID of the game they're going to play
+# 3) Calls the startGame() function which uses the game ID to get game information from the database, save the array of Round objects dictionary to Game Object, and return the information
+def getGameInfo():
+
+    data = request.json
+
+    gameDifficultyLevel : str = data['gameDifficultyLevel']
+    userID : str = data['userID']
+
+
+    # temp for testing
+    userID : str = "bo3bw4GUJdFhTp6aEqiD"
+
+
+    currentPlayer : Player = playerManager.getPlayer(playerID=userID)
+
+
+    # Sets the Game ID for the game object
+    
+    createGameForPlayer(currentPlayer,gameDifficultyLevel)
+    
+    if currentPlayer.currentGame != None:
+        print(f"Created {gameDifficultyLevel} game for {currentPlayer.name}")
+
+        
+        # Now go to the Game Interface and complete the startGame function
+
+        # Call startGame() which returns the game info
+        
+        
+        
+        # Need to return the JSONIFY of game info   
+        return jsonify({"message" : "Yay" , "gamesArray" : "arrayOfRoundDictionaries"})
+
+
+    
+
+
+
+
+
+
+
+
+    else:
+        print(f"Could not create {gameDifficultyLevel} game for {currentPlayer.name}")
+            
+        return jsonify({"message" : "No more games left"})
+    
+
+
+
+if __name__ == '__main__':
+    app.run(port=5000)
+
+
+
+
+
+
+
+
+
+# Below this are just example functions. They are not part of the application.
+
+
+
+# Example Functions using firebase
+
 EasyGames_ref = db.collection('EasyGames')
 EasyRounds_ref = db.collection('EasyRounds')
 images_ref = db.collection('images')
-leaderboard_ref = db.collection('leaderboard')
+easyleaderboard_ref = db.collection('EasyLeaderboard')
+mediumleaderboard_ref = db.collection('MediumLeaderboard')
+hardleaderboard_ref = db.collection('HardLeaderboard')
 players_ref = db.collection('players')
 
 
@@ -55,18 +153,22 @@ def get_images_data():
     return documents_dict
 
 
-def get_randImage():
-    docs = images_ref.get()
-    documents_list = [doc.to_dict() for doc in docs]
-    if documents_list:
-        random_image_data = random.choice(documents_list)
-        return random_image_data
-    else:
-        return None
+def get_easy_leaderboard_data():
+    docs = easyleaderboard_ref.get()
+    documents_dict = {}
+    for idx, doc in enumerate(docs, start=1):
+        documents_dict[idx] = doc.to_dict()
+    return documents_dict
 
+def get_medium_leaderboard_data():
+    docs = mediumleaderboard_ref.get()
+    documents_dict = {}
+    for idx, doc in enumerate(docs, start=1):
+        documents_dict[idx] = doc.to_dict()
+    return documents_dict
 
-def get_leaderboard_data():
-    docs = leaderboard_ref.get()
+def get_hard_leaderboard_data():
+    docs = hardleaderboard_ref.get()
     documents_dict = {}
     for idx, doc in enumerate(docs, start=1):
         documents_dict[idx] = doc.to_dict()
@@ -95,73 +197,42 @@ def getEasyRounds():
 def getImages():
     print(get_images_data())
 
+@app.route('/getEasyLeaderboard', methods=['GET'])
+def getEasyLeaderboard():
+    print(get_easy_leaderboard_data())
 
-@app.route('/getLeaderboard', methods=['GET'])
-def getLeaderboard():
-    print(get_leaderboard_data())
+@app.route('/getMediumLeaderboard', methods=['GET'])
+def getMediumLeaderboard():
+    print(get_medium_leaderboard_data())
+
+@app.route('/getHardLeaderboard', methods=['GET'])
+def getHardLeaderboard():
+    print(get_hard_leaderboard_data())
 
 
 @app.route('/getPlayers', methods=['GET'])
 def getPlayers():
     print(get_players_data())
 
-
-@app.route('/signin', methods=['POST'])
-def signin():
-    # THIS IS JUST AN EXAMPLE. WE SHOULD NOT HAVE VALIDATION HERE. IT SHOULD BE ANOTHER FUNCTION IN ANOTHER FILE.
-    # We would just call it here. This example is just to show u guys how everything works.
-
-    # Extract the username and password from the request
-    data = request.json
-    username = data.get('username')
-    password = data.get('password')
-
-    print("Hi Ryan")
-    if username == "admin" and password == "password":
-        return jsonify({"message": "Successfully signed in"}), 200
-    else:
-        return jsonify({"message": "Invalid credentials"}), 401
-
-
 @app.route('/images', methods=['GET'])
 def get_images():
     images_data = get_images_data()
     return jsonify(images_data)
 
+@app.route('/easyleaderboard', methods=['GET'])
+def get_easyleaderboard():
+    easyleaderboard_data = get_easy_leaderboard_data()
+    return jsonify(easyleaderboard_data)
 
-@app.route('/rand_image', methods=['GET'])
-def get_randImages():
-    image_data = get_randImage()
-    return jsonify(image_data)
+@app.route('/mediumleaderboard', methods=['GET'])
+def get_mediumleaderboard():
+    mediumleaderboard_data = get_medium_leaderboard_data()
+    return jsonify(mediumleaderboard_data)
 
-
-@app.route('/bg_target', methods=['GET'])
-def get_TargetBgImages():
-    image_data = get_randImage()
-    backgroundImage = image_data['url']
-    im = Image.open(image_data['url'])
-    width, height = im.size
-    dateTaken = image_data["datetaken"]  # got date from json
-    dateTaken = dateTaken[0:4]
-    TL = (random.randint(1, width-20), random.randint(1, height-20))
-    TR = TL + (20, 0)
-    BL = TL + (0, 20)
-    BR = TL + (20, 20)
-    # backgroundImage.show()
-    return jsonify({
-        "backgroundImage": backgroundImage,
-        "TL": TL,
-        "TR": TR,
-        "BL": BL,
-        "BR": BR,
-        "date": dateTaken
-    })
-
-
-@app.route('/leaderboard', methods=['GET'])
-def get_leaderboard():
-    leaderboard_data = get_leaderboard_data()
-    return jsonify(leaderboard_data)
+@app.route('/hardleaderboard', methods=['GET'])
+def get_hardleaderboard():
+    hardleaderboard_data = get_hard_leaderboard_data()
+    return jsonify(hardleaderboard_data)
 
 
 @app.route('/easyGames', methods=['GET'])
@@ -182,5 +253,11 @@ def get_players():
     return jsonify(players_data)
 
 
-if __name__ == '__main__':
-    app.run(port=5000)
+
+
+
+
+
+
+
+
