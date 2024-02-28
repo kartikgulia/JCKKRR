@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const LeaderboardTable = ({ data, difficulty }) => (
   <div className="leaderboard-container">
-    <h2 className='leaderboard-difficulty'>{difficulty}</h2>
+    <h2 className="leaderboard-difficulty">{difficulty}</h2>
     <table className="leaderboard-table">
       <thead>
         <tr>
@@ -29,7 +29,7 @@ const LeaderboardTable = ({ data, difficulty }) => (
 const LeaderboardScreen = () => {
   const [leaderboardData, setLeaderboardData] = useState({
     easy: [],
-    normal: [],
+    medium: [],
     hard: [],
   });
   const [loading, setLoading] = useState(true);
@@ -37,15 +37,55 @@ const LeaderboardScreen = () => {
   useEffect(() => {
     const fetchLeaderboardData = async () => {
       try {
-        // Simulating the API call with the test dataset
-        const sortedDataEasy = easyLeaderboardData.filter(entry => entry.score).sort((a, b) => b.score - a.score);
-        const sortedDataNormal = normalLeaderboardData.filter(entry => entry.score).sort((a, b) => b.score - a.score);
-        const sortedDataHard = hardLeaderboardData.filter(entry => entry.score).sort((a, b) => b.score - a.score);
+        // Fetch data from your Firestore database for Easy difficulty
+        const easyResponse = await fetch('http://localhost:5000/easyleaderboard');
+        const easyData = await easyResponse.json();
+        
+        // Convert to array and sort by score
+        const easyArray = Object.values(easyData);
+        const sortedEasyData = easyArray.filter(entry => entry.Score).sort((a, b) => b.Score - a.Score);
 
+        const processedEasyData = sortedEasyData.map((entry, index) => ({
+          rank: index + 1,
+          playerName: entry.Name, 
+          score: entry.Score, 
+        }));
+
+
+        // Fetch medium data
+        const mediumResponse = await fetch('http://localhost:5000/mediumleaderboard');
+        const mediumData = await mediumResponse.json();
+
+        // Convert to array and sort by score
+        const mediumArray = Object.values(mediumData);
+        const sortedDataMedium = mediumArray.filter(entry => entry.Score).sort((a, b) => b.Score - a.Score);
+
+        // Map array values
+        const processedMediumData = sortedDataMedium.map((entry, index) => ({
+          rank: index + 1,
+          playerName: entry.Name, 
+          score: entry.Score, 
+        }));
+
+        // Fetch hard data
+        const hardResponse = await fetch('http://localhost:5000/hardleaderboard');
+        const hardData = await hardResponse.json();
+
+        // Convert to array and sort by score
+        const hardArray = Object.values(hardData);
+        const sortedDataHard = hardArray.filter(entry => entry.Score).sort((a, b) => b.Score - a.Score);
+
+        // Map array values
+        const processedHardData = sortedDataHard.map((entry, index) => ({
+          rank: index + 1,
+          playerName: entry.Name, 
+          score: entry.Score, 
+        }));
+  
         setLeaderboardData({
-          easy: sortedDataEasy.map((entry, index) => ({ ...entry, rank: index + 1 })),
-          normal: sortedDataNormal.map((entry, index) => ({ ...entry, rank: index + 1 })),
-          hard: sortedDataHard.map((entry, index) => ({ ...entry, rank: index + 1 })),
+          easy: processedEasyData,
+          medium: processedMediumData,
+          hard: processedHardData,
         });
 
         setLoading(false);
@@ -54,7 +94,7 @@ const LeaderboardScreen = () => {
         setLoading(false);
       }
     };
-  
+
     fetchLeaderboardData();
   }, []);
 
@@ -67,34 +107,12 @@ const LeaderboardScreen = () => {
       ) : (
         <div className="leaderboards-wrapper">
           <LeaderboardTable data={leaderboardData.easy} difficulty="Easy" />
-          <LeaderboardTable data={leaderboardData.normal} difficulty="Normal" />
+          <LeaderboardTable data={leaderboardData.medium} difficulty="Medium" />
           <LeaderboardTable data={leaderboardData.hard} difficulty="Hard" />
         </div>
       )}
     </div>
   );
 };
-
-const easyLeaderboardData = [
-  { playerName: 'Ryan', score: 1300},
-  { playerName: 'Raj', score: 1800},
-  { playerName: 'CJ', score: 1550},
-  { playerName: 'Julia', score: 1630},
-];  
-
-const normalLeaderboardData = [
-  { playerName: 'Kartik', score: 1200},
-  { playerName: 'Kap', score: 1400},
-  { playerName: 'Chris', score: 1740},
-  { playerName: 'Rachel', score: 1900},
-];
-
-const hardLeaderboardData = [
-  { playerName: 'Justin', score: 2000},
-  { playerName: 'Rayyan', score: 1100},
-  { playerName: 'Christian', score: 1970},
-  { playerName: 'Jae', score: 1480},
-  { playerName: 'Patty', score: 1750},
-];
 
 export default LeaderboardScreen;
