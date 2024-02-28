@@ -25,9 +25,42 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 EasyGames_ref = db.collection('EasyGames')
 EasyRounds_ref = db.collection('EasyRounds')
+MediumGames_ref = db.collection('MediumGames')
+MediumRounds_ref = db.collection('MediumRounds')
+HardGames_ref = db.collection('HardGames')
+HardRounds_ref = db.collection('HardRounds')
 images_ref = db.collection('images')
 leaderboard_ref = db.collection('leaderboard')
 players_ref = db.collection('players')
+
+
+# Gets random image from image collection and sends target, background, date and target coordinates to one of the rounds
+def get_TargetBgImages(difficulty, i):
+    image_data = get_randImage()
+    backgroundImage = image_data['url']
+    im = Image.open(image_data['url'])
+    width, height = im.size
+    dateTaken = image_data["datetaken"]  # got date from json
+    dateTaken = dateTaken[0:4]
+    # not sure if we need to store background's corner coordinates, just need it for finding target's corner coordinates
+    TL = (random.randint(1, width-20), random.randint(1, height-20))
+    TR = TL + (20, 0)
+    BL = TL + (0, 20)
+    BR = TL + (20, 20)
+    # backgroundImage.show()
+    data = {  # most of the data is not needed for rounds, ideally we just need dates, filepaths for background and target, and target's corner coordinates
+        "id": image_data['id'],
+        "url": backgroundImage,
+        "TL": TL,
+        "TR": TR,
+        "BL": BL,
+        "BR": BR,
+        "date": dateTaken
+    }
+    # sends data to one of the collections for rounds
+    # difficulty -> EasyRounds, MediumRounds, HardRounds, i -> round number
+    doc_ref = db.collection(difficulty).document(i)
+    doc_ref.set(data)
 
 
 # Function to retrieve data from Firestore
@@ -135,45 +168,7 @@ def get_randImages():
     return jsonify(image_data)
 
 
-@app.route('/bg_target', methods=['GET'])
-def get_TargetBgImages():
-    image_data = get_randImage()
-    backgroundImage = image_data['url']
-    im = Image.open(image_data['url'])
-    width, height = im.size
-    dateTaken = image_data["datetaken"]  # got date from json
-    dateTaken = dateTaken[0:4]
-    TL = (random.randint(1, width-20), random.randint(1, height-20))
-    TR = TL + (20, 0)
-    BL = TL + (0, 20)
-    BR = TL + (20, 20)
-    # backgroundImage.show()
-    data = {
-        "id": image_data['id'],
-        "owner": image_data['owner'],
-        "secret": image_data['secret'],
-        "server": image_data['server'],
-        "farm": image_data['farm'],
-        "title": image_data['title'],
-        "ispublic": image_data['ispublic'],
-        "isfriend": image_data['isfriend'],
-        "isfamily": image_data['isfamily'],
-        "datetaken": image_data['datetaken'],
-        "datetakengranularity": image_data['datetakengranularity'],
-        "datetakenunknown": image_data['datetakenunknown'],
-        "url": backgroundImage,
-        "TL": TL,
-        "TR": TR,
-        "BL": BL,
-        "BR": BR,
-        "date": dateTaken
-    }
-
-    doc_ref = db.collection('images').document(image_data['id'])
-    doc_ref.set(data)
-    print('Document successfully replaced!')
-
-
+# @app.route('/bg_target', methods=['GET'])
 
 @app.route('/leaderboard', methods=['GET'])
 def get_leaderboard():
