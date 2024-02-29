@@ -10,7 +10,6 @@ from firebase_admin import credentials, firestore
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from PIL import Image
-from Round import BackgroundImage, Round
 
 app = Flask(__name__)
 CORS(app)
