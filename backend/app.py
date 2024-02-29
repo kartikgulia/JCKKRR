@@ -53,7 +53,18 @@ class Round:
         self.targetImage = ''  # TODO
 
 
+def get_randImage():  # gets random image from database
+    docs = images_ref.get()
+    documents_list = [doc.to_dict() for doc in docs]
+    if documents_list:
+        random_image_data = random.choice(documents_list)
+        return random_image_data
+    else:
+        return None
+
+
 # difficulty -> EasyRounds, MediumRounds, HardRounds, start -> round we start on, default is 1
+# sends set of images to round collections and set of IDs to game collection
 def getImageSet(difficulty, start):
     rounds = []
     for i in range(start, start+5):
@@ -126,16 +137,6 @@ def get_images_data():
     for idx, doc in enumerate(docs, start=1):
         documents_dict[idx] = doc.to_dict()
     return documents_dict
-
-
-def get_randImage():
-    docs = images_ref.get()
-    documents_list = [doc.to_dict() for doc in docs]
-    if documents_list:
-        random_image_data = random.choice(documents_list)
-        return random_image_data
-    else:
-        return None
 
 
 def get_leaderboard_data():
