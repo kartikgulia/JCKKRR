@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import SERVER_URL from "../config";
+import "../styles/login.css"; 
 
-function SignInPage() {
+function SignInPage(){
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -30,30 +31,29 @@ function SignInPage() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h1>Sign In</h1>
-      <div>
+      
+      <div className="background">
+        <h1 className="title">Sign In</h1>
         <label>
-          Username:
+          <h1 className="info">Username:</h1>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
         </label>
-      </div>
-      <div>
         <label>
-          Password:
+          <h1 className="info"> Password: </h1>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
+        <button type="submit">Sign In</button>
+        <h1>{messageFromBackend}</h1>
       </div>
-      <button type="submit">Sign In</button>
-
-      <h1>{messageFromBackend}</h1>
+      
     </form>
   );
 }
