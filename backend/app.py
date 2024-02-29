@@ -34,22 +34,62 @@ leaderboard_ref = db.collection('leaderboard')
 players_ref = db.collection('players')
 
 
+class BackgroundPicture:
+    def _init_(self, document):
+        self.targetImage = ''  # TODO
+        self.filepath = document['url']
+        self.targetDate = document['date']
+        # TL, TR, BL, BR (for background currently but idk if we need these. Should use for target)
+        self.imageCoordinates = [document['BL'],
+                                 document['TL'], document['TR'], document['BR']]
+
+
+class Round:
+    # id from array in easy/medium/hard game collection, difficulty -> EasyRounds, MediumRounds, HardRounds
+    def _init_(self, ID, difficulty):
+        round_ref = db.collection(difficulty).document(ID)
+        self.averagePerformance = 0
+        self.numPlayersCompleted = 0
+        self.backgroundImage = BackgroundPicture(round_ref.get())
+        self.targetImage = ''  # TODO
+
+
+# difficulty -> EasyRounds, MediumRounds, HardRounds, start -> round we start on, default is 1
+def getImageSet(difficulty, start):
+    rounds = []
+    for i in range(start, start+5):
+        get_TargetBgImages(difficulty, i)
+        rounds.append(i)  # ID
+
+    data = {rounds: rounds}
+
+    if difficulty == "EasyRounds":
+        game_difficulty = "EasyGames"
+    elif difficulty == "MediumRounds":
+        game_difficulty = "MediumGames"
+    else:
+        game_difficulty = "HardGames"
+
+    # don't know if we need an ID for the games
+    game_ref = db.collection(game_difficulty).document()
+    game_ref.set(data)
+
+
 # Gets random image from image collection and sends target, background, date and target coordinates to one of the rounds
 def get_TargetBgImages(difficulty, i):
     image_data = get_randImage()
     backgroundImage = image_data['url']
     im = Image.open(image_data['url'])
     width, height = im.size
-    dateTaken = image_data["datetaken"]  # got date from json
+    dateTaken = image_data["datetaken"]
     dateTaken = dateTaken[0:4]
-    # not sure if we need to store background's corner coordinates, just need it for finding target's corner coordinates
+    # not sure if we need to store background's corner coordinates, might just need it as a boundary for finding target's corner coordinates
     TL = (random.randint(1, width-20), random.randint(1, height-20))
     TR = TL + (20, 0)
     BL = TL + (0, 20)
     BR = TL + (20, 20)
     # backgroundImage.show()
-    data = {  # most of the data is not needed for rounds, ideally we just need dates, filepaths for background and target, and target's corner coordinates
-        "id": image_data['id'],
+    data = {  # most of the data in images is not needed for rounds, ideally we just need dates, filepaths for background and target, and target's corner coordinates
         "url": backgroundImage,
         "TL": TL,
         "TR": TR,
@@ -58,12 +98,13 @@ def get_TargetBgImages(difficulty, i):
         "date": dateTaken
     }
     # sends data to one of the collections for rounds
-    # difficulty -> EasyRounds, MediumRounds, HardRounds, i -> round number
-    doc_ref = db.collection(difficulty).document(i)
+    # difficulty -> EasyRounds, MediumRounds, HardRounds, i -> round number as id
+    doc_ref = db.collection(difficulty).document(str(i))
     doc_ref.set(data)
 
-
 # Function to retrieve data from Firestore
+
+
 def get_EasyGames_ref_data():
     docs = EasyGames_ref.get()
     documents_dict = {}
