@@ -70,9 +70,10 @@ def getGameInfo():
         # Now go to the Game Interface and complete the startGame function
 
         # Call startGame() which returns the game info
+        arrayOfRoundDictionaries = currentPlayer.currentGame.startGame()
 
         # Need to return the JSONIFY of game info
-        return jsonify({"message": "Yay", "gamesArray": "arrayOfRoundDictionaries"})
+        return jsonify({"message": "Yay", "gamesArray": arrayOfRoundDictionaries})
 
     else:
         print(
@@ -115,13 +116,14 @@ def get_randImage():  # gets random image from database
 
 
 # difficulty -> EasyRounds, MediumRounds, HardRounds, start -> round we start on, default is 1
-# call TargetBgImages for each round and send set of IDs to game collection. IDs would be index in loop (i.e 1 2 3 4 5)
+# call TargetBgImages for each round and send set of round IDs to game collection. round IDs would be index in loop (i.e 1 2 3 4 5)
 def getImageSet(difficulty, start):
     rounds = []
     # TODO for Ryan and Kartik
 
 
 # Gets random image from image collection and sends target, background, date and target coordinates to one of the rounds
+# difficulty -> EasyRounds, MediumRounds, HardRounds, i -> round number as id
 def get_TargetBgImages(difficulty, i):
     image_data = get_randImage()
     backgroundImage = image_data['url']
@@ -129,7 +131,6 @@ def get_TargetBgImages(difficulty, i):
     width, height = im.size
     dateTaken = image_data["datetaken"]
     dateTaken = dateTaken[0:4]
-    # not sure if we need to store background's corner coordinates, might just need it as a boundary for finding target's corner coordinates
     TL = (random.randint(1, width-20), random.randint(1, height-20))
     TR = TL + (20, 0)
     BL = TL + (0, 20)
@@ -144,7 +145,6 @@ def get_TargetBgImages(difficulty, i):
         "date": dateTaken
     }
     # sends data to one of the collections for rounds
-    # difficulty -> EasyRounds, MediumRounds, HardRounds, i -> round number as id
     doc_ref = db.collection(difficulty).document(str(i))
     doc_ref.set(data)
 

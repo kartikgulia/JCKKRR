@@ -1,4 +1,4 @@
-from app import db
+from FirebaseAccess.firebase import db
 
 
 class BackgroundPicture:
@@ -6,16 +6,23 @@ class BackgroundPicture:
         self.targetImage = ''  # TODO
         self.filepath = document['url']
         self.targetDate = document['date']
-        # TL, TR, BL, BR (for background currently but idk if we need these. Should use for target)
-        self.imageCoordinates = [document['BL'],
-                                 document['TL'], document['TR'], document['BR']]
+        self.targetImageCoordinates = [document['BL'],
+                                       document['TL'], document['TR'], document['BR']]
 
 
 class Round:
-    # id from array in easy/medium/hard game collection, difficulty -> EasyRounds, MediumRounds, HardRounds
-    def _init_(self, ID, difficulty):
-        round_ref = db.collection(difficulty).document(ID)
+    # id from array in easy/medium/hard game collection, roundCollection -> collection in database
+    def _init_(self, ID, roundCollection):
+        self.round_ref = roundCollection.document(ID)
         self.averagePerformance = 0
         self.numPlayersCompleted = 0
-        self.backgroundImage = BackgroundPicture(round_ref.get())
+        self.backgroundImage = BackgroundPicture(self.round_ref.get())
         self.targetImage = ''  # TODO
+
+    def getData(self):
+        # IMPORTANT: target image coords are in order BL, TL, TR, BR
+        data = {
+            "backgroundImagePath": self.filepath,
+            "targetImageCoordinates": self.backgroundImage.targetImageCoordinates,
+            "yearTaken": self.backgroundImage.targetDate
+        }
