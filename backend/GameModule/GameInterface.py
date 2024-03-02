@@ -20,7 +20,7 @@ class Game(ABC):
         # Populate rounds array with database info at self.gameID
         roundIDs = gamesCollectionRef.document(self.gameID).get()
         roundCollectionRef = self.getRoundCollectionRef()
-        # not sure how Kap will title it but I'm assuming its rounds. Change this later
+        # TODO: not sure how Kap will title it but I'm assuming its rounds. Change this later
         for ID in roundIDs["rounds"]:
             self.rounds.append(Round(ID, roundCollectionRef))
         arrayfRoundDicts = []

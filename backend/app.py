@@ -119,7 +119,7 @@ def get_randImage():  # gets random image from database
 # call TargetBgImages for each round and send set of round IDs to game collection. round IDs would be index in loop (i.e 1 2 3 4 5)
 def getImageSet(difficulty, start):
     rounds = []
-    # TODO for Ryan and Kartik
+    # TODO for Kap
 
 
 # Gets random image from image collection and sends target, background, date and target coordinates to one of the rounds
@@ -135,9 +135,15 @@ def get_TargetBgImages(difficulty, i):
     TR = TL + (20, 0)
     BL = TL + (0, 20)
     BR = TL + (20, 20)
+    # convert target image to an array of binary data and send to firestore
+    target = im.crop((BL, TL, TR, BR))
+    binaryBuffer = BytesIO()
+    target.save(binaryBuffer, format="JPG")
+    binaryData = binaryBuffer.getvalue()
     # backgroundImage.show()
-    data = {  # most of the data in images is not needed for rounds, ideally we just need dates, filepaths for background and target, and target's corner coordinates
+    data = {  # sends dates, filepaths for background, binary data of target, and target's corner coordinates
         "url": backgroundImage,
+        "target": binaryData,
         "TL": TL,
         "TR": TR,
         "BL": BL,
