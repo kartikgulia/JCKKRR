@@ -12,10 +12,35 @@ CORS(app)
 load_dotenv()
 
 # Initialize Firebase with credentials from environment variable
-
+EasyGames_ref = db.collection('EasyGames')
+EasyRounds_ref = db.collection('EasyRounds')
+images_ref = db.collection('images')
+easyleaderboard_ref = db.collection('EasyLeaderboard')
+mediumleaderboard_ref = db.collection('MediumLeaderboard')
+hardleaderboard_ref = db.collection('HardLeaderboard')
+players_ref = db.collection('players')
 
 # Active player sessions
+def get_easy_leaderboard_data():
+    docs = easyleaderboard_ref.get()
+    documents_dict = {}
+    for idx, doc in enumerate(docs, start=1):
+        documents_dict[idx] = doc.to_dict()
+    return documents_dict
 
+def get_medium_leaderboard_data():
+    docs = mediumleaderboard_ref.get()
+    documents_dict = {}
+    for idx, doc in enumerate(docs, start=1):
+        documents_dict[idx] = doc.to_dict()
+    return documents_dict
+
+def get_hard_leaderboard_data():
+    docs = hardleaderboard_ref.get()
+    documents_dict = {}
+    for idx, doc in enumerate(docs, start=1):
+        documents_dict[idx] = doc.to_dict()
+    return documents_dict
 
 @app.route('/signin', methods=['POST'])
 def signin():
@@ -101,6 +126,22 @@ def getGameInfo():
     
 
 
+@app.route('/easyleaderboard', methods=['GET'])
+def get_easyleaderboard():
+    easyleaderboard_data = get_easy_leaderboard_data()
+    return jsonify(easyleaderboard_data)
+
+@app.route('/mediumleaderboard', methods=['GET'])
+def get_mediumleaderboard():
+    mediumleaderboard_data = get_medium_leaderboard_data()
+    return jsonify(mediumleaderboard_data)
+
+@app.route('/hardleaderboard', methods=['GET'])
+def get_hardleaderboard():
+    hardleaderboard_data = get_hard_leaderboard_data()
+    return jsonify(hardleaderboard_data)
+
+
 
 if __name__ == '__main__':
     app.run(port=5000)
@@ -118,14 +159,6 @@ if __name__ == '__main__':
 
 
 # Example Functions using firebase
-
-EasyGames_ref = db.collection('EasyGames')
-EasyRounds_ref = db.collection('EasyRounds')
-images_ref = db.collection('images')
-easyleaderboard_ref = db.collection('EasyLeaderboard')
-mediumleaderboard_ref = db.collection('MediumLeaderboard')
-hardleaderboard_ref = db.collection('HardLeaderboard')
-players_ref = db.collection('players')
 
 
 # Function to retrieve data from Firestore
@@ -150,27 +183,6 @@ def get_images_data():
         documents_dict[idx] = doc.to_dict()
     return documents_dict
 
-
-def get_easy_leaderboard_data():
-    docs = easyleaderboard_ref.get()
-    documents_dict = {}
-    for idx, doc in enumerate(docs, start=1):
-        documents_dict[idx] = doc.to_dict()
-    return documents_dict
-
-def get_medium_leaderboard_data():
-    docs = mediumleaderboard_ref.get()
-    documents_dict = {}
-    for idx, doc in enumerate(docs, start=1):
-        documents_dict[idx] = doc.to_dict()
-    return documents_dict
-
-def get_hard_leaderboard_data():
-    docs = hardleaderboard_ref.get()
-    documents_dict = {}
-    for idx, doc in enumerate(docs, start=1):
-        documents_dict[idx] = doc.to_dict()
-    return documents_dict
 
 def get_players_data():
     docs = players_ref.get()
@@ -212,20 +224,7 @@ def get_images():
     images_data = get_images_data()
     return jsonify(images_data)
 
-@app.route('/easyleaderboard', methods=['GET'])
-def get_easyleaderboard():
-    easyleaderboard_data = get_easy_leaderboard_data()
-    return jsonify(easyleaderboard_data)
 
-@app.route('/mediumleaderboard', methods=['GET'])
-def get_mediumleaderboard():
-    mediumleaderboard_data = get_medium_leaderboard_data()
-    return jsonify(mediumleaderboard_data)
-
-@app.route('/hardleaderboard', methods=['GET'])
-def get_hardleaderboard():
-    hardleaderboard_data = get_hard_leaderboard_data()
-    return jsonify(hardleaderboard_data)
 
 @app.route('/easyGames', methods=['GET'])
 def get_easyGames():
