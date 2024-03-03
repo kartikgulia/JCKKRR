@@ -135,15 +135,9 @@ def get_TargetBgImages(difficulty, i):
     TR = TL + (20, 0)
     BL = TL + (0, 20)
     BR = TL + (20, 20)
-    # convert target image to an array of binary data and send to firestore
-    target = im.crop((BL, TL, TR, BR))
-    binaryBuffer = BytesIO()
-    target.save(binaryBuffer, format="JPG")
-    binaryData = binaryBuffer.getvalue()
     # backgroundImage.show()
     data = {  # sends dates, filepaths for background, binary data of target, and target's corner coordinates
         "url": backgroundImage,
-        "target": binaryData,
         "TL": TL,
         "TR": TR,
         "BL": BL,
