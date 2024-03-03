@@ -20,7 +20,6 @@ mediumleaderboard_ref = db.collection('MediumLeaderboard')
 hardleaderboard_ref = db.collection('HardLeaderboard')
 players_ref = db.collection('players')
 
-# Active player sessions
 def get_easy_leaderboard_data():
     docs = easyleaderboard_ref.get()
     documents_dict = {}
@@ -58,6 +57,8 @@ def signin():
 
 from GameModule.gameCreationFunctions import createGameForPlayer
 
+
+# Active player sessions
 
 from UserModule.PlayerSessionManager import PlayerSessionManager
 from UserModule.Player import Player
