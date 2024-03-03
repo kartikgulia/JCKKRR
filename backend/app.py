@@ -21,6 +21,14 @@ load_dotenv()
 # Initialize Firebase with credentials from environment variable
 EasyGames_ref = db.collection('EasyGames')
 EasyRounds_ref = db.collection('EasyRounds')
+
+"""
+MediumGames_ref = db.collection('MediumGames')
+MediumRounds_ref = db.collection('MediumRounds')
+HardGames_ref = db.collection('HardGames')
+HardRounds_ref = db.collection('HardRounds')
+"""
+
 images_ref = db.collection('images')
 easyleaderboard_ref = db.collection('EasyLeaderboard')
 mediumleaderboard_ref = db.collection('MediumLeaderboard')
