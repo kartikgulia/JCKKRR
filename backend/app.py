@@ -8,6 +8,7 @@ from FirebaseAccess.firebase import db
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from GameModule.gameCreationFunctions import createGameForPlayer
+from GameModule.GameInterface import Game
 from PIL import Image
 from UserModule.Player import Player
 from UserModule.PlayerSessionManager import PlayerSessionManager
@@ -80,7 +81,7 @@ playerManager: PlayerSessionManager = PlayerSessionManager()  # SINGLETON
 userID: str = "bo3bw4GUJdFhTp6aEqiD"
 tempPlayer: Player = Player(userID=userID)
 tempPlayer.name = "Rayyan"
-tempPlayer.gameIDsPlayed = ["EasyGame1", "EasyGame2"]
+tempPlayer.gameIDsPlayed = ["EasyGame1"]
 playerManager.addPlayer(userID, tempPlayer)
 
 

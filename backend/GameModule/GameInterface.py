@@ -18,7 +18,7 @@ class Game(ABC):
         self.currentRoundNumber = 1
         self.rounds = []
         # Populate rounds array with database info at self.gameID
-        roundIDs = gamesCollectionRef.document(self.gameID).get()
+        roundIDs = gamesCollectionRef.document(self.gameID).get().to_dict()
         roundCollectionRef = self.getRoundCollectionRef()
         # TODO: not sure how Kap will title it but I'm assuming its rounds. Change this later
         for ID in roundIDs["rounds"]:
@@ -45,7 +45,8 @@ class Game(ABC):
     def getGameCollectionRef(self):
         pass
 
-    @abstractmethod  # subject to change but I'm pretty sure we should have a ref to each round collection based on difficulty
+    @abstractmethod  # subject to change but I'm pretty sure we should have a ref to each round collection based on difficulty. 
+                    # yeah thats good -- rayyan
     def getRoundCollectionRef(self):
         pass
 

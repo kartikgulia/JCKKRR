@@ -25,9 +25,7 @@ class EasyGame(Game):
     def getRoundCollectionRef(self):
         return db.collection("EasyRounds")
 
-    def startGame(self):
-        # This will start the Game progress
-        pass
+   
 
     def scoreRound(self):
 
@@ -50,10 +48,7 @@ class MediumGame(Game):
     def getRoundCollectionRef(self):
         return db.collection("MediumRounds")
 
-    def startGame(self):
-        # This will start the Game progress
-        pass
-
+ 
     def scoreRound(self):
 
         pass
@@ -75,9 +70,7 @@ class HardGame(Game):
     def getRoundCollectionRef(self):
         return db.collection("HardRounds")
 
-    def startGame(self):
-        # This will start the Game progress
-        pass
+
 
     def scoreRound(self):
 
