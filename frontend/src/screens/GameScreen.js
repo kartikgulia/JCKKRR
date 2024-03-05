@@ -25,32 +25,33 @@ function Game() {
     initializeGame(); // Ensure initializeGame is called after difficulty is set
   }, []);
 
+  const loadImage = (src) =>
+    new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+    });
+
   const initializeGame = async () => {
     console.log("Game component has been mounted.");
     console.log("Use difficulty to retrieve a game from Firestore");
     console.log(difficulty);
 
     try {
-      const response = await fetch(`${SERVER_URL}/bg_target`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-      console.log(data["backgroundImage"]);
-      setBackgroundImageSRC(data["backgroundImage"]);
-      const backgroundImage = new Image();
-      backgroundImage.src = data["backgroundImage"];
-      backgroundImage.onload = () => {
-        const targetImage = new Image();
-        targetImage.src = "https://picsum.photos/500/500";
-        targetImage.onload = () => {
-          setTargetImageSRC(targetImage.src);
-          setTargetImageCoordinates({ x: 100, y: 200 });
-          setImagesLoaded(true);
-        };
-      };
+      const backgroundImageSrc = "https://picsum.photos/1000/500";
+      const targetImageSrc = "https://picsum.photos/500/500";
+
+      // Load both images asynchronously
+      const [backgroundImage, targetImage] = await Promise.all([
+        loadImage(backgroundImageSrc),
+        loadImage(targetImageSrc),
+      ]);
+
+      setBackgroundImageSRC(backgroundImage.src);
+      setTargetImageSRC(targetImage.src);
+      setTargetImageCoordinates({ x: 100, y: 200 });
+      setImagesLoaded(true);
     } catch (error) {
       console.error("Error during image processing", error);
       setBackgroundImageSRC("Error during Image Processing");
