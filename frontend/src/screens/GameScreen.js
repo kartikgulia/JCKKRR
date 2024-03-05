@@ -1,118 +1,105 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import YearGuess from "../components/GameScreen/YearGuess";
 import Round from "../components/GameScreen/Round";
+import SERVER_URL from "../config";
 
-class Game extends Component {
-  state = {
-    year: 0, // Initial slider value
-    onYearGuessPage: true,
-    backgroundImageSRC: "", // Moved initialization to state
-    targetImageSRC: "",
-    targetImageCoordinates: {},
-    imagesLoaded: false, // New state to track image loading
-    difficulty: null,
-  };
+function Game() {
+  const [year, setYear] = useState(0); // Initial slider value
+  const [onYearGuessPage, setOnYearGuessPage] = useState(true);
+  const [backgroundImageSRC, setBackgroundImageSRC] = useState("");
+  const [targetImageSRC, setTargetImageSRC] = useState("");
+  const [targetImageCoordinates, setTargetImageCoordinates] = useState({});
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [difficulty, setDifficulty] = useState(null);
 
-  minYear = 0;
-  maxYear = 2024;
+  const minYear = 0;
+  const maxYear = 2024;
 
-  componentDidMount() {
+  useEffect(() => {
     const route = window.location.pathname;
     const parts = route.split("/"); // Split the pathname by '/'
     const difficulty = parts[parts.length - 1];
-
     console.log(difficulty); // Output the difficulty level
+    setDifficulty(difficulty);
+    console.log("Difficulty updated:", difficulty);
+    initializeGame(); // Ensure initializeGame is called after difficulty is set
+  }, []);
 
-    this.setState({ difficulty: difficulty }, () => {
-      console.log("Difficulty updated:", this.state.difficulty);
-      this.initializeGame(); // Ensure initializeGame is called after difficulty is set
-    });
-  }
-
-  initializeGame = () => {
+  const initializeGame = async () => {
     console.log("Game component has been mounted.");
-    // Print out the gameID
-
     console.log("Use difficulty to retrieve a game from Firestore");
+    console.log(difficulty);
 
-    // Here is the difficulty
-
-    console.log(this.state.difficulty);
-
-    // All this data below should be retrieved from firestore. i just put in some mock data
-
-    // Use the difficulty to get the game info from firestore
-    const backgroundImage = new Image();
-    backgroundImage.src = "https://picsum.photos/1000/500";
-    backgroundImage.onload = () => {
-      const targetImage = new Image();
-      targetImage.src = "https://picsum.photos/500/500";
-      targetImage.onload = () => {
-        this.setState({
-          backgroundImageSRC: backgroundImage.src,
-          targetImageSRC: targetImage.src,
-          targetImageCoordinates: {
-            x: 100,
-            y: 200,
-          },
-          imagesLoaded: true,
-        });
+    try {
+      const response = await fetch(`${SERVER_URL}/bg_target`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      console.log(data["backgroundImage"]);
+      setBackgroundImageSRC(data["backgroundImage"]);
+      const backgroundImage = new Image();
+      backgroundImage.src = data["backgroundImage"];
+      backgroundImage.onload = () => {
+        const targetImage = new Image();
+        targetImage.src = "https://picsum.photos/500/500";
+        targetImage.onload = () => {
+          setTargetImageSRC(targetImage.src);
+          setTargetImageCoordinates({ x: 100, y: 200 });
+          setImagesLoaded(true);
+        };
       };
-    };
+    } catch (error) {
+      console.error("Error during image processing", error);
+      setBackgroundImageSRC("Error during Image Processing");
+    }
   };
 
-  handleYearChange = (value) => {
-    this.setState({ year: value });
+  const handleYearChange = (value) => {
+    setYear(value);
   };
 
-  calculateScoreForYearGuess = (yearGuessed, yearActual) => {
-    let yearRange = this.maxYear - this.minYear;
+  const calculateScoreForYearGuess = (yearGuessed, yearActual) => {
+    let yearRange = maxYear - minYear;
     let offBy = Math.abs(yearGuessed - yearActual);
     let score = yearRange - offBy;
     return score;
   };
 
-  submitYearGuess = () => {
-    console.log("Selected Year:", this.state.year);
+  const submitYearGuess = () => {
+    console.log("Selected Year:", year);
     let actualYear = 2000;
-    let score = this.calculateScoreForYearGuess(this.state.year, actualYear);
+    let score = calculateScoreForYearGuess(year, actualYear);
     console.log(score);
-    this.setState({ onYearGuessPage: false });
+    setOnYearGuessPage(false);
   };
 
-  render() {
-    const {
-      backgroundImageSRC,
-      targetImageSRC,
-      targetImageCoordinates,
-      imagesLoaded,
-    } = this.state; // Use backgroundImageSRC from state
-
-    if (!imagesLoaded) {
-      return <div>Loading...</div>; // Render a loading indicator until images are loaded
-    }
-
-    return (
-      <div style={container}>
-        {this.state.onYearGuessPage ? (
-          <YearGuess
-            year={this.state.year}
-            onYearChange={this.handleYearChange}
-            onSubmitYearGuess={this.submitYearGuess}
-            minYear={this.minYear}
-            maxYear={this.maxYear}
-            backgroundImageSRC={backgroundImageSRC} // Use state value
-          />
-        ) : (
-          <Round
-            backgroundImageSRC={backgroundImageSRC} // Use state value
-            targetImage={targetImageSRC}
-            targetImageCoordinates={targetImageCoordinates}
-          />
-        )}
-      </div>
-    );
+  if (!imagesLoaded) {
+    return <div>Loading...</div>;
   }
+
+  return (
+    <div style={container}>
+      {onYearGuessPage ? (
+        <YearGuess
+          year={year}
+          onYearChange={handleYearChange}
+          onSubmitYearGuess={submitYearGuess}
+          minYear={minYear}
+          maxYear={maxYear}
+          backgroundImageSRC={backgroundImageSRC}
+        />
+      ) : (
+        <Round
+          backgroundImageSRC={backgroundImageSRC}
+          targetImage={targetImageSRC}
+          targetImageCoordinates={targetImageCoordinates}
+        />
+      )}
+    </div>
+  );
 }
 
 const container = {

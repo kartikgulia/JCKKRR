@@ -1,2 +1,0 @@
-# JCKKRR
-CS180 Project

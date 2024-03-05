@@ -1,51 +1,31 @@
-from GameModule.GameInterface import Game
+import random
+import sys
 from enum import Enum
 
-import random
-
-
-import sys
-
-
-
-
-from UserModule.Player import Player
-
 from FirebaseAccess.firebase import db
-
-
-
-
-
-
-
-
-
-
-
+from GameModule.GameInterface import Game
+from UserModule.Player import Player
 
 
 class EasyGame(Game):
     def __init__(self, player):
-        
 
         # Properties
-        self.player : Player = player
+        self.player: Player = player
         self.rounds = []
         self.currentRoundNumber = None
-        self.gameID : str = None
+        self.gameID: str = None
 
     # Implementation of each function for EasyGame
-
 
     def getGameCollectionRef(self):
         easyGamesRef = db.collection("EasyGames")
         return easyGamesRef
 
+    def getRoundCollectionRef(self):
+        return db.collection("EasyRounds")
 
-    def startGame(self):
-        # This will start the Game progress
-        pass
+   
 
     def scoreRound(self):
 
@@ -54,6 +34,7 @@ class EasyGame(Game):
     def endGame(self):
 
         pass
+
 
 class MediumGame(Game):
     def __init__(self, player):
@@ -61,14 +42,13 @@ class MediumGame(Game):
         self.rounds = []
 
     def getGameCollectionRef(self):
-        mediumGamesRef = db.collection("MediumGames") 
+        mediumGamesRef = db.collection("MediumGames")
         return mediumGamesRef
-    
 
-    def startGame(self):
-        # This will start the Game progress
-        pass
+    def getRoundCollectionRef(self):
+        return db.collection("MediumRounds")
 
+ 
     def scoreRound(self):
 
         pass
@@ -76,6 +56,7 @@ class MediumGame(Game):
     def endGame(self):
 
         pass
+
 
 class HardGame(Game):
     def __init__(self, player):
@@ -85,11 +66,11 @@ class HardGame(Game):
     def getGameCollectionRef(self):
         hardGamesRef = db.collection("HardGames")
         return hardGamesRef
-    
 
-    def startGame(self):
-        # This will start the Game progress
-        pass
+    def getRoundCollectionRef(self):
+        return db.collection("HardRounds")
+
+
 
     def scoreRound(self):
 
@@ -98,7 +79,7 @@ class HardGame(Game):
     def endGame(self):
 
         pass
-    
+
 
 # Factory class to create game objects
 class GameFactory:
@@ -116,7 +97,8 @@ class GameFactory:
             raise ValueError("Unknown difficulty level")
 
 # Usage
-        
+
+
 if __name__ == "__main__":
     player = Player(userID="bo3bw4GUJdFhTp6aEqiD")  # Example player
     factory = GameFactory(player)
