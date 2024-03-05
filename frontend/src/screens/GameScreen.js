@@ -4,11 +4,11 @@ import Round from "../components/GameScreen/Round";
 import SERVER_URL from "../config";
 
 function Game() {
-  const [year, setYear] = useState(0); // Initial slider value
+  const [year, setYear] = useState(0);
+  const [rounds, setRounds] = useState([]);
+  const [currentRound, setCurrentRound] = useState(0);
+  const [totalRounds, setTotalRounds] = useState(0);
   const [onYearGuessPage, setOnYearGuessPage] = useState(true);
-  const [backgroundImageSRC, setBackgroundImageSRC] = useState("");
-  const [targetImageSRC, setTargetImageSRC] = useState("");
-  const [targetImageCoordinates, setTargetImageCoordinates] = useState({});
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [difficulty, setDifficulty] = useState(null);
 
@@ -17,43 +17,27 @@ function Game() {
 
   useEffect(() => {
     const route = window.location.pathname;
-    const parts = route.split("/"); // Split the pathname by '/'
+    const parts = route.split("/");
     const difficulty = parts[parts.length - 1];
-    console.log(difficulty); // Output the difficulty level
     setDifficulty(difficulty);
-    console.log("Difficulty updated:", difficulty);
-    initializeGame(); // Ensure initializeGame is called after difficulty is set
+    initializeGame(difficulty);
   }, []);
 
-  const initializeGame = async () => {
-    console.log("Game component has been mounted.");
-    console.log("Use difficulty to retrieve a game from Firestore");
-    console.log(difficulty);
-
+  const initializeGame = async (difficulty) => {
     try {
-      const response = await fetch(`${SERVER_URL}/bg_target`, {
+      const response = await fetch(`${SERVER_URL}/bg_target?difficulty=${difficulty}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       });
       const data = await response.json();
-      console.log(data["backgroundImage"]);
-      setBackgroundImageSRC(data["backgroundImage"]);
-      const backgroundImage = new Image();
-      backgroundImage.src = data["backgroundImage"];
-      backgroundImage.onload = () => {
-        const targetImage = new Image();
-        targetImage.src = "https://picsum.photos/500/500";
-        targetImage.onload = () => {
-          setTargetImageSRC(targetImage.src);
-          setTargetImageCoordinates({ x: 100, y: 200 });
-          setImagesLoaded(true);
-        };
-      };
+      setRounds(data.rounds);
+      setTotalRounds(data.rounds.length);
+      setCurrentRound(1); // Start from the first round
+      setImagesLoaded(true);
     } catch (error) {
-      console.error("Error during image processing", error);
-      setBackgroundImageSRC("Error during Image Processing");
+      console.error("Error during game initialization", error);
     }
   };
 
@@ -84,18 +68,18 @@ function Game() {
     <div style={container}>
       {onYearGuessPage ? (
         <YearGuess
-          year={year}
+          year={0}  // Set initial year value
           onYearChange={handleYearChange}
           onSubmitYearGuess={submitYearGuess}
           minYear={minYear}
           maxYear={maxYear}
-          backgroundImageSRC={backgroundImageSRC}
+          backgroundImageSRC={rounds[currentRound - 1].backgroundImagePath}
         />
       ) : (
         <Round
-          backgroundImageSRC={backgroundImageSRC}
-          targetImage={targetImageSRC}
-          targetImageCoordinates={targetImageCoordinates}
+          backgroundImageSRC={rounds[currentRound - 1].backgroundImagePath}
+          targetImage={rounds[currentRound - 1].targetImageCoordinates}
+          targetImageCoordinates={rounds[currentRound - 1].targetImageCoordinates}
         />
       )}
     </div>
