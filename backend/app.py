@@ -43,10 +43,22 @@ def get_TargetBgImages(difficulty, i):
     dateTaken = image_data["datetaken"]  # got date from json
     dateTaken = dateTaken[0:4]
     # not sure if we need to store background's corner coordinates, just need it for finding target's corner coordinates
-    TL = (random.randint(1, width-20), random.randint(1, height-20))
-    TR = TL + (20, 0)
-    BL = TL + (0, 20)
-    BR = TL + (20, 20)
+    if (difficulty == "MediumRounds"):
+        TL = (random.randint(1, width-20), random.randint(1, height-20))
+        TR = TL + (20, 0)
+        BL = TL + (0, 20)
+        BR = TL + (20, 20)
+    elif (difficulty == "EasyRounds"):
+        TL = (random.randint(1, width-20), random.randint(1, height-20))
+        TR = TL + (40, 0)
+        BL = TL + (0, 40)
+        BR = TL + (40, 40)
+    else:
+        TL = (random.randint(1, width-20), random.randint(1, height-20))
+        TR = TL + (10, 0)
+        BL = TL + (0, 10)
+        BR = TL + (10, 10)
+    
     # backgroundImage.show()
     data = {  # most of the data is not needed for rounds, ideally we just need dates, filepaths for background and target, and target's corner coordinates
         "id": image_data['id'],
