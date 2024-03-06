@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import YearGuess from "../components/GameScreen/YearGuess";
 import Round from "../components/GameScreen/Round";
-import SERVER_URL from "../config";
+import "../styles/GameScreen.css";
 
 function Game() {
-  const [year, setYear] = useState(0);
-  const [rounds, setRounds] = useState([]);
   const [currentRound, setCurrentRound] = useState(0);
-  const [totalRounds, setTotalRounds] = useState(0);
-  const [onYearGuessPage, setOnYearGuessPage] = useState(true);
+  const [mockRounds, setMockRounds] = useState([]);
+  const [roundsTotal, setRoundsTotal] = useState(0);
+  const [backgroundImageSRC, setBackgroundImageSRC] = useState("");
+  const [targetImageSRC, setTargetImageSRC] = useState("");
+  const [targetImageCoordinates, setTargetImageCoordinates] = useState({});
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [difficulty, setDifficulty] = useState(null);
 
@@ -16,48 +16,60 @@ function Game() {
   const maxYear = 2024;
 
   useEffect(() => {
+    const mockRoundsData = [
+      { backgroundImagePath: "https://picsum.photos/1000/500", targetImageCoordinates: { x: 100, y: 200 }, yearTaken: 2000 },
+      { backgroundImagePath: "https://picsum.photos/500/500", targetImageCoordinates: { x: 150, y: 250 }, yearTaken: 2010 },
+      { backgroundImagePath: "https://picsum.photos/600/500", targetImageCoordinates: { x: 150, y: 250 }, yearTaken: 2010 },
+      { backgroundImagePath: "https://picsum.photos/700/500", targetImageCoordinates: { x: 150, y: 250 }, yearTaken: 2010 },
+      { backgroundImagePath: "https://picsum.photos/800/500", targetImageCoordinates: { x: 150, y: 250 }, yearTaken: 2010 },
+    ];
+
     const route = window.location.pathname;
     const parts = route.split("/");
     const difficulty = parts[parts.length - 1];
     setDifficulty(difficulty);
-    initializeGame(difficulty);
+
+    setMockRounds(mockRoundsData);
+    setRoundsTotal(mockRoundsData.length);
+    initializeGame();
   }, []);
 
-  const initializeGame = async (difficulty) => {
+  const initializeGame = async () => {
     try {
-      const response = await fetch(`${SERVER_URL}/bg_target?difficulty=${difficulty}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-      setRounds(data.rounds);
-      setTotalRounds(data.rounds.length);
-      setCurrentRound(1); // Start from the first round
+      const backgroundImageSrc = "https://picsum.photos/1000/500";
+      const targetImageSrc = "https://picsum.photos/500/500";
+
+      const [backgroundImage, targetImage] = await Promise.all([
+        loadImage(backgroundImageSrc),
+        loadImage(targetImageSrc),
+      ]);
+
+      setBackgroundImageSRC(backgroundImage.src);
+      setTargetImageSRC(targetImage.src);
+      setTargetImageCoordinates({ x: 100, y: 200 });
       setImagesLoaded(true);
     } catch (error) {
-      console.error("Error during game initialization", error);
+      console.error("Error during image processing", error);
+      setBackgroundImageSRC("Error during Image Processing");
     }
   };
 
-  const handleYearChange = (value) => {
-    setYear(value);
-  };
+  const loadImage = (src) =>
+    new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+    });
 
-  const calculateScoreForYearGuess = (yearGuessed, yearActual) => {
-    let yearRange = maxYear - minYear;
-    let offBy = Math.abs(yearGuessed - yearActual);
-    let score = yearRange - offBy;
-    return score;
-  };
+  const handleRoundSubmit = (yearGuess, coordinates) => {
+    console.log(`Round ${currentRound + 1} Submission: Year Guess - ${yearGuess}, Coordinates - ${JSON.stringify(coordinates)}`);
 
-  const submitYearGuess = () => {
-    console.log("Selected Year:", year);
-    let actualYear = 2000;
-    let score = calculateScoreForYearGuess(year, actualYear);
-    console.log(score);
-    setOnYearGuessPage(false);
+    if (currentRound + 1 < roundsTotal) {
+      setCurrentRound(currentRound + 1);
+    } else {
+      console.log("Game completed!");
+    }
   };
 
   if (!imagesLoaded) {
@@ -65,33 +77,17 @@ function Game() {
   }
 
   return (
-    <div style={container}>
-      {onYearGuessPage ? (
-        <YearGuess
-          year={0}  // Set initial year value
-          onYearChange={handleYearChange}
-          onSubmitYearGuess={submitYearGuess}
+    <div className="container">
+        <Round
+          roundData={mockRounds[currentRound]}
+          currentRound={currentRound + 1}
+          roundsTotal={roundsTotal}
+          onSubmit={handleRoundSubmit}
           minYear={minYear}
           maxYear={maxYear}
-          backgroundImageSRC={rounds[currentRound - 1].backgroundImagePath}
         />
-      ) : (
-        <Round
-          backgroundImageSRC={rounds[currentRound - 1].backgroundImagePath}
-          targetImage={rounds[currentRound - 1].targetImageCoordinates}
-          targetImageCoordinates={rounds[currentRound - 1].targetImageCoordinates}
-        />
-      )}
     </div>
   );
 }
-
-const container = {
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "100vh",
-};
 
 export default Game;

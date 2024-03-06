@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const BackgroundImage = ({ src, onClick }) => {
   const style = {
     maxWidth: "100%",
-    maxHeight: "100vh",
+    maxHeight: "50vh",
     position: "relative",
   };
 

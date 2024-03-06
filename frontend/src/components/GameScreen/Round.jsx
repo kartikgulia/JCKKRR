@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import BackgroundImage from "./BackgroundImage";
 import SubmitButton from "./SubmitButton";
+import YearGuess from "./YearGuess";
+import "../../styles/Round.css"
 
-const Round = ({ backgroundImageSRC, targetImage, targetImageCoordinates }) => {
+const Round = ({ roundData, currentRound, roundsTotal, onSubmit, minYear, maxYear }) => {
+  const [year, setYear] = useState(0);
   const [clickPosition, setClickPosition] = useState({ x: null, y: null });
 
   const handleBackgroundImageClick = (event) => {
     const rect = event.target.getBoundingClientRect();
-    const circleDiameter = 20; // Since the circle's size is 20x20px
+    const circleDiameter = 20;
     const offsetX = circleDiameter / 2;
     const offsetY = circleDiameter / 2;
     const x = event.clientX - rect.left - offsetX;
@@ -16,80 +19,60 @@ const Round = ({ backgroundImageSRC, targetImage, targetImageCoordinates }) => {
     setClickPosition({ x, y });
   };
 
-  // Optionally, define what happens when the submit button is clicked
-  const handleSubmitClick = () => {
-    console.log(`Submit click at x: ${clickPosition.x}, y: ${clickPosition.y}`);
-    console.log(
-      `Target Image coordinates at x: ${targetImageCoordinates.x}, y: ${targetImageCoordinates.y}`
-    );
-    // Here you can add the logic for what should happen on submit, like verifying the click position
+  const handleRoundSubmit = () => {
+    onSubmit(year, clickPosition);
+    setClickPosition({ x: null, y: null });
+    setYear(0);
+  };
+
+  const submitYearGuess = () => {
+    console.log("Selected Year:", year);
+    let actualYear = 2000;
+    let score = calculateScoreForYearGuess(year, actualYear);
+    console.log(score);
+  };
+
+  const handleYearChange = (value) => {
+    setYear(value);
+  };
+
+  const calculateScoreForYearGuess = (yearGuessed, yearActual) => {
+    let yearRange = maxYear - minYear;
+    let offBy = Math.abs(yearGuessed - yearActual);
+    let score = yearRange - offBy;
+    return score;
   };
 
   return (
-    <div style={roundContainerStyle}>
-      <div style={targetImageContainerStyle}>
-        <h2>Find this image</h2>
-        <img src={targetImage} alt="Target" style={targetImageStyle} />
+    <div className="round-container">
+      <div className="target-image-container">
+        <h2 className="find-image-heading">Find this image</h2>
       </div>
-      <div
-        style={backgroundImageContainerStyle}
-        onClick={handleBackgroundImageClick}
-      >
-        <BackgroundImage src={backgroundImageSRC} />
-        {/* Conditionally render the red circle if coordinates are available */}
+      <div className="background-image-container" onClick={handleBackgroundImageClick}>
+        <BackgroundImage src={roundData.backgroundImagePath} />
         {clickPosition.x !== null && clickPosition.y !== null && (
-          <div
-            style={{
-              ...redCircleStyle,
-              left: clickPosition.x + "px",
-              top: clickPosition.y + "px",
-            }}
-          ></div>
-        )}
+        <div>
+          <div className="red-circle" style={{ left: `${clickPosition.x}px`, top: `${clickPosition.y}px` }}></div>
+          <div className="text">
+            Clicked Coordinates: {clickPosition.x}, {clickPosition.y}
+          </div>
+        </div>
+      )}
       </div>
 
-      <SubmitButton
-        onClick={handleSubmitClick}
-        text={"Submit Your Guess"}
-        color={"dodgerblue"}
+      <YearGuess
+          year={year}
+          onYearChange={handleYearChange}
+          onSubmitYearGuess={submitYearGuess}
+          minYear={minYear}
+          maxYear={maxYear}
       />
+
+      <SubmitButton onClick={handleRoundSubmit} text={"Submit Your Guess"}/>
+
+      <div className="text">Round {currentRound} of {roundsTotal}</div>
     </div>
   );
-};
-
-// Styles
-const roundContainerStyle = {
-  display: "flex",
-  flexDirection: "column", // Changed to column layout to stack items vertically
-  alignItems: "center", // Center items horizontally
-  width: "100%",
-  position: "relative", // To position the red circle absolutely within this container
-};
-
-const backgroundImageContainerStyle = {
-  position: "relative", // Necessary for absolute positioning of the red circle
-  marginBottom: "20px", // Added margin bottom for spacing
-};
-
-const targetImageContainerStyle = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  marginBottom: "20px", // Added margin bottom for spacing
-};
-
-const targetImageStyle = {
-  maxWidth: "100%",
-  height: "auto",
-};
-
-const redCircleStyle = {
-  position: "absolute",
-  width: "20px",
-  height: "20px",
-  borderRadius: "50%",
-  backgroundColor: "red",
-  // Removed the transform property for direct alignment
 };
 
 export default Round;
