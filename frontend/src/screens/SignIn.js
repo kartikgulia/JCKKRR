@@ -24,6 +24,8 @@ function SignInPage(){
 
 
       if (data.message === "Successfully logged in") {
+        localStorage.setItem('userToken', data.token);
+        console.log('Token saved to local storage');
         navigate('/gameSelect'); // Use navigate to redirect
       } else {
         setMessageFromBackend(data.message);

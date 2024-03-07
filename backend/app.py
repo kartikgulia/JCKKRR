@@ -60,7 +60,15 @@ def signup():
         try:
             
             auth.create_user_with_email_and_password(email, password)
-            
+            data = {
+             'name': 'email',
+             'score': 5000,
+             'playerid': 'nothing'
+            }
+
+            db.collection('players').add(data)
+            print('Player added to Firestore.')
+
             return jsonify({"message": "Successfully signed up"}), 200
         except Exception as e:
            
