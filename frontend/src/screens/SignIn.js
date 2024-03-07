@@ -22,6 +22,13 @@ function SignInPage(){
       const data = await response.json();
       console.log(data); // Process the response data
 
+
+      if (data.message === "Successfully logged in") {
+        navigate('/gameSelect'); // Use navigate to redirect
+      } else {
+        setMessageFromBackend(data.message);
+      }
+
       setMessageFromBackend(data.message);
     } catch (error) {
       console.error("Error during the sign in:", error);

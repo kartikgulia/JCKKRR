@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import SERVER_URL from "../config";
+import { useNavigate } from "react-router-dom";
 import "../styles/signup.css"; 
 
 function SignUpPage(){
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate();
   const [messageFromBackend, setMessageFromBackend] = useState("");
 
   const handleSubmit = async (e) => {
@@ -21,6 +23,12 @@ function SignUpPage(){
       });
       const data = await response.json();
       console.log(data); // Process the response data
+
+      if (data.message === "Successfully signed up") {
+        navigate('/gameSelect'); // Use navigate to redirect
+      } else {
+        setMessageFromBackend(data.message);
+      }
 
       setMessageFromBackend(data.message);
     } catch (error) {

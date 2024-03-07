@@ -4,6 +4,7 @@ from flask_cors import CORS
 from FirebaseAccess.firebase import db
 import os
 from dotenv import load_dotenv
+import pyrebase
 
 app = Flask(__name__)
 CORS(app)
@@ -11,6 +12,21 @@ CORS(app)
 # Initialize Firebase
 load_dotenv()
 
+
+firebaseConfig = {
+  "apiKey": "AIzaSyDi9zM0BsjjlPkV7hGsHL-l9Cq-0ojBpxM",
+  "authDomain": "jokerker-d9272.firebaseapp.com",
+  "projectId": "jokerker-d9272",
+  "storageBucket": "jokerker-d9272.appspot.com",
+  "messagingSenderId": "566288545027",
+  "appId": "1:566288545027:web:7db45fb95b46d81997a536",
+  "measurementId": "G-FRR8KY2F80",
+  "databaseURL": ""
+}
+
+
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
 # Initialize Firebase with credentials from environment variable
 
 
@@ -19,16 +35,37 @@ load_dotenv()
 
 @app.route('/signin', methods=['POST'])
 def signin():
-    
     data = request.json
-    username = data.get('username')
-    password = data.get('password')
+    email = data.get('username')
+    # password = data.get('password')
+    try:
+        # Authenticate the user with the provided email and password
+        user = auth.get_user_by_email(email)
+        user_token = auth.create_custom_token(user.uid)
+        # Assuming successful authentication, you can enhance this by checking password if your setup requires
+        # Normally, you would validate the password with Firebase's signInWithEmailAndPassword on the client side
+        return jsonify({"message": "Successfully logged in", "token": user_token.decode("utf-8")}), 200
+    except Exception as e:
+        # Handle exceptions (e.g., user not found, wrong password, etc.)
+        error_message = str(e)
+        return jsonify({"message": error_message}), 401
+    
 
-    print("Hi Ryan")
-    if username == "admin" and password == "password":
-        return jsonify({"message": "Successfully signed in"}), 200
-    else:
-        return jsonify({"message": "Invalid credentials"}), 401
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        data = request.json
+        email = data.get('username')
+        password = data.get('password')
+        try:
+            
+            auth.create_user_with_email_and_password(email, password)
+            
+            return jsonify({"message": "Successfully signed up"}), 200
+        except Exception as e:
+           
+            error_message = str(e)
+            return jsonify({"message": error_message}), 401
 
 
 from GameModule.gameCreationFunctions import createGameForPlayer
