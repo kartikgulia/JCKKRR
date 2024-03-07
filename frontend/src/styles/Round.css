@@ -1,0 +1,44 @@
+.round-container {
+    background-color: #3a3a3a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+  
+.target-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+  
+.find-image-heading {
+    color: #b76fe4;
+    text-align: center;
+    margin-top: 20px;
+}
+  
+  .background-image-container {
+    position: relative;
+    margin-bottom: 10px;
+  }
+  
+  .target-image {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .red-circle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: red;
+  }
+  
+  .text {
+    color: #b76fe4;
+  }
+  
