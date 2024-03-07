@@ -8,7 +8,7 @@ function Game() {
   const [roundsTotal, setRoundsTotal] = useState(0);
   const [roundsLoaded, setRoundsLoaded] = useState(false);
 
-  const minYear = 0;
+  const minYear = 1900;
   const maxYear = 2024;
 
   useEffect(() => {
