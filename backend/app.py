@@ -14,14 +14,14 @@ load_dotenv()
 
 
 firebaseConfig = {
-  "apiKey": "AIzaSyDi9zM0BsjjlPkV7hGsHL-l9Cq-0ojBpxM",
-  "authDomain": "jokerker-d9272.firebaseapp.com",
-  "projectId": "jokerker-d9272",
-  "storageBucket": "jokerker-d9272.appspot.com",
-  "messagingSenderId": "566288545027",
-  "appId": "1:566288545027:web:7db45fb95b46d81997a536",
-  "measurementId": "G-FRR8KY2F80",
-  "databaseURL": ""
+    "apiKey": os.getenv("FIREBASE_API_KEY"),
+    "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN"),
+    "projectId": os.getenv("FIREBASE_PROJECT_ID"),
+    "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET"),
+    "messagingSenderId": os.getenv("FIREBASE_MESSAGING_SENDER_ID"),
+    "appId": os.getenv("FIREBASE_APP_ID"),
+    "measurementId": os.getenv("FIREBASE_MEASUREMENT_ID"),
+    "databaseURL": os.getenv("FIREBASE_DATABASE_URL")
 }
 
 
