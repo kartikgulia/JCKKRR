@@ -38,7 +38,7 @@ const LeaderboardScreen = () => {
     const fetchLeaderboardData = async () => {
       try {
         // Fetch data from your Firestore database for Easy difficulty
-        const easyResponse = await fetch('http://localhost:5000/easyleaderboard');
+        const easyResponse = await fetch('http://127.0.0.1:5000/easyleaderboard');
         const easyData = await easyResponse.json();
         
         // Convert to array and sort by score
@@ -53,7 +53,7 @@ const LeaderboardScreen = () => {
 
 
         // Fetch medium data
-        const mediumResponse = await fetch('http://localhost:5000/mediumleaderboard');
+        const mediumResponse = await fetch('http://127.0.0.1:5000/mediumleaderboard');
         const mediumData = await mediumResponse.json();
 
         // Convert to array and sort by score
@@ -68,7 +68,7 @@ const LeaderboardScreen = () => {
         }));
 
         // Fetch hard data
-        const hardResponse = await fetch('http://localhost:5000/hardleaderboard');
+        const hardResponse = await fetch('http://127.0.0.1:5000/hardleaderboard');
         const hardData = await hardResponse.json();
 
         // Convert to array and sort by score
