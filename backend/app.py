@@ -162,16 +162,18 @@ def get_randImage():  # gets random image from database
         return None
 
 
-# difficulty -> EasyRounds, MediumRounds, HardRounds, start -> round we start on, default is 1
-# call TargetBgImages for each round and send set of round IDs to game collection. round IDs would be index in loop (i.e 1 2 3 4 5)
-def getImageSet(difficulty, start):
+# difficulty -> EasyRounds, MediumRounds, HardRounds
+# call TargetBgImages to add data for each round
+# get 5 random document ids from rounds collection and add them to rounds array
+# send array of document IDs to game collection with corresponding difficulty.
+def getImageSet(difficulty):
     rounds = []
     # TODO for Kap
 
 
 # Gets random image from image collection and sends target, background, date and target coordinates to one of the rounds
 # difficulty -> EasyRounds, MediumRounds, HardRounds, i -> round number as id
-def get_TargetBgImages(difficulty, i):
+def get_TargetBgImages(difficulty):
     image_data = get_randImage()
     backgroundImage = image_data['url']
     im = Image.open(image_data['url'])
@@ -191,8 +193,8 @@ def get_TargetBgImages(difficulty, i):
         "BR": BR,
         "date": dateTaken
     }
-    # sends data to one of the collections for rounds
-    doc_ref = db.collection(difficulty).document(str(i))
+    # sends data to one of the collections for rounds. ID of round will be id of photo from flickr json file
+    doc_ref = db.collection(difficulty).document(image_data['id'])
     doc_ref.set(data)
 
 # Function to retrieve data from Firestore
