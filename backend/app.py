@@ -34,15 +34,38 @@ leaderboard_ref = db.collection('leaderboard')
 players_ref = db.collection('players')
 
 
+# call TargetBgImages to add data for each round
+# add round ids returned from TargetBgImages to rounds array
+# difficulty -> "EasyGames", "HardGames", "MediumGames"
+# i -> id for the game document in games. I think i will be the game number (ie Game 1, Game 2....)
+def getImageSet(difficulty, i):
+    rounds = []
+    roundDifficulty = ''
+
+    if (difficulty == "EasyGames"):
+        roundDifficulty = "EasyRounds"
+    elif (difficulty == "MediumGames"):
+        roundDifficulty = "MediumRounds"
+    elif (difficulty == "HardGames"):
+        roundDifficulty = "HardRounds"
+
+    for j in range(5):
+        rounds.append(get_TargetBgImages(roundDifficulty))
+
+    data = {"rounds": rounds}
+
+    doc_ref = db.collection(difficulty).document(i)
+    doc_ref.set(data)
+
+
 # Gets random image from image collection and sends target, background, date and target coordinates to one of the rounds
-def get_TargetBgImages(difficulty, i):
+def get_TargetBgImages(difficulty):
     image_data = get_randImage()
     backgroundImage = image_data['url']
     im = Image.open(image_data['url'])
     width, height = im.size
     dateTaken = image_data["datetaken"]  # got date from json
     dateTaken = dateTaken[0:4]
-    # not sure if we need to store background's corner coordinates, just need it for finding target's corner coordinates
     if (difficulty == "MediumRounds"):
         TL = (random.randint(1, width-20), random.randint(1, height-20))
         TR = TL + (20, 0)
@@ -58,10 +81,9 @@ def get_TargetBgImages(difficulty, i):
         TR = TL + (10, 0)
         BL = TL + (0, 10)
         BR = TL + (10, 10)
-    
+
     # backgroundImage.show()
-    data = {  # most of the data is not needed for rounds, ideally we just need dates, filepaths for background and target, and target's corner coordinates
-        "id": image_data['id'],
+    data = {  # sends dates, filepath for background, and target's corner coordinates
         "url": backgroundImage,
         "TL": TL,
         "TR": TR,
@@ -70,9 +92,13 @@ def get_TargetBgImages(difficulty, i):
         "date": dateTaken
     }
     # sends data to one of the collections for rounds
-    # difficulty -> EasyRounds, MediumRounds, HardRounds, i -> round number
-    doc_ref = db.collection(difficulty).document(i)
+    # difficulty -> EasyRounds, MediumRounds, HardRounds
+    # got rid of i parameter because I realized we can't have duplicate IDs in a collection. Just going to use image ids as round ids
+    doc_ref = db.collection(difficulty).document(image_data['id'])
     doc_ref.set(data)
+
+    # returns image id which we can add to rounds array
+    return image_data['id']
 
 
 # Function to retrieve data from Firestore
