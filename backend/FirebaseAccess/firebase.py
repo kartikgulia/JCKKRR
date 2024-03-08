@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from collections.abc import MutableMapping
 import pyrebase
 
 load_dotenv()
