@@ -1,18 +1,13 @@
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from FirebaseAccess.firebase import db
+from FirebaseAccess.firebase import db, auth
 import os
 from dotenv import load_dotenv
 import pyrebase
 import os
 import random
 from io import BytesIO
-
-from dotenv import load_dotenv
-from FirebaseAccess.firebase import db
-from flask import Flask, jsonify, request
-from flask_cors import CORS
 from GameModule.gameCreationFunctions import createGameForPlayer
 from GameModule.GameInterface import Game
 from PIL import Image
@@ -22,24 +17,7 @@ from UserModule.PlayerSessionManager import PlayerSessionManager
 app = Flask(__name__)
 CORS(app)
 
-# Initialize Firebase
-load_dotenv()
 
-
-firebaseConfig = {
-    "apiKey": os.getenv("FIREBASE_API_KEY"),
-    "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN"),
-    "projectId": os.getenv("FIREBASE_PROJECT_ID"),
-    "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET"),
-    "messagingSenderId": os.getenv("FIREBASE_MESSAGING_SENDER_ID"),
-    "appId": os.getenv("FIREBASE_APP_ID"),
-    "measurementId": os.getenv("FIREBASE_MEASUREMENT_ID"),
-    "databaseURL": os.getenv("FIREBASE_DATABASE_URL")
-}
-
-
-firebase = pyrebase.initialize_app(firebaseConfig)
-auth = firebase.auth()
 # Initialize Firebase with credentials from environment variable
 EasyGames_ref = db.collection('EasyGames')
 EasyRounds_ref = db.collection('EasyRounds')
