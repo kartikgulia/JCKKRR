@@ -35,7 +35,8 @@ players_ref = db.collection('players')
 
 
 # call TargetBgImages to add data for each round
-# add round ids returned from TargetBgImages to rounds array
+# add round document ids returned from TargetBgImages to rounds array
+# send rounds array of round IDs to game collections
 # difficulty -> "EasyGames", "HardGames", "MediumGames"
 # i -> id for the game document in games. I think i will be the game number (ie Game 1, Game 2....)
 def getImageSet(difficulty, i):
@@ -58,7 +59,7 @@ def getImageSet(difficulty, i):
     doc_ref.set(data)
 
 
-# Gets random image from image collection and sends target, background, date and target coordinates to one of the rounds
+# Gets random image from image collection and sends background url, date, and target coordinates to one of the rounds collections
 def get_TargetBgImages(difficulty):
     image_data = get_randImage()
     backgroundImage = image_data['url']
