@@ -36,6 +36,16 @@ hardleaderboard_ref = db.collection('HardLeaderboard')
 players_ref = db.collection('players')
 
 
+# Active player sessions
+
+playerManager: PlayerSessionManager = PlayerSessionManager()  # SINGLETON
+userID: str = "bo3bw4GUJdFhTp6aEqiD"
+tempPlayer: Player = Player(userID=userID)
+tempPlayer.name = "Rayyan"
+tempPlayer.gameIDsPlayed = ["EasyGame1"]
+playerManager.addPlayer(userID, tempPlayer)
+
+
 def get_easy_leaderboard_data():
     docs = easyleaderboard_ref.get()
     documents_dict = {}
@@ -104,14 +114,7 @@ def signup():
             return jsonify({"message": error_message}), 401
 
 
-# Active player sessions
 
-playerManager: PlayerSessionManager = PlayerSessionManager()  # SINGLETON
-userID: str = "bo3bw4GUJdFhTp6aEqiD"
-tempPlayer: Player = Player(userID=userID)
-tempPlayer.name = "Rayyan"
-tempPlayer.gameIDsPlayed = ["EasyGame1"]
-playerManager.addPlayer(userID, tempPlayer)
 
 
 @app.route('/getGameInfo', methods=['GET'])
