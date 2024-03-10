@@ -4,7 +4,6 @@ import pyrebase
 
 load_dotenv()
 
-
 firebaseConfig = {
     "apiKey": os.getenv("FIREBASE_API_KEY"),
     "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN"),
@@ -16,7 +15,13 @@ firebaseConfig = {
     "databaseURL": os.getenv("FIREBASE_DATABASE_URL")
 }
 
-
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 db = firebase.database()
+
+# Kap, this doesn't work
+print(db)
+# playerCollection = db.child("players").get()
+
+# for player in playerCollection.each():
+#     print(player.val())
