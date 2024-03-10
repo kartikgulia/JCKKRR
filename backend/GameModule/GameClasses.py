@@ -1,11 +1,13 @@
 import random
 import sys
 from enum import Enum
+import math
 
-from FirebaseAccess.firebase import db
+
 from GameModule.GameInterface import Game
 from UserModule.Player import Player
-
+from GameModule.Rounds import Round
+from FirebaseAccess.firebase import db
 
 class EasyGame(Game):
     def __init__(self, player):
@@ -27,9 +29,58 @@ class EasyGame(Game):
 
    
 
-    def scoreRound(self):
+    def scoreRounds(self) -> int:
 
-        pass
+        yearGuesses = [1970, 1940, 1955]
+        locationGuesses = [[300,500], [400,500], [500,500]]
+        
+        currentRoundNumber : int = 0
+
+        totalScore : int = 0
+        
+        for round in self.rounds:
+        
+            round : Round = round
+
+            # 1) Get the actual answers
+            currentData : dict = round.getData()
+            correctYear : int = currentData["yearTaken"]
+            correctLocation : list[list[int]] = currentData["targetImageCoordinates"]    
+
+            # 2) Manipulate correctLocation data to get the average "pinpoint"
+
+            bottomLeftCoord : list[int] = correctLocation[0]
+            topRightCoord : list[int] = correctLocation[2]
+        
+            correctCoord : list[int] = [abs(topRightCoord[0]-bottomLeftCoord[0]), abs(topRightCoord[1]-bottomLeftCoord[1])]
+
+            # 3) Compare the correct vs. guesses
+
+            # Max score for each is 2024 (50-50 split)
+            
+            yearScore : int = 2024 - abs(correctYear-yearGuesses[currentRoundNumber])
+
+            locationDifference = math.sqrt(math.pow(correctCoord[0]-locationGuesses[currentRoundNumber][0],2) + math.pow(correctCoord[1]-locationGuesses[currentRoundNumber][1], 2))
+
+            locationScore : int
+            
+            if locationDifference > 2024:
+                locationScore = 0
+            else:
+                locationScore = 2024 - locationDifference
+
+            if locationScore < 1974:
+                locationScore += 50
+
+            if yearScore < 1974:
+                yearScore += 50
+
+            totalScore += yearScore
+            totalScore += locationScore
+
+            currentRoundNumber += 1
+
+        return totalScore  
 
     def endGame(self):
 
@@ -38,8 +89,10 @@ class EasyGame(Game):
 
 class MediumGame(Game):
     def __init__(self, player):
-        self.player = player
+        self.player: Player = player
         self.rounds = []
+        self.currentRoundNumber = None
+        self.gameID: str = None
 
     def getGameCollectionRef(self):
         mediumGamesRef = db.collection("MediumGames")
@@ -49,9 +102,58 @@ class MediumGame(Game):
         return db.collection("MediumRounds")
 
  
-    def scoreRound(self):
+    def scoreRounds(self) -> int:
 
-        pass
+        yearGuesses = [1970, 1940, 1955]
+        locationGuesses = [[300,500], [400,500], [500,500]]
+        
+        currentRoundNumber : int = 0
+
+        totalScore : int = 0
+        
+        for round in self.rounds:
+        
+            round : Round = round
+
+            # 1) Get the actual answers
+            currentData : dict = round.getData()
+            correctYear : int = currentData["yearTaken"]
+            correctLocation : list[list[int]] = currentData["targetImageCoordinates"]    
+
+            # 2) Manipulate correctLocation data to get the average "pinpoint"
+
+            bottomLeftCoord : list[int] = correctLocation[0]
+            topRightCoord : list[int] = correctLocation[2]
+        
+            correctCoord : list[int] = [abs(topRightCoord[0]-bottomLeftCoord[0]), abs(topRightCoord[1]-bottomLeftCoord[1])]
+
+            # 3) Compare the correct vs. guesses
+
+            # Max score for each is 2024 (50-50 split)
+            
+            yearScore : int = 2024 - abs(correctYear-yearGuesses[currentRoundNumber])
+
+            locationDifference = math.sqrt(math.pow(correctCoord[0]-locationGuesses[currentRoundNumber][0],2) + math.pow(correctCoord[1]-locationGuesses[currentRoundNumber][1], 2))
+
+            locationScore : int
+            
+            if locationDifference > 2024:
+                locationScore = 0
+            else:
+                locationScore = 2024 - locationDifference
+
+            if locationScore < 1999:
+                locationScore += 25
+
+            if yearScore < 1999:
+                yearScore += 25
+
+            totalScore += yearScore
+            totalScore += locationScore
+
+            currentRoundNumber += 1
+
+        return totalScore  
 
     def endGame(self):
 
@@ -60,8 +162,10 @@ class MediumGame(Game):
 
 class HardGame(Game):
     def __init__(self, player):
-        self.player = player
+        self.player: Player = player
         self.rounds = []
+        self.currentRoundNumber = None
+        self.gameID: str = None
 
     def getGameCollectionRef(self):
         hardGamesRef = db.collection("HardGames")
@@ -71,10 +175,52 @@ class HardGame(Game):
         return db.collection("HardRounds")
 
 
+    def scoreRounds(self, yearGuesses, locationGuesses) -> int:
 
-    def scoreRound(self):
+        yearGuesses = [1970, 1940, 1955]
+        locationGuesses = [[300,500], [400,500], [500,500]]
+        
+        currentRoundNumber : int = 0
 
-        pass
+        totalScore : int = 0
+        
+        for round in self.rounds:
+        
+            round : Round = round
+
+            # 1) Get the actual answers
+            currentData : dict = round.getData()
+            correctYear : int = currentData["yearTaken"]
+            correctLocation : list[list[int]] = currentData["targetImageCoordinates"]    
+
+            # 2) Manipulate correctLocation data to get the average "pinpoint"
+
+            bottomLeftCoord : list[int] = correctLocation[0]
+            topRightCoord : list[int] = correctLocation[2]
+        
+            correctCoord : list[int] = [abs(topRightCoord[0]-bottomLeftCoord[0]), abs(topRightCoord[1]-bottomLeftCoord[1])]
+
+            # 3) Compare the correct vs. guesses
+
+            # Max score for each is 2024 (50-50 split)
+            
+            yearScore : int = 2024 - abs(correctYear-yearGuesses[currentRoundNumber])
+
+            locationDifference = math.sqrt(math.pow(correctCoord[0]-locationGuesses[currentRoundNumber][0],2) + math.pow(correctCoord[1]-locationGuesses[currentRoundNumber][1], 2))
+
+            locationScore : int
+            
+            if locationDifference > 2024:
+                locationScore = 0
+            else:
+                locationScore = 2024 - locationDifference
+
+            totalScore += yearScore
+            totalScore += locationScore
+
+            currentRoundNumber += 1
+
+        return totalScore            
 
     def endGame(self):
 

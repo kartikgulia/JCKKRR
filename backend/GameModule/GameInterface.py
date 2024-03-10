@@ -2,7 +2,7 @@ import random
 from abc import ABC, abstractmethod
 
 from FirebaseAccess.firebase import db
-from Rounds import BackgroundPicture, Round
+from GameModule.Rounds import Round, BackgroundPicture
 
 
 class Game(ABC):
@@ -51,7 +51,7 @@ class Game(ABC):
         pass
 
     @abstractmethod
-    def scoreRound(self):
+    def scoreRounds(self) -> int:
         pass
 
     @abstractmethod
