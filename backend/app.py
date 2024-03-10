@@ -72,11 +72,20 @@ def signin():
     email = data.get('username')
     password = data.get('password')
     try:
+        
+        
         # Authenticate the user with the provided email and password
         user = auth.sign_in_with_email_and_password(email,password)
+
+        # if the auth is successful
         user_token = user['localId']
-        # Assuming successful authentication, you can enhance this by checking password if your setup requires
-        # Normally, you would validate the password with Firebase's signInWithEmailAndPassword on the client side
+        
+        # Add the uid to active player session
+
+        playerObject : Player = Player(userID=user_token)
+        
+        playerManager.addPlayer(user_token,playerObject)
+
         return jsonify({"message": "Successfully logged in", "token": user_token}), 200
     except Exception as e:
         # Handle exceptions (e.g., user not found, wrong password, etc.)
