@@ -1,6 +1,8 @@
 import os
 from dotenv import load_dotenv
 import pyrebase
+import firebase_admin
+from firebase_admin import credentials, firestore
 
 load_dotenv()
 
@@ -17,11 +19,8 @@ firebaseConfig = {
 
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
-db = firebase.database()
 
-# Kap, this doesn't work
-print(db)
-# playerCollection = db.child("players").get()
 
-# for player in playerCollection.each():
-#     print(player.val())
+cred = credentials.Certificate('jokerker-d9272-firebase-adminsdk-sbyd5-fda51193ba.json')
+firebase_admin.initialize_app(cred)
+db = firestore.client()

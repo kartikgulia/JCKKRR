@@ -2,12 +2,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from FirebaseAccess.firebase import db, auth
-import os
-from dotenv import load_dotenv
-import pyrebase
-import os
 import random
-from io import BytesIO
 from GameModule.gameCreationFunctions import createGameForPlayer
 from GameModule.GameInterface import Game
 from PIL import Image
@@ -75,14 +70,14 @@ def signin():
 
     data = request.json
     email = data.get('username')
-    # password = data.get('password')
+    password = data.get('password')
     try:
         # Authenticate the user with the provided email and password
-        user = auth.get_user_by_email(email)
-        user_token = auth.create_custom_token(user.uid)
+        user = auth.sign_in_with_email_and_password(email,password)
+        user_token = user['localId']
         # Assuming successful authentication, you can enhance this by checking password if your setup requires
         # Normally, you would validate the password with Firebase's signInWithEmailAndPassword on the client side
-        return jsonify({"message": "Successfully logged in", "token": user_token.decode("utf-8")}), 200
+        return jsonify({"message": "Successfully logged in", "token": user_token}), 200
     except Exception as e:
         # Handle exceptions (e.g., user not found, wrong password, etc.)
         error_message = str(e)
@@ -97,14 +92,15 @@ def signup():
         password = data.get('password')
         try:
             
-            auth.create_user_with_email_and_password(email, password)
+            user = auth.create_user_with_email_and_password(email, password)
+            uid = user['localId']
             data = {
-             'name': 'email',
+             'name': f'{email}',
              'score': 5000,
-             'playerid': 'nothing'
+             'playerid': uid
             }
 
-            db.collection('players').add(data)
+            db.collection('players').document(uid).set(data)
             print('Player added to Firestore.')
 
             return jsonify({"message": "Successfully signed up"}), 200

@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import SERVER_URL from "../config";
-import "../styles/login.css"; 
+import { useNavigate } from "react-router-dom";
+import "../styles/login.css";
 
-function SignInPage(){
+function SignInPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const [messageFromBackend, setMessageFromBackend] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     console.log("On Handle Submit Function");
@@ -22,11 +25,10 @@ function SignInPage(){
       const data = await response.json();
       console.log(data); // Process the response data
 
-
       if (data.message === "Successfully logged in") {
-        localStorage.setItem('userToken', data.token);
-        console.log('Token saved to local storage');
-        navigate('/gameSelect'); // Use navigate to redirect
+        localStorage.setItem("userToken", data.token);
+        console.log("Token saved to local storage");
+        navigate("/gameSelect"); // Use navigate to redirect
       } else {
         setMessageFromBackend(data.message);
       }
@@ -40,7 +42,6 @@ function SignInPage(){
 
   return (
     <form onSubmit={handleSubmit}>
-      
       <div className="background">
         <h1 className="title">Sign In</h1>
         <label>
@@ -62,7 +63,6 @@ function SignInPage(){
         <button type="submit">Sign In</button>
         <h1>{messageFromBackend}</h1>
       </div>
-      
     </form>
   );
 }
