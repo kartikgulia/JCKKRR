@@ -1,12 +1,8 @@
 
-import os
-import random
-from io import BytesIO
-
-from dotenv import load_dotenv
-from FirebaseAccess.firebase import db
-from flask import Flask, jsonify, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
+from FirebaseAccess.firebase import db, auth
+import random
 from GameModule.gameCreationFunctions import createGameForPlayer
 from GameModule.GameInterface import Game
 from PIL import Image
@@ -16,8 +12,6 @@ from UserModule.PlayerSessionManager import PlayerSessionManager
 app = Flask(__name__)
 CORS(app)
 
-# Initialize Firebase
-load_dotenv()
 
 # Initialize Firebase with credentials from environment variable
 EasyGames_ref = db.collection('EasyGames')
@@ -35,6 +29,16 @@ easyleaderboard_ref = db.collection('EasyLeaderboard')
 mediumleaderboard_ref = db.collection('MediumLeaderboard')
 hardleaderboard_ref = db.collection('HardLeaderboard')
 players_ref = db.collection('players')
+
+
+# Active player sessions
+
+playerManager: PlayerSessionManager = PlayerSessionManager()  # SINGLETON
+userID: str = "bo3bw4GUJdFhTp6aEqiD"
+tempPlayer: Player = Player(userID=userID)
+tempPlayer.name = "Rayyan"
+tempPlayer.gameIDsPlayed = ["EasyGame1"]
+playerManager.addPlayer(userID, tempPlayer)
 
 
 def get_easy_leaderboard_data():
@@ -65,24 +69,57 @@ def get_hard_leaderboard_data():
 def signin():
 
     data = request.json
-    username = data.get('username')
+    email = data.get('username')
     password = data.get('password')
+    try:
+        
+        
+        # Authenticate the user with the provided email and password
+        user = auth.sign_in_with_email_and_password(email,password)
 
-    print("Hi Ryan")
-    if username == "admin" and password == "password":
-        return jsonify({"message": "Successfully signed in"}), 200
-    else:
-        return jsonify({"message": "Invalid credentials"}), 401
+        # if the auth is successful
+        user_token = user['localId']
+        
+        # Add the uid to active player session
+
+        playerObject : Player = Player(userID=user_token)
+        
+        playerManager.addPlayer(user_token,playerObject)
+
+        return jsonify({"message": "Successfully logged in", "token": user_token}), 200
+    except Exception as e:
+        # Handle exceptions (e.g., user not found, wrong password, etc.)
+        error_message = str(e)
+        return jsonify({"message": error_message}), 401
+    
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        data = request.json
+        email = data.get('username')
+        password = data.get('password')
+        try:
+            
+            user = auth.create_user_with_email_and_password(email, password)
+            uid = user['localId']
+            data = {
+             'name': f'{email}',
+             'score': 5000,
+             'playerid': uid
+            }
+
+            db.collection('players').document(uid).set(data)
+            print('Player added to Firestore.')
+
+            return jsonify({"message": "Successfully signed up"}), 200
+        except Exception as e:
+           
+            error_message = str(e)
+            return jsonify({"message": error_message}), 401
 
 
-# Active player sessions
 
-playerManager: PlayerSessionManager = PlayerSessionManager()  # SINGLETON
-userID: str = "bo3bw4GUJdFhTp6aEqiD"
-tempPlayer: Player = Player(userID=userID)
-tempPlayer.name = "Rayyan"
-tempPlayer.gameIDsPlayed = ["EasyGame1"]
-playerManager.addPlayer(userID, tempPlayer)
 
 
 @app.route('/getGameInfo', methods=['GET'])
@@ -151,6 +188,13 @@ if __name__ == '__main__':
 
 # Example Functions using firebase
 
+EasyGames_ref = db.collection('EasyGames')
+EasyRounds_ref = db.collection('EasyRounds')
+images_ref = db.collection('images')
+easyleaderboard_ref = db.collection('EasyLeaderboard')
+mediumleaderboard_ref = db.collection('MediumLeaderboard')
+hardleaderboard_ref = db.collection('HardLeaderboard')
+players_ref = db.collection('players')
 
 def get_randImage():  # gets random image from database
     docs = images_ref.get()
@@ -224,6 +268,28 @@ def get_images_data():
     return documents_dict
 
 
+def get_easy_leaderboard_data():
+    docs = easyleaderboard_ref.get()
+    documents_dict = {}
+    for idx, doc in enumerate(docs, start=1):
+        documents_dict[idx] = doc.to_dict()
+    return documents_dict
+
+def get_medium_leaderboard_data():
+    docs = mediumleaderboard_ref.get()
+    documents_dict = {}
+    for idx, doc in enumerate(docs, start=1):
+        documents_dict[idx] = doc.to_dict()
+    return documents_dict
+
+def get_hard_leaderboard_data():
+    docs = hardleaderboard_ref.get()
+    documents_dict = {}
+    for idx, doc in enumerate(docs, start=1):
+        documents_dict[idx] = doc.to_dict()
+    return documents_dict
+
+
 def get_players_data():
     docs = players_ref.get()
     documents_dict = {}
@@ -271,6 +337,21 @@ def getPlayers():
 def get_images():
     images_data = get_images_data()
     return jsonify(images_data)
+
+@app.route('/easyleaderboard', methods=['GET'])
+def get_easyleaderboard():
+    easyleaderboard_data = get_easy_leaderboard_data()
+    return jsonify(easyleaderboard_data)
+
+@app.route('/mediumleaderboard', methods=['GET'])
+def get_mediumleaderboard():
+    mediumleaderboard_data = get_medium_leaderboard_data()
+    return jsonify(mediumleaderboard_data)
+
+@app.route('/hardleaderboard', methods=['GET'])
+def get_hardleaderboard():
+    hardleaderboard_data = get_hard_leaderboard_data()
+    return jsonify(hardleaderboard_data)
 
 
 @app.route('/easyGames', methods=['GET'])
