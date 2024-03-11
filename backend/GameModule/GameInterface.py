@@ -86,8 +86,7 @@ class Game(ABC):
         totalScore, scoreForEachRound = self.scoreRounds()
 
 
-
-        placeOnLeaderboardString : str = f"{self.player.name}, you are 13th on the Easy Leaderboard"
+        
 
 
         # End Game Logistics
@@ -117,5 +116,11 @@ class Game(ABC):
         # 5) Add the current game id to the list of played games for the user
 
         self.player.gameIDsPlayed.append(self.gameID)
+
+
+        # 6) TODO: Get the leaderboard position
+
+
+        placeOnLeaderboardString : str = f"{self.player.name}, you are 13th on the Easy Leaderboard"
 
         return (totalScore, scoreForEachRound, placeOnLeaderboardString)
