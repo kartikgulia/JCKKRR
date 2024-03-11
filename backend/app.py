@@ -147,6 +147,43 @@ def getGameInfo():
         print(f"Could not create {gameDifficultyLevel} game for {currentPlayer.name}")
         return jsonify({"message": "No more games left"})
 
+@app.route('/storeRoundGuesses', methods=['POST'])
+
+def storeRoundGuess():
+
+    if request.method == 'POST':
+        
+
+        # Get data from client 
+
+        data = request.json
+        yearGuess : int = data.get('yearGuess')
+        targetGuess : dict = data.get('targetGuess')
+
+        targetGuess : list[float] = [targetGuess['x'] , targetGuess['y']]
+        userID : str = data.get('userID')
+
+        
+
+        # store their current round guesses
+
+        try:    
+            
+            currentPlayer : Player = playerManager.getPlayer(playerID=userID)
+
+            currentGame : Game = currentPlayer.currentGame
+
+            currentGame.storeRound(yearGuess = yearGuess, targetGuess = targetGuess)
+
+            currentRoundNumber = currentGame.currentRoundNumber - 1 # this is just for development purposes, we don't need this line
+            
+            return jsonify({"message": "Success" , "description" : f"Stored guesses for Round #{currentRoundNumber} for player {currentPlayer.name}"})
+
+        except Exception as e:
+           
+            error_message = str(e)
+            return jsonify({"message": "Failed" , "description" : error_message})
+
 
 
 @app.route('/easyleaderboard', methods=['GET'])

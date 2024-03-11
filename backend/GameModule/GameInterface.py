@@ -10,7 +10,7 @@ class Game(ABC):
      
         self.gameID = None
         self.rounds = []
-        self.currentRoundNumber = None
+        self.currentRoundNumber = 1
         self.gameID: str = None
         
         self.yearGuesses : list[int] = []
@@ -52,6 +52,11 @@ class Game(ABC):
 
         print(yearGuess)
         print(targetGuess)
+
+        self.yearGuesses.append(yearGuess)
+        self.targetGuesses.append(targetGuess)
+
+        self.currentRoundNumber += 1
 
 
 

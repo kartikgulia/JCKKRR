@@ -4,6 +4,7 @@ import SubmitButton from "./SubmitButton";
 import YearGuess from "./YearGuess";
 import Scoreboard from "./Scoreboard";
 import "../../styles/Round.css";
+import SERVER_URL from "../../config";
 
 const Round = ({
   roundData,
@@ -41,10 +42,13 @@ const Round = ({
     setImageLoaded(true);
   };
 
-  const handleRoundSubmit = () => {
+  const handleRoundSubmit = async () => {
     if (imageLoaded && clickPosition.x !== null && clickPosition.y !== null) {
       onSubmit(year, clickPosition);
-      submitYearGuess();
+      // submitYearGuess(); dont need this
+
+      await storeRoundGuess();
+
       setClickPosition({ x: null, y: null });
       setYear(0);
 
@@ -56,13 +60,31 @@ const Round = ({
     }
   };
 
-  const submitYearGuess = () => {
-    console.log("Selected Year:", year);
-    let actualYear = 2000;
-    let score = calculateScoreForYearGuess(year, actualYear);
-    console.log(score);
-    setRoundScores([...roundScores, score]);
+  const storeRoundGuess = async () => {
+    console.log("Storing round guesses in the backend");
+
+    const yearGuess = year;
+    const targetGuess = clickPosition;
+    const userID = localStorage.getItem("userToken");
+    try {
+      const response = await fetch(`${SERVER_URL}/storeRoundGuesses`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ yearGuess, targetGuess, userID }),
+      });
+      const data = await response.json();
+      console.log(data); // Process the response data
+    } catch {}
   };
+  // const submitYearGuess = () => {
+  //   console.log("Selected Year:", year);
+  //   let actualYear = 2000;
+  //   let score = calculateScoreForYearGuess(year, actualYear);
+  //   console.log(score);
+  //   setRoundScores([...roundScores, score]);
+  // };
 
   const handlePlayAgain = () => {
     setRoundScores([]);
@@ -73,12 +95,12 @@ const Round = ({
     setYear(value);
   };
 
-  const calculateScoreForYearGuess = (yearGuessed, yearActual) => {
-    let yearRange = maxYear - minYear;
-    let offBy = Math.abs(yearGuessed - yearActual);
-    let score = yearRange - offBy;
-    return score;
-  };
+  // const calculateScoreForYearGuess = (yearGuessed, yearActual) => {
+  //   let yearRange = maxYear - minYear;
+  //   let offBy = Math.abs(yearGuessed - yearActual);
+  //   let score = yearRange - offBy;
+  //   return score;
+  // };
 
   if (imageLoaded) {
     return (
