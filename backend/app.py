@@ -83,7 +83,10 @@ def signin():
         # Add the uid to active player session
 
         playerObject : Player = Player(userID=user_token)
-        
+        playerObject.name = email
+    
+        playerDoc  = db.collection('players').document(user_token).get()
+        playerObject.gameIDsPlayed = playerDoc.to_dict()["gamesPlayed"]
         playerManager.addPlayer(user_token,playerObject)
 
         return jsonify({"message": "Successfully logged in", "token": user_token}), 200
@@ -106,7 +109,8 @@ def signup():
             data = {
              'name': f'{email}',
              'score': 5000,
-             'playerid': uid
+             'playerid': uid,
+             'gamesPlayed' : []
             }
 
             db.collection('players').document(uid).set(data)
@@ -121,44 +125,28 @@ def signup():
 
 
 
-
-@app.route('/getGameInfo', methods=['GET'])
 # This route does the following:
 # 1) Creates a Game Object for the currentPlayer
 # 2) Sets the game ID of the game they're going to play
 # 3) Calls the startGame() function which uses the game ID to get game information from the database, save the array of Round objects dictionary to Game Object, and return the information
+
+@app.route('/getGameInfo', methods=['GET'])
 def getGameInfo():
+    gameDifficultyLevel = request.args.get('gameDifficultyLevel')
+    userID = request.args.get('userID')
 
-    data = request.json
-
-    gameDifficultyLevel: str = data['gameDifficultyLevel']
-    userID: str = data['userID']
-
-    # temp for testing
-    userID: str = "bo3bw4GUJdFhTp6aEqiD"
-
-    currentPlayer: Player = playerManager.getPlayer(playerID=userID)
-
-    # Sets the Game ID for the game object
+    currentPlayer = playerManager.getPlayer(playerID=userID)
 
     createGameForPlayer(currentPlayer, gameDifficultyLevel)
 
-    if currentPlayer.currentGame != None:
+    if currentPlayer.currentGame is not None:
         print(f"Created {gameDifficultyLevel} game for {currentPlayer.name}")
-
-        # Now go to the Game Interface and complete the startGame function
-
-        # Call startGame() which returns the game info
         arrayOfRoundDictionaries = currentPlayer.currentGame.startGame()
-
-        # Need to return the JSONIFY of game info
-        return jsonify({"message": "Yay", "gamesArray": arrayOfRoundDictionaries})
-
+        return jsonify({"message" : "Success", "description": f"Created {gameDifficultyLevel} game for {currentPlayer.name}", "roundsArray": arrayOfRoundDictionaries}), 200
     else:
-        print(
-            f"Could not create {gameDifficultyLevel} game for {currentPlayer.name}")
-
+        print(f"Could not create {gameDifficultyLevel} game for {currentPlayer.name}")
         return jsonify({"message": "No more games left"})
+
 
 
 @app.route('/easyleaderboard', methods=['GET'])
