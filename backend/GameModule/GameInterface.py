@@ -7,9 +7,12 @@ from GameModule.Rounds import Round, BackgroundPicture
 
 class Game(ABC):
     def __init__(self, player):
-        self.player = player
+     
         self.gameID = None
-
+        self.rounds = []
+        self.currentRoundNumber = None
+        self.gameID: str = None
+        
         self.yearGuesses : list[int] = []
         self.targetGuesses : list[list[float]] = []
 

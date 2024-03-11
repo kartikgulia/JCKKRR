@@ -14,9 +14,7 @@ class EasyGame(Game):
         super().__init__(player)
         # Properties
         self.player: Player = player
-        self.rounds = []
-        self.currentRoundNumber = None
-        self.gameID: str = None
+        
         
     # Implementation of each function for EasyGame
 
@@ -91,9 +89,6 @@ class MediumGame(Game):
     def __init__(self, player):
         super().__init__(player)
         self.player: Player = player
-        self.rounds = []
-        self.currentRoundNumber = None
-        self.gameID: str = None
 
     def getGameCollectionRef(self):
         mediumGamesRef = db.collection("MediumGames")
@@ -165,9 +160,6 @@ class HardGame(Game):
     def __init__(self, player):
         super().__init__(player)
         self.player: Player = player
-        self.rounds = []
-        self.currentRoundNumber = None
-        self.gameID: str = None
 
     def getGameCollectionRef(self):
         hardGamesRef = db.collection("HardGames")
