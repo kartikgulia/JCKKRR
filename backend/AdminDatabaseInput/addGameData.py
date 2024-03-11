@@ -110,4 +110,5 @@ def get_images_data():
 
 
 if __name__ == "__main__":
-    createGamesForAllDifficulties(2)
+    gameCounts = "idk"
+    createGamesForAllDifficulties(__name__)
