@@ -100,12 +100,24 @@ class Game(ABC):
 
         self.player.gameIDsPlayed.append(self.gameID)
 
-        # TODO : Update the document in the database
 
 
-        # 3) TODO : Add to their total score in the database
+        
+        # TODO : Update the Player document (document name: uid. in the 'players' collection)
+
+        uid : str = self.player.userID
+
+            # 3) TODO : Update their gameIDsPlayed with the self.player.gameIDsPlayed
 
 
-        # 4) TODO : For the current game, update the numPlayersPlayed and the avgPerformance
+            # 4) TODO : Update their total score in the database
+
+
+
+        # TODO : Update the Game document (document name: gameID. in the '{difficulty}Game' collection)
+
+        gameID : str = self.gameID
+
+            # 5) TODO : For the current game, update the numPlayersPlayed and the avgPerformance
 
         return (totalScore, scoreForEachRound, placeOnLeaderboardString)
