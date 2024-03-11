@@ -59,6 +59,17 @@ def getImageSet(difficulty, i):
     doc_ref.set(data)
 
 
+
+def createGamesForAllDifficulties(gameCounts):
+    difficulties = ["EasyGames", "MediumGames", "HardGames"]
+    for difficulty in difficulties:
+        for i in range(1, gameCounts[difficulty] + 1):
+            gameID = f"Game {i}"
+            getImageSet(difficulty, gameID)
+
+
+
+
 # Gets random image from image collection and sends background url, date, and target coordinates to one of the rounds collections
 def get_TargetBgImages(difficulty):
     image_data = get_randImage()
