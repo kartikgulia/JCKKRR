@@ -11,13 +11,13 @@ from FirebaseAccess.firebase import db
 
 class EasyGame(Game):
     def __init__(self, player):
-
+        super().__init__(player)
         # Properties
         self.player: Player = player
         self.rounds = []
         self.currentRoundNumber = None
         self.gameID: str = None
-
+        
     # Implementation of each function for EasyGame
 
     def getGameCollectionRef(self):
@@ -81,7 +81,7 @@ class EasyGame(Game):
             currentRoundNumber += 1
 
         return totalScore  
-
+    
     def endGame(self):
 
         pass
@@ -89,6 +89,7 @@ class EasyGame(Game):
 
 class MediumGame(Game):
     def __init__(self, player):
+        super().__init__(player)
         self.player: Player = player
         self.rounds = []
         self.currentRoundNumber = None
@@ -162,6 +163,7 @@ class MediumGame(Game):
 
 class HardGame(Game):
     def __init__(self, player):
+        super().__init__(player)
         self.player: Player = player
         self.rounds = []
         self.currentRoundNumber = None

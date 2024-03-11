@@ -20,7 +20,9 @@ const Round = ({
   const [roundScores, setRoundScores] = useState([]);
 
   useEffect(() => {
-    setImageLoaded(true);
+    if (roundData != null) {
+      setImageLoaded(true);
+    }
   }, [roundData]);
 
   const handleBackgroundImageClick = (event) => {

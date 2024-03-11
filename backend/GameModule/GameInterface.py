@@ -10,6 +10,10 @@ class Game(ABC):
         self.player = player
         self.gameID = None
 
+        self.yearGuesses : list[int] = []
+        self.targetGuesses : list[list[float]] = []
+
+
     def startGame(self):
         # Common starting game logic
         gamesCollectionRef = self.getGameCollectionRef()
@@ -40,6 +44,13 @@ class Game(ABC):
             return
 
         self.gameID = random.choice(gameIDsLeft)
+
+    def storeRound(self, yearGuess, targetGuess):
+
+        print(yearGuess)
+        print(targetGuess)
+
+
 
     @abstractmethod
     def getGameCollectionRef(self):
