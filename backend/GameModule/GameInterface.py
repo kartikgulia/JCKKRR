@@ -91,26 +91,15 @@ class Game(ABC):
 
 
         # End Game Logistics
-
-        # 1) Remove the game from player
-
-        self.player.currentGame = None
-
-        # 2) Add the current game id to the list of played games for the user
-
-        self.player.gameIDsPlayed.append(self.gameID)
-
-
-
         
         # TODO : Update the Player document (document name: uid. in the 'players' collection)
 
         uid : str = self.player.userID
 
-            # 3) TODO : Update their gameIDsPlayed with the self.player.gameIDsPlayed
+            # 1) TODO : Update their gameIDsPlayed with the self.player.gameIDsPlayed
 
 
-            # 4) TODO : Update their total score in the database
+            # 2) TODO : Update their total score in the database
 
 
 
@@ -118,6 +107,15 @@ class Game(ABC):
 
         gameID : str = self.gameID
 
-            # 5) TODO : For the current game, update the numPlayersPlayed and the avgPerformance
+            # 3) TODO : For the current game, update the numPlayersPlayed and the avgPerformance
+        
+
+        # 4) Remove the game from player
+
+        self.player.currentGame = None
+
+        # 5) Add the current game id to the list of played games for the user
+
+        self.player.gameIDsPlayed.append(self.gameID)
 
         return (totalScore, scoreForEachRound, placeOnLeaderboardString)
