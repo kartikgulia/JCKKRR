@@ -186,6 +186,36 @@ def storeRoundGuess():
 
 
 
+# Gets the UID and scores the game, returning the score for each round and the total score.
+        
+@app.route('/endGame' , methods = ['GET'])
+def endGameScoreAndReturnRounds():
+
+    if request.method == 'GET':
+
+        userID = request.args.get('userID')
+
+
+        try:
+
+            currentPlayer : Player = playerManager.getPlayer(playerID= userID)
+            currentGame : Game = currentPlayer.currentGame
+
+
+            totalScore : int
+            scoreForEachRound : list[int]
+            placeOnTheLeaderboardString : str
+
+
+            totalScore , scoreForEachRound, placeOnTheLeaderboardString = currentGame.endGame()
+
+            return jsonify({"message": "Success" , "totalScore" : totalScore, "scoreForEachRound" : scoreForEachRound, "placeOnTheLeaderboardString" : placeOnTheLeaderboardString})
+        
+
+        except Exception as e:
+            error_message = str(e)
+            return jsonify({"message": "Failed" , "description" : error_message})
+
 @app.route('/easyleaderboard', methods=['GET'])
 def get_easyleaderboard():
     easyleaderboard_data = get_easy_leaderboard_data()

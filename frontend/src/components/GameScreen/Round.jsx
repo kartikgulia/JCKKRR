@@ -19,6 +19,11 @@ const Round = ({
   const [imageLoaded, setImageLoaded] = useState(false);
   const [roundsFinished, setRoundsFinished] = useState(false);
   const [roundScores, setRoundScores] = useState([]);
+  const [totalGameScore, setTotalGameScore] = useState(null);
+  const [leaderboardPositionMessage, setLeaderboardPositionMessage] =
+    useState(null);
+
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     if (roundData != null) {
@@ -53,10 +58,35 @@ const Round = ({
       setYear(0);
 
       if (currentRound === roundsTotal) {
+        await endGame();
+
         setRoundsFinished(true);
       }
     } else {
       console.log("Image not loaded or coordinates not chosen yet.");
+    }
+  };
+
+  const endGame = async () => {
+    const userID = localStorage.getItem("userToken");
+    const response = await fetch(`${SERVER_URL}/endGame?userID=${userID}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+
+    if (data.message === "Success") {
+      console.log(data.totalScore);
+      setTotalGameScore(data.totalScore);
+      console.log(data.scoreForEachRound);
+      setRoundScores(data.scoreForEachRound);
+      console.log(data.placeOnTheLeaderboardString);
+      setLeaderboardPositionMessage(data.placeOnTheLeaderboardString);
+    } else {
+      setErrorMessage(data.message);
     }
   };
 
@@ -76,6 +106,7 @@ const Round = ({
       });
       const data = await response.json();
       console.log(data); // Process the response data
+      console.log(data.totalScore);
     } catch {}
   };
   // const submitYearGuess = () => {
@@ -102,11 +133,19 @@ const Round = ({
   //   return score;
   // };
 
+  if (errorMessage) {
+    <div>{errorMessage}</div>;
+  }
   if (imageLoaded) {
     return (
       <div className="round-container">
         {roundsFinished ? (
-          <Scoreboard scores={roundScores} onPlayAgain={handlePlayAgain} />
+          <Scoreboard
+            totalGameScore={totalGameScore}
+            scores={roundScores}
+            leaderboardPositionMessage={leaderboardPositionMessage}
+            onPlayAgain={handlePlayAgain}
+          />
         ) : (
           <>
             <div className="target-image-container">

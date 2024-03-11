@@ -29,9 +29,10 @@ class EasyGame(Game):
 
     def scoreRounds(self) -> int:
 
-        yearGuesses = [1970, 1940, 1955]
-        locationGuesses = [[300,500], [400,500], [500,500]]
-        
+        yearGuesses = self.yearGuesses
+        locationGuesses = self.targetGuesses
+        scoreForEachRound = []
+
         currentRoundNumber : int = 0
 
         totalScore : int = 0
@@ -73,16 +74,14 @@ class EasyGame(Game):
             if yearScore < 1974:
                 yearScore += 50
 
-            totalScore += yearScore
-            totalScore += locationScore
+            eachRoundScore = int(yearScore + locationScore)
+            scoreForEachRound.append(eachRoundScore)
+            totalScore +=  eachRoundScore
 
             currentRoundNumber += 1
 
-        return totalScore  
+        return totalScore, scoreForEachRound  
     
-    def endGame(self):
-
-        pass
 
 
 class MediumGame(Game):
@@ -100,9 +99,10 @@ class MediumGame(Game):
  
     def scoreRounds(self) -> int:
 
-        yearGuesses = [1970, 1940, 1955]
-        locationGuesses = [[300,500], [400,500], [500,500]]
-        
+        yearGuesses = self.yearGuesses
+        locationGuesses = self.targetGuesses
+        scoreForEachRound = []
+
         currentRoundNumber : int = 0
 
         totalScore : int = 0
@@ -144,16 +144,15 @@ class MediumGame(Game):
             if yearScore < 1999:
                 yearScore += 25
 
-            totalScore += yearScore
-            totalScore += locationScore
+            eachRoundScore = int(yearScore + locationScore)
+            scoreForEachRound.append(eachRoundScore)
+            totalScore +=  eachRoundScore
 
             currentRoundNumber += 1
 
-        return totalScore  
+        return totalScore, scoreForEachRound  
 
-    def endGame(self):
 
-        pass
 
 
 class HardGame(Game):
@@ -169,10 +168,12 @@ class HardGame(Game):
         return db.collection("HardRounds")
 
 
-    def scoreRounds(self, yearGuesses, locationGuesses) -> int:
+    def scoreRounds(self) -> int:
 
-        yearGuesses = [1970, 1940, 1955]
-        locationGuesses = [[300,500], [400,500], [500,500]]
+        scoreForEachRound = []
+
+        yearGuesses = self.yearGuesses
+        locationGuesses = self.targetGuesses
         
         currentRoundNumber : int = 0
 
@@ -209,16 +210,14 @@ class HardGame(Game):
             else:
                 locationScore = 2024 - locationDifference
 
-            totalScore += yearScore
-            totalScore += locationScore
+            eachRoundScore = int(yearScore + locationScore)
+            scoreForEachRound.append(eachRoundScore)
+            totalScore +=  eachRoundScore
 
             currentRoundNumber += 1
 
-        return totalScore            
+        return totalScore, scoreForEachRound            
 
-    def endGame(self):
-
-        pass
 
 
 # Factory class to create game objects

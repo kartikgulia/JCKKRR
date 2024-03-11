@@ -7,7 +7,8 @@ from GameModule.Rounds import Round, BackgroundPicture
 
 class Game(ABC):
     def __init__(self, player):
-     
+        
+        self.player = player
         self.gameID = None
         self.rounds = []
         self.currentRoundNumber = 1
@@ -70,9 +71,41 @@ class Game(ABC):
         pass
 
     @abstractmethod
-    def scoreRounds(self) -> int:
+    def scoreRounds(self) -> tuple:
         pass
 
-    @abstractmethod
-    def endGame(self):
-        pass
+
+    def endGame(self) -> tuple:
+
+        # Get scores and leaderboard position
+
+        totalScore : int
+
+        scoreForEachRound : list[int]
+
+        totalScore, scoreForEachRound = self.scoreRounds()
+
+
+
+        placeOnLeaderboardString : str = f"{self.player.name}, you are 13th on the Easy Leaderboard"
+
+
+        # End Game Logistics
+
+        # 1) Remove the game from player
+
+        self.player.currentGame = None
+
+        # 2) Add the current game id to the list of played games for the user
+
+        self.player.gameIDsPlayed.append(self.gameID)
+
+        # TODO : Update the document in the database
+
+
+        # 3) TODO : Add to their total score in the database
+
+
+        # 4) TODO : For the current game, update the numPlayersPlayed and the avgPerformance
+
+        return (totalScore, scoreForEachRound, placeOnLeaderboardString)
