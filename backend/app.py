@@ -103,6 +103,25 @@ def signup():
         username = data.get('username')
         email = data.get('email')
         password = data.get('password')
+
+        # Check if username is already taken
+
+
+        players_ref = db.collection('players')
+
+        isUniqueUsername = True
+
+        for doc in players_ref.stream():
+      
+            player_data = doc.to_dict()
+
+            if player_data['name'] == username:
+                isUniqueUsername = False
+                break
+
+        if not isUniqueUsername:
+            return jsonify({"message": "Username taken. Try something else"}), 401
+        
         try:
             
             user = auth.create_user_with_email_and_password(email, password)
