@@ -1,21 +1,37 @@
+import random
 import sys
 
+from PIL import Image
+
+from FirebaseAccess.firebase import db
 
 sys.path.append("")
-from FirebaseAccess.firebase import db
-import random
-from PIL import Image
 
 
 images_ref = db.collection('images')
 
 # fills the game collections for each difficulty
+
+
 def createGamesForAllDifficulties(gameCounts):
     difficulties = ["EasyGames", "MediumGames", "HardGames"]
+    key = ''
     for difficulty in difficulties:
+        start = 1  # added these variables to fix round IDs. Do not worry about these, everything should still be the same
+        end = 5
+
+        if difficulty == "EasyGames":
+            key = "Easy"
+        elif difficulty == "MediumGames":
+            key = "Medium"
+        else:
+            key = "Hard"
+
         for i in range(1, gameCounts[difficulty] + 1):
-            gameID = f"Game {i}"
-            getImageSet(difficulty, gameID)
+            gameID = f"{key}Game {i}"
+            getImageSet(difficulty, gameID, start, end)
+            start = end + 1
+            end = end + 5
 
 
 def get_randImage():  # gets random image from database
@@ -33,7 +49,7 @@ def get_randImage():  # gets random image from database
 # send rounds array of round IDs to game collections
 # difficulty -> "EasyGames", "HardGames", "MediumGames"
 # i -> id for the game document in games. I think i will be the game number (ie Game 1, Game 2....)
-def getImageSet(difficulty, i):
+def getImageSet(difficulty, i, startIndex, endIndex):
     rounds = []
     roundDifficulty = ''
 
@@ -44,8 +60,8 @@ def getImageSet(difficulty, i):
     elif (difficulty == "HardGames"):
         roundDifficulty = "HardRounds"
 
-    for j in range(5):
-        rounds.append(get_TargetBgImages(roundDifficulty))
+    for j in range(startIndex, endIndex+1):
+        rounds.append(get_TargetBgImages(roundDifficulty), j)
 
     data = {
         "rounds": rounds,
@@ -58,7 +74,7 @@ def getImageSet(difficulty, i):
 
 # Gets random image from image collection and sends target, background, date and target coordinates to one of the rounds
 # difficulty -> EasyRounds, MediumRounds, HardRounds, i -> round number as id
-def get_TargetBgImages(difficulty):
+def get_TargetBgImages(difficulty, i):
     image_data = get_randImage()
     backgroundImage = image_data['url']
     im = Image.open(image_data['url'])
@@ -66,16 +82,19 @@ def get_TargetBgImages(difficulty):
     dateTaken = image_data["datetaken"]
     dateTaken = dateTaken[0:4]
     if (difficulty == "MediumRounds"):
+        id = "Medium"
         TL = (random.randint(1, width-20), random.randint(1, height-20))
         TR = TL + (20, 0)
         BL = TL + (0, 20)
         BR = TL + (20, 20)
     elif (difficulty == "EasyRounds"):
+        id = "Easy"
         TL = (random.randint(1, width-20), random.randint(1, height-20))
         TR = TL + (40, 0)
         BL = TL + (0, 40)
         BR = TL + (40, 40)
     else:
+        id = "Hard"
         TL = (random.randint(1, width-20), random.randint(1, height-20))
         TR = TL + (10, 0)
         BL = TL + (0, 10)
@@ -90,15 +109,15 @@ def get_TargetBgImages(difficulty):
         "BR": BR,
         "date": dateTaken
     }
+
+    id = id + "Round" + str(i)
     # sends data to one of the collections for rounds
     # difficulty -> EasyRounds, MediumRounds, HardRounds
-    # got rid of i parameter because I realized we can't have duplicate IDs in a collection. Just going to use image ids as round ids
-    doc_ref = db.collection(difficulty).document(image_data['id'])
+    doc_ref = db.collection(difficulty).document(id)
     doc_ref.set(data)
 
     # returns image id which we can add to rounds array
-    return image_data['id']
-
+    return id
 
 
 def get_images_data():
