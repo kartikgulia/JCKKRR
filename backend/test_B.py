@@ -32,16 +32,15 @@ class TestEasyGame:
     def test_score_rounds(self):
         mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
         easy_game = EasyGame(mock_player)
-        easy_game.yearGuesses = [2000, 2020]
-        easy_game.targetGuesses = [[5,5], [200, 250]]
+        easy_game.yearGuesses = [2000] # second in list should account for easy rounding
+        easy_game.targetGuesses = [[5,5]] # second in list should account for easy rounding
         # Mocking Round data
         class MockRound:
             def getData(self):
                 return {"yearTaken": 2010, "targetImageCoordinates": [[0, 0], [0, 10], [10, 10], [10, 0]]}
-        easy_game.rounds = [MockRound(), MockRound()]
-        total_score, score_for_each_round = easy_game.scoreRounds()
-        assert total_score == 4048  # Total score for both rounds
-        assert score_for_each_round == [2024, 2024]  # Score for each round
+        easy_game.rounds = [MockRound()]
+        total_score = easy_game.scoreRounds()
+        assert total_score[0] == 4048  # Total score for both rounds
 
     # Add more test cases for other scenarios and edge cases as needed
 

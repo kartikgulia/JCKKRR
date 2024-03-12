@@ -70,9 +70,13 @@ class EasyGame(Game):
 
             if locationScore < 1974:
                 locationScore += 50
+            elif locationScore >= 1974:
+                locationScore = 2024
 
             if yearScore < 1974:
                 yearScore += 50
+            elif yearScore >= 1974: 
+                yearScore = 2024
 
             eachRoundScore = int(yearScore + locationScore)
             scoreForEachRound.append(eachRoundScore)
