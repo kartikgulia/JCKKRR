@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/login.css";
 
 function SignInPage() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [messageFromBackend, setMessageFromBackend] = useState("");
@@ -20,7 +20,7 @@ function SignInPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
       console.log(data); // Process the response data
@@ -45,11 +45,11 @@ function SignInPage() {
       <div className="background">
         <h1 className="title">Sign In</h1>
         <label>
-          <h1 className="info">Username:</h1>
+          <h1 className="info">Email:</h1>
           <input
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </label>
         <label>

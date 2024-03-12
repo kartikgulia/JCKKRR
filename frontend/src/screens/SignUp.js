@@ -5,6 +5,7 @@ import "../styles/signup.css";
 
 function SignUpPage() {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ function SignUpPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, username, password }),
       });
       const data = await response.json();
       console.log(data); // Process the response data
@@ -49,6 +50,16 @@ function SignUpPage() {
             onChange={(e) => setUsername(e.target.value)}
           />
         </label>
+
+        <label>
+          <h1 className="info">Enter New Email:</h1>
+          <input
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
+
         <label>
           <h1 className="info"> Enter New Password: </h1>
           <input

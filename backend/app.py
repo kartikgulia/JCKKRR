@@ -69,7 +69,7 @@ def get_hard_leaderboard_data():
 def signin():
 
     data = request.json
-    email = data.get('username')
+    email = data.get('email')
     password = data.get('password')
     try:
         
@@ -100,14 +100,16 @@ def signin():
 def signup():
     if request.method == 'POST':
         data = request.json
-        email = data.get('username')
+        username = data.get('username')
+        email = data.get('email')
         password = data.get('password')
         try:
             
             user = auth.create_user_with_email_and_password(email, password)
             uid = user['localId']
             data = {
-             'name': f'{email}',
+             'name': f'{username}',
+             'email': f'{email}',
              'EasyScore': 0,
              "MediumScore": 0,
              "HardScore": 0,

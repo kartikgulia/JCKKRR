@@ -50,6 +50,7 @@ class Player(UserInterface):
         playerDictionary = playerDoc.to_dict()
 
         name = playerDictionary["name"]
+        email = playerDictionary["email"]
         easyScore = playerDictionary["EasyScore"]
         mediumScore = playerDictionary["MediumScore"]
         hardScore = playerDictionary["HardScore"]
@@ -59,7 +60,7 @@ class Player(UserInterface):
         self.easyScore = easyScore
         self.mediumScore = mediumScore
         self.hardScore = hardScore
-        
+
         self.gameIDsPlayed = gamesPlayed
 
     def signOut(self):
