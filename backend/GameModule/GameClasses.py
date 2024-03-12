@@ -50,8 +50,19 @@ class EasyGame(Game):
 
             bottomLeftCoord : list[int] = correctLocation[0]
             topRightCoord : list[int] = correctLocation[2]
-        
-            correctCoord : list[int] = [abs(topRightCoord[0]-bottomLeftCoord[0]), abs(topRightCoord[1]-bottomLeftCoord[1])]
+
+            correctCoord : list[int] = [0,0]
+
+            if(bottomLeftCoord[0] == 0):
+                correctCoord[0] = topRightCoord[0]/2
+            else: 
+                correctCoord[0] = abs(topRightCoord[0]-bottomLeftCoord[0])
+            if(bottomLeftCoord[1] == 0):
+                correctCoord[1] = topRightCoord[1]/2
+            else:  
+                correctCoord[1] = abs(topRightCoord[1]-bottomLeftCoord[1])
+     
+                # correctCoord : list[int] = [abs(topRightCoord[0]-bottomLeftCoord[0]), abs(topRightCoord[1]-bottomLeftCoord[1])]
 
             # 3) Compare the correct vs. guesses
 
