@@ -80,14 +80,22 @@ def signin():
         # if the auth is successful
         user_token = user['localId']
         
-        # Add the uid to active player session
+        # If the uid exists
 
-        playerObject : Player = Player(userID=user_token)
-        playerObject.name = email
-    
-        # playerDoc  = db.collection('players').document(user_token).get()
-        # playerObject.gameIDsPlayed = playerDoc.to_dict()["gamesPlayed"]
-        playerManager.addPlayer(user_token,playerObject)
+        if playerManager.getPlayer(user_token) != None:
+            return jsonify({"message": "Successfully logged in", "token": user_token}), 200
+
+
+
+        # If the uid does not exist
+        # Add the uid to active player session
+        else: 
+            playerObject : Player = Player(userID=user_token)
+            playerObject.name = email
+        
+            # playerDoc  = db.collection('players').document(user_token).get()
+            # playerObject.gameIDsPlayed = playerDoc.to_dict()["gamesPlayed"]
+            playerManager.addPlayer(user_token,playerObject)
 
         return jsonify({"message": "Successfully logged in", "token": user_token}), 200
     except Exception as e:
