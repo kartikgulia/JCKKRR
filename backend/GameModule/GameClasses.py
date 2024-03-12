@@ -164,11 +164,21 @@ class MediumGame(Game):
             else:
                 locationScore = 2024 - locationDifference
 
+            # if locationScore < 1999:
+            #     locationScore += 25
+
+            # if yearScore < 1999:
+            #     yearScore += 25
+
             if locationScore < 1999:
                 locationScore += 25
+            elif locationScore >= 1999:
+                locationScore = 2024
 
             if yearScore < 1999:
                 yearScore += 25
+            elif yearScore >= 1999: 
+                yearScore = 2024
 
             eachRoundScore = int(yearScore + locationScore)
             scoreForEachRound.append(eachRoundScore)
