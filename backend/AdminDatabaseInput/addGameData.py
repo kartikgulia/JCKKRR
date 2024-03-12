@@ -2,7 +2,9 @@ import random
 import sys
 
 from PIL import Image
-
+import requests
+from PIL import Image
+from io import BytesIO
 
 
 # IMPORTANT: change this to access the backend 
@@ -91,33 +93,41 @@ def getImageSet(difficulty, i, startIndex, endIndex):
 # difficulty -> EasyRounds, MediumRounds, HardRounds, i -> round number as id
 def get_TargetBgImages(difficulty, i):
     image_data = get_randImage()
-    backgroundImage = image_data['url']
-    im = Image.open(image_data['url'])
+    backgroundImageURL = image_data['url']
+    response = requests.get(backgroundImageURL)
+
+    if response.status_code == 200:
+        # Open the image from the bytes in memory
+        imageBytes = BytesIO(response.content)
+        im = Image.open(imageBytes)
+        # im.show() for debuggin
+
+    
     width, height = im.size
     dateTaken = image_data["datetaken"]
     dateTaken = dateTaken[0:4]
-    if (difficulty == "MediumRounds"):
+    if difficulty == "MediumRounds":
         id = "Medium"
-        TL = (random.randint(1, width-20), random.randint(1, height-20))
-        TR = TL + (20, 0)
-        BL = TL + (0, 20)
-        BR = TL + (20, 20)
-    elif (difficulty == "EasyRounds"):
+        TL = [random.randint(1, width-20), random.randint(1, height-20)]
+        TR = [TL[0] + 20, TL[1]]
+        BL = [TL[0], TL[1] + 20]
+        BR = [TL[0] + 20, TL[1] + 20]
+    elif difficulty == "EasyRounds":
         id = "Easy"
-        TL = (random.randint(1, width-20), random.randint(1, height-20))
-        TR = TL + (40, 0)
-        BL = TL + (0, 40)
-        BR = TL + (40, 40)
-    else:
+        TL = [random.randint(1, width-20), random.randint(1, height-20)]
+        TR = [TL[0] + 40, TL[1]]
+        BL = [TL[0], TL[1] + 40]
+        BR = [TL[0] + 40, TL[1] + 40]
+    else:  # Assuming this is for "HardRounds" or any other difficulty
         id = "Hard"
-        TL = (random.randint(1, width-20), random.randint(1, height-20))
-        TR = TL + (10, 0)
-        BL = TL + (0, 10)
-        BR = TL + (10, 10)
+        TL = [random.randint(1, width-20), random.randint(1, height-20)]
+        TR = [TL[0] + 10, TL[1]]
+        BL = [TL[0], TL[1] + 10]
+        BR = [TL[0] + 10, TL[1] + 10]
 
     # backgroundImage.show()
     data = {  # sends dates, filepath for background, and target's corner coordinates
-        "url": backgroundImage,
+        "url": backgroundImageURL,
         "TL": TL,
         "TR": TR,
         "BL": BL,
