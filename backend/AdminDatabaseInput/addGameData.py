@@ -42,8 +42,8 @@ def createGamesForAllDifficulties(gameCounts):
         else:
             key = "Hard"
 
-        for i in range(1, gameCounts[difficulty] + 1):
-            gameID = f"{key}Game {i}"
+        for i in range(3, 5):
+            gameID = f"{key}Game{i}"
             getImageSet(difficulty, gameID, start, end)
             start = end + 1
             end = end + 5
@@ -76,7 +76,7 @@ def getImageSet(difficulty, i, startIndex, endIndex):
         roundDifficulty = "HardRounds"
 
     for j in range(startIndex, endIndex+1):
-        rounds.append(get_TargetBgImages(roundDifficulty), j)
+        rounds.append(get_TargetBgImages(roundDifficulty,j))
 
     data = {
         "rounds": rounds,
