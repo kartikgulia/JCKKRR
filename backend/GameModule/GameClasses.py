@@ -15,7 +15,7 @@ class EasyGame(Game):
         # Properties
         self.player: Player = player
         
-        
+        self.difficulty = "Easy"
     # Implementation of each function for EasyGame
 
     def getGameCollectionRef(self):
@@ -56,7 +56,7 @@ class EasyGame(Game):
             # 3) Compare the correct vs. guesses
 
             # Max score for each is 2024 (50-50 split)
-            
+            correctYear = int(correctYear)
             yearScore : int = 2024 - abs(correctYear-yearGuesses[currentRoundNumber])
 
             locationDifference = math.sqrt(math.pow(correctCoord[0]-locationGuesses[currentRoundNumber][0],2) + math.pow(correctCoord[1]-locationGuesses[currentRoundNumber][1], 2))
@@ -88,7 +88,7 @@ class MediumGame(Game):
     def __init__(self, player):
         super().__init__(player)
         self.player: Player = player
-
+        self.difficulty = "Medium"
     def getGameCollectionRef(self):
         mediumGamesRef = db.collection("MediumGames")
         return mediumGamesRef
@@ -126,7 +126,7 @@ class MediumGame(Game):
             # 3) Compare the correct vs. guesses
 
             # Max score for each is 2024 (50-50 split)
-            
+            correctYear = int(correctYear)
             yearScore : int = 2024 - abs(correctYear-yearGuesses[currentRoundNumber])
 
             locationDifference = math.sqrt(math.pow(correctCoord[0]-locationGuesses[currentRoundNumber][0],2) + math.pow(correctCoord[1]-locationGuesses[currentRoundNumber][1], 2))
@@ -159,6 +159,7 @@ class HardGame(Game):
     def __init__(self, player):
         super().__init__(player)
         self.player: Player = player
+        self.difficulty = "Hard"
 
     def getGameCollectionRef(self):
         hardGamesRef = db.collection("HardGames")
@@ -198,7 +199,7 @@ class HardGame(Game):
             # 3) Compare the correct vs. guesses
 
             # Max score for each is 2024 (50-50 split)
-            
+            correctYear = int(correctYear)
             yearScore : int = 2024 - abs(correctYear-yearGuesses[currentRoundNumber])
 
             locationDifference = math.sqrt(math.pow(correctCoord[0]-locationGuesses[currentRoundNumber][0],2) + math.pow(correctCoord[1]-locationGuesses[currentRoundNumber][1], 2))

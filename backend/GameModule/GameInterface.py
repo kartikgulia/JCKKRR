@@ -79,81 +79,108 @@ class Game(ABC):
 
         # Get scores and leaderboard position
 
-        totalScore : int
+        try:
 
-        scoreForEachRound : list[int]
+            totalScore : int
 
-        totalScore, scoreForEachRound = self.scoreRounds()
+            scoreForEachRound : list[int]
 
-
-        
-
-        
-
-        # End Game Logistics
-
-        # 1) Add the current game id to the list of played games for the user
-
-        self.player.gameIDsPlayed.append(self.gameID)
-
-        
-        # TODO : Update the Player document (document name: uid. in the 'players' collection)
-
-        players_ref = db.collection('players')
-
-        uid : str = self.player.userID
-
-            # 2) TODO : Update their gameIDsPlayed with the self.player.gameIDsPlayed
-
-       
-            # 3) TODO : Update their total score in the database
+            totalScore, scoreForEachRound = self.scoreRounds()
 
 
-        players_ref = db.collection('players')
+            
 
+            
 
-        uid = "Praa65tGh3XZvsshV0H3GErZ9Of2"
+            # End Game Logistics
 
-        doc_ref = players_ref.document(uid)
+            # 1) Add the current game id to the list of played games for the user
 
-        doc = doc_ref.get()
+            self.player.gameIDsPlayed.append(self.gameID)
 
-        doc_data : dict
-        if doc.exists:
-            doc_data = doc.to_dict()
-            print("Document data:", doc_data)
+            
+            # TODO : Update the Player document (document name: uid. in the 'players' collection)
 
+            players_ref = db.collection('players')
 
-            prevScore = doc_data["score"]
-            doc_ref.update({
-                "score" : prevScore + totalScore,
-                "gamesPlayed" : self.player.gameIDsPlayed
-            })
+            uid : str = self.player.userID
 
-
-        else:
-            print("No such document!")
-
-
-
-
-        # TODO : Update the Game document (document name: gameID. in the '{difficulty}Game' collection)
-
-        gameID : str = self.gameID
-
-            # 4) TODO : For the current game, update the numPlayersPlayed and the avgPerformance
-        
-
-        # 5) Remove the game from player
-
-        self.player.currentGame = None
+                # 2) TODO : Update their gameIDsPlayed with the self.player.gameIDsPlayed
 
         
+                # 3) TODO : Update their total score in the database
 
 
-        # 6) TODO: Get the leaderboard position
+            players_ref = db.collection('players')
+
+            doc_ref = players_ref.document(uid)
+
+            doc = doc_ref.get()
+
+            doc_data : dict
+
+            totalScoreInDatabase : int = 0
+
+            if doc.exists:
+                doc_data = doc.to_dict()
+                print("Document data:", doc_data)
 
 
-        placeOnLeaderboardString : str = f"{self.player.name}, you are 13th on the Easy Leaderboard"
+                prevScore = doc_data[f"{self.difficulty}Score"]
 
-        return (totalScore, scoreForEachRound, placeOnLeaderboardString)
+                totalScoreInDatabase = prevScore + totalScore
+
+                doc_ref.update({
+                    f"{self.difficulty}Score" : totalScoreInDatabase,
+                    "gamesPlayed" : self.player.gameIDsPlayed
+                })
+
+
+            else:
+                print("No such document!")
+
+
+            # 4) Remove the game from player
+
+            self.player.currentGame = None
+
+
+            # 5) Update the leaderboard
+            print(self.difficulty)
+            leaderboard_ref = db.collection(f'{self.difficulty}Leaderboard')
+
+
+            doc_ref = leaderboard_ref.document(uid)
+
+            doc = doc_ref.get()
+
+            doc_data : dict
+            if doc.exists:
+                doc_data = doc.to_dict()
+                print("Document data:", doc_data)
+
+                doc_ref.update({
+                    f"Score" : totalScoreInDatabase,
+                    "Name" : self.player.name,
+                })
+
+
+            else:
+                print("No such document!")
+
+                print("Creating document")
+
+                doc_ref.set({
+                    "Name" : self.player.name,
+                    "Score" : totalScoreInDatabase,
+                })
+                
+
+
+            return (totalScore, scoreForEachRound)
+        
+
+        except Exception as e:
+            print(e)
+            self.player.currentGame = None
+            return (0,0)

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import SERVER_URL from "../config";
 import { useNavigate } from "react-router-dom";
-import "../styles/signup.css"; 
+import "../styles/signup.css";
 
-function SignUpPage(){
+function SignUpPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -25,7 +25,7 @@ function SignUpPage(){
       console.log(data); // Process the response data
 
       if (data.message === "Successfully signed up") {
-        navigate('/gameSelect'); // Use navigate to redirect
+        navigate("/signin"); // Use navigate to redirect
       } else {
         setMessageFromBackend(data.message);
       }
@@ -39,7 +39,6 @@ function SignUpPage(){
 
   return (
     <form onSubmit={handleSubmit}>
-      
       <div className="background">
         <h1 className="title">Sign Up</h1>
         <label>
@@ -61,7 +60,6 @@ function SignUpPage(){
         <button type="submit">Sign Up</button>
         <h1>{messageFromBackend}</h1>
       </div>
-      
     </form>
   );
 }

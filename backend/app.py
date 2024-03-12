@@ -85,8 +85,8 @@ def signin():
         playerObject : Player = Player(userID=user_token)
         playerObject.name = email
     
-        playerDoc  = db.collection('players').document(user_token).get()
-        playerObject.gameIDsPlayed = playerDoc.to_dict()["gamesPlayed"]
+        # playerDoc  = db.collection('players').document(user_token).get()
+        # playerObject.gameIDsPlayed = playerDoc.to_dict()["gamesPlayed"]
         playerManager.addPlayer(user_token,playerObject)
 
         return jsonify({"message": "Successfully logged in", "token": user_token}), 200
@@ -108,7 +108,9 @@ def signup():
             uid = user['localId']
             data = {
              'name': f'{email}',
-             'score': 5000,
+             'EasyScore': 0,
+             "MediumScore": 0,
+             "HardScore": 0,
              'playerid': uid,
              'gamesPlayed' : []
             }
@@ -213,9 +215,9 @@ def endGameScoreAndReturnRounds():
             placeOnTheLeaderboardString : str
 
 
-            totalScore , scoreForEachRound, placeOnTheLeaderboardString = currentGame.endGame()
+            totalScore , scoreForEachRound = currentGame.endGame()
 
-            return jsonify({"message": "Success" , "totalScore" : totalScore, "scoreForEachRound" : scoreForEachRound, "placeOnTheLeaderboardString" : placeOnTheLeaderboardString})
+            return jsonify({"message": "Success" , "totalScore" : totalScore, "scoreForEachRound" : scoreForEachRound})
         
 
         except Exception as e:
