@@ -21,6 +21,59 @@ function Game() {
   const minYear = 1900;
   const maxYear = 2024;
 
+  // const mockRoundsData = [
+  //   {
+  //     backgroundImagePath: "https://picsum.photos/1000/500",
+  //     targetImageCoordinates: [
+  //       [100, 200],
+  //       [100, 100],
+  //       [200, 100],
+  //       [200, 200],
+  //     ],
+  //     yearTaken: 2000,
+  //   },
+  //   {
+  //     backgroundImagePath: "https://picsum.photos/500/500",
+  //     targetImageCoordinates: [
+  //       [150, 250],
+  //       [150, 150],
+  //       [250, 150],
+  //       [250, 250],
+  //     ],
+  //     yearTaken: 2010,
+  //   },
+  //   {
+  //     backgroundImagePath: "https://picsum.photos/600/500",
+  //     targetImageCoordinates: [
+  //       [150, 250],
+  //       [150, 150],
+  //       [250, 150],
+  //       [250, 250],
+  //     ],
+  //     yearTaken: 2010,
+  //   },
+  //   {
+  //     backgroundImagePath: "https://picsum.photos/700/500",
+  //     targetImageCoordinates: [
+  //       [150, 250],
+  //       [150, 150],
+  //       [250, 150],
+  //       [250, 250],
+  //     ],
+  //     yearTaken: 2010,
+  //   },
+  //   {
+  //     backgroundImagePath: "https://picsum.photos/800/500",
+  //     targetImageCoordinates: [
+  //       [150, 250],
+  //       [150, 150],
+  //       [250, 150],
+  //       [250, 250],
+  //     ],
+  //     yearTaken: 2010,
+  //   },
+  // ];
+
   useEffect(() => {
     // If roundsArray is not provided through navigation state, fetch the rounds
     if (!roundsArray) {
