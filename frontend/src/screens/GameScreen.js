@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Round from "../components/GameScreen/Round";
 import "../styles/GameScreen.css";
 import SERVER_URL from "../config";
+import { Link } from "react-router-dom";
 
 function Game() {
   // const mockRoundsData = [
@@ -117,14 +118,20 @@ function Game() {
     }
   };
 
+  if (errorMessage) {
+    return (
+      <div>
+        <h1>{errorMessage}</h1>
+        <Link to="/gameSelect" className="button">
+          Go back to Game Select
+        </Link>
+      </div>
+    );
+  }
+
   if (!roundsLoaded) {
     return <div>Loading...</div>;
   }
-
-  if (errorMessage) {
-    return <div>{errorMessage}</div>;
-  }
-
   return (
     <div className="container">
       <Round
