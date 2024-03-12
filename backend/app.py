@@ -264,7 +264,7 @@ def get_hardleaderboard():
 
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(port=5000, host="0.0.0.0")
 
 
 # Below this are just example functions. They are not part of the application.
