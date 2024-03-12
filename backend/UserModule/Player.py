@@ -41,6 +41,18 @@ class Player(UserInterface):
 
 
         
+    def updateInfo(self):
+
+        playerDoc  = db.collection('players').document(self.userID).get()
+        playerDictionary = playerDoc.to_dict()
+
+        name = playerDictionary["name"]
+        score = playerDictionary["score"]
+        gamesPlayed = playerDictionary["gamesPlayed"]
+
+        self.name = name
+        self.score = score
+        self.gameIDsPlayed = gamesPlayed
 
     def signOut(self):
         # Implement sign-out logic here

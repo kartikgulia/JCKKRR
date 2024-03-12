@@ -137,6 +137,10 @@ def getGameInfo():
 
     currentPlayer = playerManager.getPlayer(playerID=userID)
 
+    currentPlayer.updateInfo()
+    
+
+
     createGameForPlayer(currentPlayer, gameDifficultyLevel)
 
     if currentPlayer.currentGame is not None:
@@ -171,6 +175,7 @@ def storeRoundGuess():
             
             currentPlayer : Player = playerManager.getPlayer(playerID=userID)
 
+            currentPlayer.updateInfo()
             currentGame : Game = currentPlayer.currentGame
 
             currentGame.storeRound(yearGuess = yearGuess, targetGuess = targetGuess)
@@ -199,6 +204,7 @@ def endGameScoreAndReturnRounds():
         try:
 
             currentPlayer : Player = playerManager.getPlayer(playerID= userID)
+            currentPlayer.updateInfo()
             currentGame : Game = currentPlayer.currentGame
 
 

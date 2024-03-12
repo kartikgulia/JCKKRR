@@ -88,6 +88,7 @@ class Game(ABC):
 
         
 
+        
 
         # End Game Logistics
 
@@ -98,12 +99,41 @@ class Game(ABC):
         
         # TODO : Update the Player document (document name: uid. in the 'players' collection)
 
+        players_ref = db.collection('players')
+
         uid : str = self.player.userID
 
             # 2) TODO : Update their gameIDsPlayed with the self.player.gameIDsPlayed
 
-
+       
             # 3) TODO : Update their total score in the database
+
+
+        players_ref = db.collection('players')
+
+
+        uid = "Praa65tGh3XZvsshV0H3GErZ9Of2"
+
+        doc_ref = players_ref.document(uid)
+
+        doc = doc_ref.get()
+
+        doc_data : dict
+        if doc.exists:
+            doc_data = doc.to_dict()
+            print("Document data:", doc_data)
+
+
+            prevScore = doc_data["score"]
+            doc_ref.update({
+                "score" : prevScore + totalScore,
+                "gamesPlayed" : self.player.gameIDsPlayed
+            })
+
+
+        else:
+            print("No such document!")
+
 
 
 
