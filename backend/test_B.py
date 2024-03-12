@@ -1,9 +1,7 @@
 # test_easy_game.py
 
 import pytest
-from GameModule.GameClasses import EasyGame  # Updated import statement
-from GameModule.GameClasses import MediumGame  # Updated import statement
-from GameModule.GameClasses import HardGame  # Updated import statement
+from GameModule.GameClasses import *  # Updated import statement
 from UserModule.Player import Player
 from FirebaseAccess.firebase import db
 
@@ -172,9 +170,52 @@ class TestHardGame:
         total_score, score_for_each_round = hard_game.scoreRounds()
         assert total_score == 8095  # Total score for both rounds
         assert score_for_each_round == [4048, 4047]  # Score for each round
-        
+
     # Add more test cases for other scenarios and edge cases as needed
         
+
+
+# Test for GameFactory class
+class TestGameFactory:
+    # Test initialization of GameFactory class
+    def test_init(self):
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        game_factory = GameFactory(mock_player)
+        assert game_factory.player == mock_player
+
+    # Test create_game method for Easy difficulty
+    def test_create_game_easy(self):
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        game_factory = GameFactory(mock_player)
+        game = game_factory.create_game("Easy")
+        assert isinstance(game, EasyGame)
+        assert game.difficulty == "Easy"
+        assert game.player == mock_player
+
+    # Test create_game method for Medium difficulty
+    def test_create_game_medium(self):
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        game_factory = GameFactory(mock_player)
+        game = game_factory.create_game("Medium")
+        assert isinstance(game, MediumGame)
+        assert game.difficulty == "Medium"
+        assert game.player == mock_player
+
+    # Test create_game method for Hard difficulty
+    def test_create_game_hard(self):
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        game_factory = GameFactory(mock_player)
+        game = game_factory.create_game("Hard")
+        assert isinstance(game, HardGame)
+        assert game.difficulty == "Hard"
+        assert game.player == mock_player
+
+    # Test create_game method for invalid difficulty
+    def test_create_game_invalid_difficulty(self):
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        game_factory = GameFactory(mock_player)
+        with pytest.raises(ValueError):
+            game_factory.create_game("InvalidDifficulty")
 
 
 if __name__ == "__main__":
