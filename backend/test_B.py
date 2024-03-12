@@ -2,6 +2,7 @@
 
 import pytest
 from GameModule.GameClasses import *  # Updated import statement
+from GameModule.gameCreationFunctions import *  # Updated import statement
 from UserModule.Player import Player
 from FirebaseAccess.firebase import db
 
@@ -217,6 +218,27 @@ class TestGameFactory:
         with pytest.raises(ValueError):
             game_factory.create_game("InvalidDifficulty")
 
+
+# Test for createGameForPlayer function
+class TestCreateGameForPlayer:
+    # Test creating game for player with valid parameters
+    def test_create_game_for_player_valid(self):
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        game_difficulty = "Easy"
+        # factory = GameFactory(mock_player)
+        createGameForPlayer(mock_player, game_difficulty)
+        assert mock_player.currentGame is not None
+        assert isinstance(mock_player.currentGame, Game)
+        assert mock_player.currentGame.difficulty == game_difficulty
+
+    # Test creating game for player with invalid difficulty
+    def test_create_game_for_player_invalid_difficulty(self):
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        game_difficulty = "InvalidDifficulty"
+        # factory = GameFactory(mock_player)
+        with pytest.raises(ValueError):
+            createGameForPlayer(mock_player, game_difficulty)
+        assert mock_player.currentGame is None
 
 if __name__ == "__main__":
     pytest.main()
