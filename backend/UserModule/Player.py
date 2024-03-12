@@ -57,6 +57,7 @@ class Player(UserInterface):
         gamesPlayed = playerDictionary["gamesPlayed"]
 
         self.name = name
+        self.email = email
         self.easyScore = easyScore
         self.mediumScore = mediumScore
         self.hardScore = hardScore

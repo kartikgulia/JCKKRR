@@ -146,7 +146,36 @@ def signup():
             return jsonify({"message": error_message}), 401
 
 
+@app.route('/getExistingGameInfo', methods=['GET'])
+def getExistingGameInfo():
 
+    userID = request.args.get('userID')
+
+    currentPlayer = playerManager.getPlayer(playerID=userID)
+
+    currentPlayer.updateInfo()
+
+    # Check if they have an existing game 
+
+    currentGame : Game = currentPlayer.currentGame
+
+    try:
+    
+        if currentGame == None:
+            return jsonify({"message" : "Success", "description": f"No existing game"}), 200
+        
+        # Player has a current game
+
+        arrayOfRoundDictionaries = currentGame.getArrayOfRoundDictionaries()
+        currentRoundNumber = currentGame.currentRoundNumber
+        difficulty = currentGame.difficulty
+
+        return jsonify({"message" : "Success", "description": f"Game exists" , "roundsArray" : arrayOfRoundDictionaries , "currentRoundNumber" : currentRoundNumber, "difficulty" : difficulty}), 200
+
+    
+    except Exception as e:
+        return jsonify({"message" : "Failed", "description": f"{e}"}), 401
+    
 
 # This route does the following:
 # 1) Creates a Game Object for the currentPlayer

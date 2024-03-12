@@ -18,6 +18,14 @@ class Game(ABC):
         self.targetGuesses : list[list[float]] = []
 
 
+
+    def getArrayOfRoundDictionaries(self):
+        arrayfRoundDicts = []
+        for r in self.rounds:
+            arrayfRoundDicts.append(r.getData())
+        return arrayfRoundDicts
+    
+
     def startGame(self):
         # Common starting game logic
         gamesCollectionRef = self.getGameCollectionRef()
@@ -31,9 +39,7 @@ class Game(ABC):
         # TODO: not sure how Kap will title it but I'm assuming its rounds. Change this later
         for ID in roundIDs["rounds"]:
             self.rounds.append(Round(ID, roundCollectionRef))
-        arrayfRoundDicts = []
-        for r in self.rounds:
-            arrayfRoundDicts.append(r.getData())
+        arrayfRoundDicts = self.getArrayOfRoundDictionaries()
         return arrayfRoundDicts
 
     def setGameID(self):
