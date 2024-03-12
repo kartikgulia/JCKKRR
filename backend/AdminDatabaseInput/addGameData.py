@@ -3,12 +3,27 @@ import sys
 
 from PIL import Image
 
+
+
+# IMPORTANT: change this to access the backend 
+
+# ex. if your terminal says JCKKRR as the folder it's in, then sys.path.append("backend/")
+
+# if your terminal says it's in backend, then leave it like sys.path.append("")
+
+sys.path.append("backend/")
+
+
+
 from FirebaseAccess.firebase import db
 
-sys.path.append("")
 
 
 images_ref = db.collection('images')
+
+
+
+
 
 # fills the game collections for each difficulty
 
