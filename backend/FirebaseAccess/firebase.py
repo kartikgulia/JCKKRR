@@ -21,6 +21,6 @@ firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
 
-cred = credentials.Certificate('backend/jokerker-d9272-firebase-adminsdk-sbyd5-fda51193ba.json')
+cred = credentials.Certificate('jokerker-d9272-firebase-adminsdk-sbyd5-fda51193ba.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
