@@ -3,6 +3,7 @@
 import pytest
 from GameModule.GameClasses import EasyGame  # Updated import statement
 from GameModule.GameClasses import MediumGame  # Updated import statement
+from GameModule.GameClasses import HardGame  # Updated import statement
 from UserModule.Player import Player
 from FirebaseAccess.firebase import db
 
@@ -127,6 +128,51 @@ class TestMediumGame:
         assert total_score == 8095  # Total score for both rounds
         assert score_for_each_round == [4048, 4047]  # Score for each round
 
+    # Add more test cases for other scenarios and edge cases as needed
+        
+
+
+# Test for HardGame class
+class TestHardGame:
+    # Test initialization of HardGame class
+    def test_init(self):
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        hard_game = HardGame(mock_player)
+        assert hard_game.player == mock_player
+        assert hard_game.difficulty == "Hard"
+
+    # Test getGameCollectionRef method
+    def test_get_game_collection_ref(self):
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        hard_game = HardGame(mock_player)
+        collection_ref = hard_game.getGameCollectionRef()
+        assert collection_ref == db.collection("HardGames")
+
+    # Test getRoundCollectionRef method
+    def test_get_round_collection_ref(self):
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        hard_game = HardGame(mock_player)
+        collection_ref = hard_game.getRoundCollectionRef()
+        assert collection_ref == db.collection("HardRounds")
+
+    # Test scoreRounds method for hard game without
+    def test_score_hardrounds_worounding(self):
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        hard_game = HardGame(mock_player)
+        hard_game.yearGuesses = [2000, 2011]
+        hard_game.targetGuesses = [[5, 5], [10, 10]]
+        # Mocking Round data
+        class MockRound1:
+            def getData(self):
+                return {"yearTaken": 2000, "targetImageCoordinates": [[0, 0], [0, 10], [10, 10], [10, 0]]}
+        class MockRound2:
+            def getData(self):
+                return {"yearTaken": 2010, "targetImageCoordinates": [[0, 0], [0, 20], [20, 20], [20, 0]]}
+        hard_game.rounds = [MockRound1(), MockRound2()]
+        total_score, score_for_each_round = hard_game.scoreRounds()
+        assert total_score == 8095  # Total score for both rounds
+        assert score_for_each_round == [4048, 4047]  # Score for each round
+        
     # Add more test cases for other scenarios and edge cases as needed
         
 
