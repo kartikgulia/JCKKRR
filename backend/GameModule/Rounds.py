@@ -22,8 +22,8 @@ class Round:
     # id from array in easy/medium/hard game collection, roundCollection -> collection in database
     def __init__(self, ID, roundCollection):
         round_ref = roundCollection.document(ID)
-        self.averagePerformance = 0
-        self.numPlayersCompleted = 0
+        # self.averagePerformance = 0
+        # self.numPlayersCompleted = 0
         self.backgroundImage = BackgroundPicture(round_ref.get())
 
     def getData(self):
