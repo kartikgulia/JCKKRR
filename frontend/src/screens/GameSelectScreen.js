@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../styles/GameSelectScreen.css"
+import "../styles/GameSelectScreen.css";
 
 const GameSelectScreen = () => {
   return (
@@ -11,8 +11,8 @@ const GameSelectScreen = () => {
         <button className="button-style">Easy</button>
       </Link>
 
-      <Link to="/playGame/Normal" className="button-link">
-        <button className="button-style">Normal</button>
+      <Link to="/playGame/Medium" className="button-link">
+        <button className="button-style">Medium</button>
       </Link>
 
       <Link to="/playGame/Hard" className="button-link">
@@ -24,6 +24,6 @@ const GameSelectScreen = () => {
       </Link>
     </div>
   );
-}; 
+};
 
 export default GameSelectScreen;
