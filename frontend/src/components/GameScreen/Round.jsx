@@ -27,6 +27,9 @@ const Round = ({
 
   useEffect(() => {
     if (roundData != null) {
+      console.log("Hello");
+      console.log(JSON.stringify(roundData));
+
       setImageLoaded(true);
     }
   }, [roundData]);
