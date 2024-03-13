@@ -29,7 +29,7 @@ class TestEasyGame:
         collection_ref = easy_game.getRoundCollectionRef()
         assert collection_ref == db.collection("EasyRounds")
 
-    # Test scoreRounds method for easy game WITHOUT rounding (1 round)
+    # Test scoreRounds method for easy game WITHOUT rounding (2 round)
     def test_score_easyrounds_worounding(self):
         mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
         easy_game = EasyGame(mock_player)
@@ -47,7 +47,7 @@ class TestEasyGame:
         assert total_score[0] == 8096  # Total score for both rounds
         assert total_score[1] == [4048,4048]  # Score for each round
 
-    # Test scoreRounds method for easy game WITH rounding (1 round)
+    # Test scoreRounds method for easy game WITH rounding (2 round)
     def test_score_easyrounds_wrounding(self):
         mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
         easy_game = EasyGame(mock_player)
@@ -64,6 +64,21 @@ class TestEasyGame:
         total_score = easy_game.scoreRounds()
         assert total_score[0] == 8095  # Total score for both rounds
         assert total_score[1] == [4048,4047]  # Score for each round
+
+    # Test scoreRounds method for easy game edge cases (1 round)
+    def test_score_easyrounds_edgecases(self):
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        easy_game = EasyGame(mock_player)
+        easy_game.yearGuesses = [2000] # second in list should account for easy rounding
+        easy_game.targetGuesses = [[10000,10000]] # second in list should account for easy rounding
+        # Mocking Round data
+        class MockRound1:
+            def getData(self):
+                return {"yearTaken": 2000, "targetImageCoordinates": [[10, 10], [10, 25], [25, 25], [25, 10]]}
+        easy_game.rounds = [MockRound1()]
+        total_score = easy_game.scoreRounds()
+        assert total_score[0] == 2074  # Total score for both rounds
+        assert total_score[1] == [2074]  # Score for each round    
 
     # Add more test cases for other scenarios and edge cases as needed
 
@@ -127,6 +142,21 @@ class TestMediumGame:
         assert total_score == 8095  # Total score for both rounds
         assert score_for_each_round == [4048, 4047]  # Score for each round
 
+    # Test scoreRounds method for medium game edge cases
+    def test_score_mediumrounds_edgecases(self): #with rounding
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        medium_game = MediumGame(mock_player)
+        medium_game.yearGuesses = [1000]
+        medium_game.targetGuesses = [[10000,1000]]
+        # Mocking Round data
+        class MockRound1:
+            def getData(self):
+                return {"yearTaken": 2000, "targetImageCoordinates": [[10, 10], [10, 25], [25, 25], [25, 10]]}
+        medium_game.rounds = [MockRound1()]
+        total_score, score_for_each_round = medium_game.scoreRounds()
+        assert total_score == 1074  # Total score for both rounds
+        assert score_for_each_round == [1074]  # Score for each round
+
     # Add more test cases for other scenarios and edge cases as needed
         
 
@@ -154,7 +184,7 @@ class TestHardGame:
         collection_ref = hard_game.getRoundCollectionRef()
         assert collection_ref == db.collection("HardRounds")
 
-    # Test scoreRounds method for hard game without
+    # Test scoreRounds method for hard game without rounding
     def test_score_hardrounds_worounding(self):
         mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
         hard_game = HardGame(mock_player)
@@ -172,6 +202,20 @@ class TestHardGame:
         assert total_score == 8095  # Total score for both rounds
         assert score_for_each_round == [4048, 4047]  # Score for each round
 
+    # Test scoreRounds method for hard game edge cases
+    def test_score_hardrounds_edgecases(self):
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        hard_game = HardGame(mock_player)
+        hard_game.yearGuesses = [1000]
+        hard_game.targetGuesses = [[10000,10000]]
+        # Mocking Round data
+        class MockRound1:
+            def getData(self):
+                return {"yearTaken": 2000, "targetImageCoordinates": [[10, 10], [10, 25], [25, 25], [25, 10]]}
+        hard_game.rounds = [MockRound1()]
+        total_score, score_for_each_round = hard_game.scoreRounds()
+        assert total_score == 1024  # Total score for both rounds
+        assert score_for_each_round == [1024]  # Score for each round
     # Add more test cases for other scenarios and edge cases as needed
         
 
@@ -239,6 +283,16 @@ class TestCreateGameForPlayer:
         with pytest.raises(ValueError):
             createGameForPlayer(mock_player, game_difficulty)
         assert mock_player.currentGame is None
+
+    # Test creating game for player when gameID is None
+    def test_create_game_for_player_none_gameID(self):
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        game_difficulty = "Easy"
+        factory = GameFactory(mock_player)
+        createGameForPlayer(mock_player, game_difficulty)
+        assert mock_player.currentGame is not None
+        assert mock_player.currentGame.gameID is None
+
 
 if __name__ == "__main__":
     pytest.main()

@@ -285,10 +285,10 @@ class GameFactory:
 
 # Usage
 
-
-if __name__ == "__main__":
-    player = Player(userID="bo3bw4GUJdFhTp6aEqiD")  # Example player
-    factory = GameFactory(player)
-    easy_game = factory.create_game("Easy")
-    easy_game.setGameID()
-    print()
+  # --------- TESTING CODE ------------
+# if __name__ == "__main__":
+    # player = Player(userID="bo3bw4GUJdFhTp6aEqiD")  # Example player
+    # factory = GameFactory(player)
+    # easy_game = factory.create_game("Easy")
+    # easy_game.setGameID()
+    # print()
