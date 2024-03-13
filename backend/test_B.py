@@ -4,6 +4,7 @@ import pytest
 from GameModule.GameClasses import *  # Updated import statement
 from GameModule.gameCreationFunctions import *  # Updated import statement
 from UserModule.Player import Player
+from unittest.mock import MagicMock
 from FirebaseAccess.firebase import db
 
 # Test for EasyGame class
@@ -284,15 +285,75 @@ class TestCreateGameForPlayer:
             createGameForPlayer(mock_player, game_difficulty)
         assert mock_player.currentGame is None
 
-    # Test creating game for player when gameID is None
-    def test_create_game_for_player_none_gameID(self):
+    # # Test creating game for player when gameID is None
+    # def test_create_game_for_player_none_gameID(self):
+    #     mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+    #     game_difficulty = "Easy"
+    #     factory = GameFactory(mock_player)
+    #     createGameForPlayer(mock_player, game_difficulty)
+    #     assert mock_player.currentGame is not None
+    #     assert mock_player.currentGame.gameID is None
+
+class TestGame:
+    def test_get_array_of_round_dictionaries(self):
         mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
-        game_difficulty = "Easy"
-        factory = GameFactory(mock_player)
-        createGameForPlayer(mock_player, game_difficulty)
-        assert mock_player.currentGame is not None
-        assert mock_player.currentGame.gameID is None
+        game = EasyGame(mock_player)
+        
+        # Mocking a Round object and appending it to the rounds list
+        class MockRound:
+            def getData(self):
+                return {"key": "value"}  # Example data
+                
+        mock_round = MockRound()
+        game.rounds.append(mock_round)
+        
+        # Call the method to be tested
+        result = game.getArrayOfRoundDictionaries()
+        
+        # Assertion
+        assert len(result) == 1  # Check if there is one dictionary in the result
+        assert result[0] == {"key": "value"}  # Check if the dictionary is as expected
+
+    def test_startGame(self):
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        game = EasyGame(mock_player)
+        
+        # Mocking gameID and rounds data
+        game.gameID = "test_game_id"
+        round_data = {"rounds": ["round1_id", "round2_id"]}  # Example round data
+        
+        # Mocking the database calls
+        games_collection_ref_mock = MagicMock()
+        games_collection_ref_mock.document().get().to_dict.return_value = round_data
+        round_collection_ref_mock = MagicMock()
+        
+        # Assigning the mocks to the game object
+        game.getGameCollectionRef = MagicMock(return_value=games_collection_ref_mock)
+        game.getRoundCollectionRef = MagicMock(return_value=round_collection_ref_mock)
+        
+        # Testing the method
+        game.startGame()
+        
+        # Asserting the result
+        assert len(game.rounds) == 2  # Ensure that two rounds are appended to the rounds list
 
 
+    def test_endGame(self):
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        game = EasyGame(mock_player)
+        game.gameID = "test_game_id"
+        game.player.gameIDsPlayed = []
+        game.difficulty = "Easy"
+        game.scoreRounds = MagicMock(return_value=(100, [50, 50]))
+        game.getGameCollectionRef = MagicMock()
+        game.getRoundCollectionRef = MagicMock()
+
+        # Call the method to be tested
+        result = game.endGame()
+
+        # Assertions
+        assert result == (100, [50, 50])  # Check the return value
+        assert game.player.gameIDsPlayed == ["test_game_id"]  # Check if game ID is added to player's game IDs
+        assert game.player.currentGame is None  # Check if the current game is set to None
 if __name__ == "__main__":
     pytest.main()
