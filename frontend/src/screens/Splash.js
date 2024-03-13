@@ -1,10 +1,14 @@
-// src/WelcomePage.js
+import "../styles/Splash.css";
+
 function Splash() {
   return (
-    <div>
-      <h1>Welcome</h1>
-      <button onClick={() => (window.location.href = "/signIn")}>
+    <div className="splash-container">
+      <h1 className="splash-title">WhereIn</h1>
+      <button className="button-style" onClick={() => (window.location.href = "/signIn")}>
         Sign In
+      </button>
+      <button className="button-style" onClick={() => (window.location.href = "/signUp")}>
+        Sign Up
       </button>
     </div>
   );

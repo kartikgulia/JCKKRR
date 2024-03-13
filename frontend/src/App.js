@@ -40,7 +40,7 @@ function SplashWithRedirect() {
   useEffect(() => {
     const userToken = localStorage.getItem("userToken");
     if (userToken) {
-      navigate("/gameSelect");
+      navigate("/");
     }
   }, [navigate]); // useEffect will only run once after the initial render
   // Render Splash component normally if there's no userToken

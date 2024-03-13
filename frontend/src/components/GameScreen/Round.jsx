@@ -4,6 +4,7 @@ import SubmitButton from "./SubmitButton";
 import YearGuess from "./YearGuess";
 import Scoreboard from "./Scoreboard";
 import "../../styles/Round.css";
+import CroppedImage from "./CroppedImage";
 import SERVER_URL from "../../config";
 
 const Round = ({
@@ -27,7 +28,6 @@ const Round = ({
 
   useEffect(() => {
     if (roundData != null) {
-      console.log("Hello");
       console.log(JSON.stringify(roundData));
 
       setImageLoaded(true);
@@ -53,7 +53,6 @@ const Round = ({
   const handleRoundSubmit = async () => {
     if (imageLoaded && clickPosition.x !== null && clickPosition.y !== null) {
       onSubmit(year, clickPosition);
-      // submitYearGuess(); dont need this
 
       await storeRoundGuess();
 
@@ -112,13 +111,6 @@ const Round = ({
       console.log(data.totalScore);
     } catch {}
   };
-  // const submitYearGuess = () => {
-  //   console.log("Selected Year:", year);
-  //   let actualYear = 2000;
-  //   let score = calculateScoreForYearGuess(year, actualYear);
-  //   console.log(score);
-  //   setRoundScores([...roundScores, score]);
-  // };
 
   const handlePlayAgain = () => {
     setRoundScores([]);
@@ -128,13 +120,6 @@ const Round = ({
   const handleYearChange = (value) => {
     setYear(value);
   };
-
-  // const calculateScoreForYearGuess = (yearGuessed, yearActual) => {
-  //   let yearRange = maxYear - minYear;
-  //   let offBy = Math.abs(yearGuessed - yearActual);
-  //   let score = yearRange - offBy;
-  //   return score;
-  // };
 
   if (errorMessage) {
     <div>{errorMessage}</div>;
@@ -151,12 +136,18 @@ const Round = ({
           />
         ) : (
           <>
+            <div className="round-container">
             <div className="target-image-container">
               <h2 className="find-image-heading">
-                Find this image and guess the year this was taken from! Click on
-                the picture and drag the slider.
+                Find this image and guess the year this was taken from! Click on the picture and drag the slider.
               </h2>
             </div>
+
+            <CroppedImage
+              src={roundData.backgroundImagePath}
+              targetCoordinates={roundData.targetImageCoordinates}
+            />
+
             <div
               className="background-image-container"
               onClick={handleBackgroundImageClick}
@@ -197,6 +188,8 @@ const Round = ({
             <div className="text">
               Round {currentRound} of {roundsTotal}
             </div>
+          </div>
+
           </>
         )}
       </div>

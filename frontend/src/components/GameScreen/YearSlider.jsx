@@ -16,14 +16,14 @@ const YearSlider = ({ min, max, onChange }) => {
   };
 
   return (
-    <div style={{ padding: "20px", backgroundColor: "#4d0066",}}>
+    <div style={{ padding: "20px", backgroundColor: "#4d0066" }}>
       <input
         type="number"
         value={value === null ? "" : value}
         onChange={(e) => handleChange(e.target.value)}
         min={min}
         max={max}
-        style={{ marginBottom: "20px", width: "100%"}}
+        style={{ marginBottom: "20px", width: "100%" }}
       />
       <input
         type="range"
@@ -40,9 +40,8 @@ const YearSlider = ({ min, max, onChange }) => {
           marginTop: "8px",
         }}
       >
-        <span style={{color: "#b76fe4",}}>{min}</span>
-
-        <span style={{color: "#b76fe4",}}>{max}</span>
+        <span style={{ color: "#b76fe4" }}>{min}</span>
+        <span style={{ color: "#b76fe4" }}>{max}</span>
       </div>
     </div>
   );

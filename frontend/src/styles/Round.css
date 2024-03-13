@@ -7,13 +7,6 @@
     height: 100vh;
 }
   
-.target-image-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-}
-  
 .find-image-heading {
     color: #b76fe4;
     text-align: center;
