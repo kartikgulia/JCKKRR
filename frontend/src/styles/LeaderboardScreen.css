@@ -1,77 +1,77 @@
 .leaderboard-screen {
-    background-color: #3a3a3a; 
-    min-height: 100vh; 
-    color: #fff; 
-    padding: 20px; 
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  background-color: #3a3a3a;
+  min-height: 100vh;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .leaderboard-title {
-    font-size: 30px;
-    margin-bottom: 20px;
-    color: #b76fe4; 
-    text-decoration: underline ;
+  font-size: 30px;
+  margin-bottom: 20px;
+  color: #b76fe4;
+  text-decoration: underline;
 }
 
 .leaderboard-table {
-    margin: 0 auto;
-    border-collapse: collapse;
-    width: 80%;
-    background-color: #1a1a1a;
+  margin: 0 auto;
+  border-collapse: collapse;
+  width: 80%;
+  background-color: #1a1a1a;
 }
 
 .leaderboard-table th,
 .leaderboard-table td {
-    border: 5px solid #4d0066;
-    padding: 8px;
-    text-align: center;
-    color: #fff; 
+  border: 5px solid #4d0066;
+  padding: 8px;
+  text-align: center;
+  color: #fff;
 }
 
 .leaderboard-table th {
-    background-color: #1a1a1a; 
-    color: #b76fe4; 
-    font-size: 25px;
+  background-color: #1a1a1a;
+  color: #b76fe4;
+  font-size: 25px;
 }
 
 .leaderboards-wrapper {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
 }
 
 .leaderboard-container {
-    margin: 0 10px; 
+  margin: 0 10px;
 }
 
 .leaderboard-difficulty {
-    color: #b76fe4; 
-    background-color: #4d0066;
-    font-size: 25px;
-    border-color: #1a1a1a;
-    border-width: thick;
-    border-style: outset; 
-}
-  
-.back-button{
-    padding: 10px 10px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #1a1a1a;
-    color: #b76fe4;
-    border: solid;
-    border-radius: 5px;
-    border-color: #4d0066;
-    border-width: 5px;
-    width: 200px;
-    position: absolute;
-    top: 5px;
-    left: 5px;
+  color: #b76fe4;
+  background-color: #4d0066;
+  font-size: 25px;
+  border-color: #1a1a1a;
+  border-width: thick;
+  border-style: outset;
 }
 
-.back-button:hover{
-    background-color: #9900ff;
+.back-button {
+  padding: 10px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #1a1a1a;
+  color: #b76fe4;
+  border: solid;
+  border-radius: 5px;
+  border-color: #4d0066;
+  border-width: 5px;
+  width: 200px;
+  position: absolute;
+  top: 5px;
+  right: 5px; /* Updated from left to right */
+}
+
+.back-button:hover {
+  background-color: #9900ff;
 }
