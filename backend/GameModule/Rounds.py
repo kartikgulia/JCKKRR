@@ -6,7 +6,7 @@ class BackgroundPicture:
         doc_dictionary = document.to_dict()
 
         # until kartik and ryan add data to the DB
-        if 'url' in doc_dictionary:
+        if doc_dictionary and 'url' in doc_dictionary:
             self.filepath = doc_dictionary['url']
             self.targetDate = doc_dictionary['date']
             self.targetImageCoordinates = [doc_dictionary['BL'],
@@ -22,8 +22,8 @@ class Round:
     # id from array in easy/medium/hard game collection, roundCollection -> collection in database
     def __init__(self, ID, roundCollection):
         round_ref = roundCollection.document(ID)
-        self.averagePerformance = 0
-        self.numPlayersCompleted = 0
+        # self.averagePerformance = 0
+        # self.numPlayersCompleted = 0
         self.backgroundImage = BackgroundPicture(round_ref.get())
 
     def getData(self):

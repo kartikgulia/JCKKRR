@@ -23,7 +23,10 @@ class Player(UserInterface):
         self.name : str = ""
         self.email : str = ""
         self.currentGame : Game = None
-        self.score : int = 0
+        self.easyScore : int = 0
+        self.mediumScore : int = 0
+        self.hardScore : int = 0
+
 
     def signIn(self, email: str, password: str):
         # Implement sign-in logic here
@@ -41,6 +44,25 @@ class Player(UserInterface):
 
 
         
+    def updateInfo(self):
+
+        playerDoc  = db.collection('players').document(self.userID).get()
+        playerDictionary = playerDoc.to_dict()
+
+        name = playerDictionary["name"]
+        email = playerDictionary["email"]
+        easyScore = playerDictionary["EasyScore"]
+        mediumScore = playerDictionary["MediumScore"]
+        hardScore = playerDictionary["HardScore"]
+        gamesPlayed = playerDictionary["gamesPlayed"]
+
+        self.name = name
+        self.email = email
+        self.easyScore = easyScore
+        self.mediumScore = mediumScore
+        self.hardScore = hardScore
+
+        self.gameIDsPlayed = gamesPlayed
 
     def signOut(self):
         # Implement sign-out logic here
