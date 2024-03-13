@@ -54,3 +54,17 @@ button[type=submit] {
     padding: 1%;
     text-align: center;
 }
+button[type=SignUp] {
+    color: #b76fe4;
+    background-color: #4d0066;
+    border-color: #1a1a1a;
+    width: 200px;
+    margin: 1%;
+    border-width: thick;
+    border-style: outset; 
+    padding: 1%;
+    text-align: center;
+    position:fixed;
+    top: 0;
+    right: 0;
+}
