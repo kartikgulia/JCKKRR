@@ -3,6 +3,7 @@
 import pytest
 from GameModule.GameClasses import *  # Updated import statement
 from GameModule.gameCreationFunctions import *  # Updated import statement
+from GameModule.Rounds import *  # Updated import statement
 from UserModule.Player import Player
 from unittest.mock import MagicMock
 from FirebaseAccess.firebase import db
@@ -294,6 +295,7 @@ class TestCreateGameForPlayer:
     #     assert mock_player.currentGame is not None
     #     assert mock_player.currentGame.gameID is None
 
+
 class TestGame:
     def test_get_array_of_round_dictionaries(self):
         mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
@@ -372,5 +374,62 @@ class TestGame:
         assert result == (100, [50, 50])  # Check the return value
         assert game.player.gameIDsPlayed == ["test_game_id"]  # Check if game ID is added to player's game IDs
         assert game.player.currentGame is None  # Check if the current game is set to None
+
+    def test_endGame_exception_handling(self):
+        # Mocking player
+        mock_player = MagicMock()
+        mock_player.userID = "mRafsYCe9zWbCFNIcIIZhJoHSFn2"
+        mock_player.gameIDsPlayed = []
+        mock_player.name = "Test Player"
+
+        # Mocking game
+        game = EasyGame(mock_player)
+        game.gameID = "test_game_id"
+        game.difficulty = "Easy"
+        game.scoreRounds = MagicMock(side_effect=Exception("Error occurred"))
+        game.getGameCollectionRef = MagicMock()
+        game.getRoundCollectionRef = MagicMock()
+
+        # Call the method to be tested
+        result = game.endGame()
+
+        # Assertions
+        assert result == (0, 0)  # Check the return value in case of exception
+        assert game.player.currentGame is None  # Check if the current game is set to None
+
+class TestRounds:
+    def test_init_with_data(self):
+        # Mock document with data
+        mock_document = MagicMock()
+        mock_document.to_dict.return_value = {
+            'url': 'mock_url',
+            'date': 2000,
+            'BL': [1, 1],
+            'TL': [1, 2],
+            'TR': [2, 2],
+            'BR': [2, 1]
+        }
+
+        # Create BackgroundPicture instance
+        bg_picture = BackgroundPicture(mock_document)
+
+        # Assertions
+        assert bg_picture.filepath == 'mock_url'
+        assert bg_picture.targetDate == 2000
+        assert bg_picture.targetImageCoordinates == [[1, 1], [1, 2], [2, 2], [2, 1]]
+
+    def test_init_without_data(self):
+        # Mock document without data
+        mock_document = MagicMock()
+        mock_document.to_dict.return_value = None
+
+        # Create BackgroundPicture instance
+        bg_picture = BackgroundPicture(mock_document)
+
+        # Assertions
+        assert bg_picture.filepath == "https://live.staticflickr.com/65535/53483308986_eeb182d542.jpg"
+        assert bg_picture.targetDate == 1989
+        assert bg_picture.targetImageCoordinates == [[1, 2], [1, 4], [4, 4], [4, 2]]
+
 if __name__ == "__main__":
     pytest.main()
