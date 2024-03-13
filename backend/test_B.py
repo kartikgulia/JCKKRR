@@ -314,6 +314,23 @@ class TestGame:
         assert len(result) == 1  # Check if there is one dictionary in the result
         assert result[0] == {"key": "value"}  # Check if the dictionary is as expected
 
+    def test_storeRound(self):
+        # Mock player and game
+        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        game = EasyGame(mock_player)
+        
+        # Mock input values
+        year_guess = "2000"
+        target_guess = [10, 10]
+
+        # Call the method to be tested
+        game.storeRound(year_guess, target_guess)
+
+        # Assertions
+        assert year_guess in game.yearGuesses  # Check if year guess is stored
+        assert target_guess in game.targetGuesses  # Check if target guess is stored
+        assert game.currentRoundNumber == 2  # Check if current round number is updated
+
     def test_startGame(self):
         mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
         game = EasyGame(mock_player)
