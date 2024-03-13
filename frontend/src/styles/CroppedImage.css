@@ -1,0 +1,19 @@
+.cropped-image-container {
+    position: relative; /* Change to relative */
+    display: inline-block; /* Display inline-block to position next to main image */
+    margin-left: 10px; /* Add spacing between the main image and cropped image */
+  }
+  
+  .cropped-image-container canvas {
+    width: 200%; /* Set canvas width to 100% */
+    height: auto; /* Maintain aspect ratio */
+  }
+  
+  /* Adjust as needed */
+  .cropped-image-container img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  

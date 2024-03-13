@@ -20,9 +20,6 @@ const Scoreboard = ({
 
         <h2 className="title">Total Score</h2>
         <h4>{totalGameScore}</h4>
-
-        <h2 className="title">Leaderboard Position</h2>
-        <h4>{leaderboardPositionMessage}</h4>
       </div>
       <Link to="/gameSelect" className="button">
         Play Again?

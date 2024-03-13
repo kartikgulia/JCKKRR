@@ -1,0 +1,50 @@
+.splash-container {
+    background-color: #3a3a3a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('../assets/HomeScreen.png');
+}
+
+.splash-title {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 72px;
+    color: #b76fe4;
+    text-align: center;
+    animation: flash 2s linear infinite alternate;
+    border-color: #1a1a1a;
+    border-width: thick;
+    border-style: outset; 
+    padding: 20px 40px;
+    background-color: #4d0066;
+  }
+
+  @keyframes flash {
+    0% {
+      text-shadow: 0 0 20px #00f, 0 0 20px #00f, 0 0 20px #00f, 0 0 20px #00f, 0 0 20px #00f;
+    }
+    100% {
+      text-shadow: 0 0 20px #f00, 0 0 20px #f00, 0 0 20px #f00, 0 0 20px #f00, 0 0 20px #f00;
+    }
+}
+
+.button-style {
+    padding: 20px 40px;
+    font-size: 32px;
+    cursor: pointer;
+    background-color: #4d0066;
+    color: #b76fe4;
+    border: solid;
+    border-radius: 10px;
+    border-color: #1a1a1a;
+    border-width: 5px;
+    width: 400px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.button-style:hover{
+    background-color: #9900ff;
+}
