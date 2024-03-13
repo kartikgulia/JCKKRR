@@ -18,7 +18,7 @@ function Game() {
   const [roundsLoaded, setRoundsLoaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const minYear = 1900;
+  const minYear = 1800;
   const maxYear = 2024;
 
   // const mockRoundsData = [
