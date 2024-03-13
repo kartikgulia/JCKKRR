@@ -26,5 +26,9 @@ class PlayerSessionManager:
         self.activePlayerSessions[playerID] = playerObject
 
     def getPlayer(self, playerID: str) -> Player:
-        return self.activePlayerSessions.get(playerID, None)
+
+        if playerID in self.activePlayerSessions:
+            return self.activePlayerSessions[playerID]
+        else:
+            return None
     
