@@ -31,7 +31,7 @@ const GameSelectScreen = () => {
             currentRoundNumber: data.currentRoundNumber,
           },
         });
-      } else {
+      } else if (data.message !== "Success") {
         setErrorMessage(data.message);
       }
     };
@@ -41,6 +41,8 @@ const GameSelectScreen = () => {
 
   return (
     <div className="container">
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+
       <h1 className="title">Select Difficulty</h1>
 
       <Link to="/playGame/Easy" className="button-link">
@@ -57,6 +59,10 @@ const GameSelectScreen = () => {
 
       <Link to="/leaderboard" className="button-link">
         <button className="button-style">Leaderboard</button>
+      </Link>
+
+      <Link to="/profile" className="button-link">
+        <button className="button-style">Profile</button>
       </Link>
     </div>
   );
