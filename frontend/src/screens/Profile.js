@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styles/ProfileScreen.css";
 import SERVER_URL from "../config";
+import { Link } from "react-router-dom";
 
 const ProfileScreen = () => {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -45,6 +46,9 @@ const ProfileScreen = () => {
 
   return (
     <div className="profile-container">
+      <Link to="/gameSelect" className="back-button">
+        Back
+      </Link>
       <h2 className="profile-name">{name}</h2>
       <div className="scores">
         <p>
