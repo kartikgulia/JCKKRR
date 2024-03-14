@@ -1,16 +1,37 @@
 .profile-container {
-  text-align: center;
+    background-color: #3a3a3a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .profile-name {
-  font-size: 24px;
-  margin-bottom: 20px;
+    color: #b76fe4;
+    background-color: #4d0066;
+    border-color: #1a1a1a;
+    border-width: thick;
+    border-style: outset; 
+    padding: 20px 40px;
 }
 
 .scores {
-  margin-bottom: 20px;
+    font-size: 24px;
+    padding: 15px;
+    background-color: #4d0066;
+    color: #b76fe4;
+    font-size: 20px;
+    border-radius: 5px;
+    margin: 10px;
 }
 
-.scores p {
-  margin-bottom: 10px;
+.email {
+    font-size: 24px;
+    padding: 15px;
+    background-color: #4d0066;
+    color: #b76fe4;
+    font-size: 20px;
+    border-radius: 5px;
+    margin: 10px;
 }
