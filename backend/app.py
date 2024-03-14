@@ -151,6 +151,38 @@ def signup():
             return jsonify({"message": error_message}), 401
 
 
+@app.route('/getProfileInfo', methods=["GET"])
+
+def getProfileInfo():
+
+    userID = request.args.get('userID')
+
+    
+
+    try:
+
+        currentPlayer : Player = playerManager.getPlayer(playerID=userID)
+
+        currentPlayer.updateInfo()
+    
+        name = currentPlayer.name
+        email = currentPlayer.email
+        easyScore = currentPlayer.easyScore
+        mediumScore = currentPlayer.mediumScore
+        hardScore = currentPlayer.hardScore
+
+        return jsonify({"message" : "Success", "name" : name, "email": email, "easyScore" : easyScore, "mediumScore":mediumScore, "hardScore" : hardScore}), 200
+
+    
+    except Exception as e:
+        return jsonify({"message" : "Failed", "description": f"{e}"}), 401
+    
+
+
+
+
+
+
 @app.route('/getExistingGameInfo', methods=['GET'])
 def getExistingGameInfo():
 

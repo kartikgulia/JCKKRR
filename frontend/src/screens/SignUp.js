@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import SERVER_URL from "../config";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/signup.css";
 
 function SignUpPage() {
@@ -70,6 +70,9 @@ function SignUpPage() {
         </label>
         <button type="submit">Sign Up</button>
         <h1>{messageFromBackend}</h1>
+        <Link to="/signin" className="button-link">
+        <button type="SignIn">Sign In</button>
+      </Link>
       </div>
     </form>
   );

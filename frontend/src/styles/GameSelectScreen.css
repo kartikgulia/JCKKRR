@@ -22,8 +22,8 @@
 }
   
 .button-style {
-    padding: 20px 40px;
-    font-size: 32px;
+    padding: 15px 25px;
+    font-size: 20px; 
     cursor: pointer;
     background-color: #4d0066;
     color: #b76fe4;
@@ -31,8 +31,9 @@
     border-radius: 10px;
     border-color: #1a1a1a;
     border-width: 5px;
-    width: 400px;
+    width: 300px; 
     text-align: center;
+    margin: 5px; 
 }
 
 .button-style:hover{
