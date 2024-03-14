@@ -61,7 +61,7 @@ const ProfileScreen = () => {
           <strong>Hard Score:</strong> {hardScore}
         </p>
       </div>
-      <p>
+      <p className="email">
         <strong>Email:</strong> {email}
       </p>
     </div>
