@@ -44,25 +44,46 @@ class Player(UserInterface):
 
 
         
-    def updateInfo(self):
+    # def updateInfo(self):
 
-        playerDoc  = db.collection('players').document(self.userID).get()
-        playerDictionary = playerDoc.to_dict()
+    #     playerDoc  = db.collection('players').document(self.userID).get()
+    #     playerDictionary = playerDoc.to_dict()
 
-        name = playerDictionary["name"]
-        email = playerDictionary["email"]
-        easyScore = playerDictionary["EasyScore"]
-        mediumScore = playerDictionary["MediumScore"]
-        hardScore = playerDictionary["HardScore"]
-        gamesPlayed = playerDictionary["gamesPlayed"]
+    #     name = playerDictionary["name"]
+    #     email = playerDictionary["email"]
+    #     easyScore = playerDictionary["EasyScore"]
+    #     mediumScore = playerDictionary["MediumScore"]
+    #     hardScore = playerDictionary["HardScore"]
+    #     gamesPlayed = playerDictionary["gamesPlayed"]
 
-        self.name = name
-        self.email = email
-        self.easyScore = easyScore
-        self.mediumScore = mediumScore
-        self.hardScore = hardScore
+    #     self.name = name
+    #     self.email = email
+    #     self.easyScore = easyScore
+    #     self.mediumScore = mediumScore
+    #     self.hardScore = hardScore
 
-        self.gameIDsPlayed = gamesPlayed
+    #     self.gameIDsPlayed = gamesPlayed
+        
+    def updateInfo(self): 
+        playerDoc  = db.collection('players').document(self.userID).get() 
+        
+        if playerDoc.exists:
+            playerDictionary = playerDoc.to_dict()
+
+            self.name = playerDictionary.get("name", "")
+            self.email = playerDictionary.get("email", "")
+            self.easyScore = playerDictionary.get("EasyScore", 0)
+            self.mediumScore = playerDictionary.get("MediumScore", 0)
+            self.hardScore = playerDictionary.get("HardScore", 0)
+            self.gameIDsPlayed = playerDictionary.get("gamesPlayed", [])
+        else:
+            # Handle the case when the document does not exist
+            self.name = ""
+            self.email = ""
+            self.easyScore = 0
+            self.mediumScore = 0
+            self.hardScore = 0
+            self.gameIDsPlayed = []
 
     def signOut(self):
         # Implement sign-out logic here

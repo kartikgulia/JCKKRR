@@ -4,7 +4,8 @@ import pytest
 from GameModule.GameClasses import *  # Updated import statement
 from GameModule.gameCreationFunctions import *  # Updated import statement
 from GameModule.Rounds import *  # Updated import statement
-from UserModule.Player import Player
+from UserModule.Player import *
+from UserModule.PlayerSessionManager import *
 from unittest.mock import MagicMock
 from FirebaseAccess.firebase import db
 
@@ -430,6 +431,220 @@ class TestRounds:
         assert bg_picture.filepath == "https://live.staticflickr.com/65535/53483308986_eeb182d542.jpg"
         assert bg_picture.targetDate == 1989
         assert bg_picture.targetImageCoordinates == [[1, 2], [1, 4], [4, 4], [4, 2]]
+
+class TestPlayer:
+    class FirestoreCollectionReferenceMock:
+        @staticmethod
+        def get():
+            return [MagicMock()]
+
+    def test_sign_in_success(self):
+        # Mocking signInSuccessful as True
+        mock_player = Player("mock_user_id")
+        mock_player.signInSuccessful = MagicMock(return_value=True)
+        # Add more setup if needed
+        mock_player.signIn("email@example.com", "password")
+        # Add assertions for the expected behavior
+
+    def test_sign_in_failure(self):
+        # Mocking signInSuccessful as False
+        mock_player = Player("mock_user_id")
+        mock_player.signInSuccessful = MagicMock(return_value=False)
+        # Add more setup if needed
+        mock_player.signIn("email@example.com", "password")
+        # Add assertions for the expected behavior
+
+    def test_update_info_existing_document(self):
+        # Mocking the case where the player document exists
+        mock_player = Player("mock_user_id")
+        mock_player.get = MagicMock(return_value=self.FirestoreCollectionReferenceMock)
+        # Add more setup if needed
+        mock_player.updateInfo()
+        # Add assertions for the expected behavior
+
+    def test_update_info_non_existing_document(self):
+        # Mocking the case where the player document does not exist
+        mock_player = Player("mock_user_id")
+        mock_player.get = MagicMock(return_value=None)
+        # Add more setup if needed
+        mock_player.updateInfo()
+        # Add assertions for the expected behavior
+
+    def test_change_password(self):
+        # Test the logic to change the password
+        mock_player = Player("mock_user_id")
+        # Add more setup if needed
+        mock_player.changePassword("new_password")
+        # Add assertions for the expected behavior
+
+    def test_display_leaderboard(self):
+        # Test the logic for displaying the leaderboard for different difficulties
+        mock_player = Player("mock_user_id")
+        # Add more setup if needed
+        mock_player.displayLeaderboard("Easy")
+        # Add assertions for the expected behavior
+
+class TestPlayerAppend:
+    class FirestoreCollectionReferenceMock:
+        @staticmethod
+        def get():
+            # Mocking the behavior of players_ref.get() to return a list of documents
+            return [
+                MagicMock(to_dict=MagicMock(return_value={"name": "John", "email": "john@example.com", 
+                                                           "EasyScore": 100, "MediumScore": 150, 
+                                                           "HardScore": 200, "gamesPlayed": ["game1", "game2"]})),
+                MagicMock(to_dict=MagicMock(return_value={"name": "Alice", "email": "alice@example.com", 
+                                                           "EasyScore": 120, "MediumScore": 180, 
+                                                           "HardScore": 220, "gamesPlayed": ["game3", "game4"]}))
+            ]
+
+    # def test_update_info_existing_document(self):
+    #     # Mocking the Firestore collection reference directly within the test class
+    #     players_ref = self.FirestoreCollectionReferenceMock()
+
+    #     # Create a Player instance
+    #     player = Player("userID123")
+
+    #     # Reassign players_ref in UserModule.Player with the mocked FirestoreCollectionReferenceMock
+    #     import UserModule.Player
+    #     UserModule.Player.players_ref = players_ref
+
+    #     # Call the updateInfo method
+    #     player.updateInfo()
+
+    #     # Assertions
+    #     assert player.name == "John"
+    #     assert player.email == "john@example.com"
+    #     assert player.easyScore == 100
+    #     assert player.mediumScore == 150
+    #     assert player.hardScore == 200
+    #     assert player.gameIDsPlayed == ["game1", "game2"]
+
+    def test_update_info_non_existing_document(self):
+        # Mocking the Firestore collection reference directly within the test class
+        players_ref = self.FirestoreCollectionReferenceMock()
+
+        # Create a Player instance
+        player = Player("non_existing_userID")
+
+        # Reassign players_ref in UserModule.Player with the mocked FirestoreCollectionReferenceMock
+        import UserModule.Player
+        UserModule.Player.players_ref = players_ref
+
+        # Call the updateInfo method
+        player.updateInfo()
+
+        # Assertions for non-existing document
+        assert player.name == ""
+        assert player.email == ""
+        assert player.easyScore == 0
+        assert player.mediumScore == 0
+        assert player.hardScore == 0
+        assert player.gameIDsPlayed == []
+
+    def test_get_players_data(self):
+        # Mocking the Firestore collection reference directly within the test class
+        players_ref = self.FirestoreCollectionReferenceMock()
+
+        # Reassign players_ref in UserModule.Player with the mocked FirestoreCollectionReferenceMock
+        import UserModule.Player
+        UserModule.Player.players_ref = players_ref
+
+        # Call the get_players_data function
+        result = get_players_data()
+
+        # Assertions
+        assert result == {
+            1: {"name": "John", "email": "john@example.com", "EasyScore": 100, "MediumScore": 150, 
+                "HardScore": 200, "gamesPlayed": ["game1", "game2"]},
+            2: {"name": "Alice", "email": "alice@example.com", "EasyScore": 120, "MediumScore": 180, 
+                "HardScore": 220, "gamesPlayed": ["game3", "game4"]}
+        }
+
+
+    # def test_update_info_existing_document(self):
+    #     # Mocking Firestore document with data
+    #     mock_document = MagicMock()
+    #     mock_document.exists = True
+    #     mock_document.to_dict.return_value = {
+    #         "name": "Test Player",
+    #         "email": "test@example.com",
+    #         "EasyScore": 100,
+    #         "MediumScore": 200,
+    #         "HardScore": 300,
+    #         "gamesPlayed": ["game1", "game2"]
+    #     }
+
+    #     # Mocking Firestore collection and document reference
+    #     mock_players_ref = MagicMock()
+    #     mock_players_ref.document.return_value.get.return_value = mock_document
+
+    #     # Creating Player instance with the mocked Firestore reference
+    #     player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+    #     player.players_ref = mock_players_ref
+
+    #     # Calling the updateInfo method
+    #     player.updateInfo()
+
+    #     # Assertions
+    #     # assert player.name == "ryannnlee"
+    #     assert player.email == "rlee204@ucr.edu"
+
+    def test_update_info_non_existing_document(self):
+        # Mocking Firestore document that does not exist
+        mock_document = MagicMock()
+        mock_document.exists = False
+
+        # Mocking Firestore collection and document reference
+        mock_players_ref = MagicMock()
+        mock_players_ref.document.return_value.get.return_value = mock_document
+
+        # Creating Player instance with the mocked Firestore reference
+        player = Player("non_existing_user")
+        player.players_ref = mock_players_ref
+
+        # Calling the updateInfo method
+        player.updateInfo()
+
+        # Assertions
+        assert player.name == ""
+        assert player.email == ""
+        assert player.easyScore == 0
+        assert player.mediumScore == 0
+        assert player.hardScore == 0
+        assert player.gameIDsPlayed == []
+# Add more test cases for other methods and branches as needed
+
+# Add more test cases for other methods and branches as needed
+
+
+class TestPlayerSessionManager:
+    def test_add_player(self):
+        # Create a mock player object
+        mock_player = MagicMock()
+
+        # Create an instance of PlayerSessionManager
+        player_session_manager = PlayerSessionManager()
+
+        # Add the mock player to the player session manager
+        player_session_manager.addPlayer("player1", mock_player)
+
+        # Retrieve the player from the player session manager
+        retrieved_player = player_session_manager.getPlayer("player1")
+
+        # Assert that the retrieved player is the same as the mock player
+        assert retrieved_player == mock_player
+
+    def test_get_non_existing_player(self):
+        # Create an instance of PlayerSessionManager
+        player_session_manager = PlayerSessionManager()
+
+        # Try to retrieve a non-existing player from the player session manager
+        retrieved_player = player_session_manager.getPlayer("non_existing_player")
+
+        # Assert that the retrieved player is None
+        assert retrieved_player is None
+
 
 if __name__ == "__main__":
     pytest.main()
