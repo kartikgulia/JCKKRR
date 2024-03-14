@@ -49,7 +49,7 @@ const ProfileScreen = () => {
       <Link to="/gameSelect" className="back-button">
         Back
       </Link>
-      <h2 className="profile-name">{name}</h2>
+      <h2 className="profile-name">Hi, {name}</h2>
       <div className="scores">
         <p>
           <strong>Easy Score:</strong> {easyScore}
