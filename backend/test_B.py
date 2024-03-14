@@ -13,28 +13,28 @@ from FirebaseAccess.firebase import db
 class TestEasyGame:
     # Test initialization of EasyGame class
     def test_init(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         easy_game = EasyGame(mock_player)
         assert easy_game.player == mock_player
         assert easy_game.difficulty == "Easy"
 
     # Test getGameCollectionRef method
     def test_get_game_collection_ref(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         easy_game = EasyGame(mock_player)
         collection_ref = easy_game.getGameCollectionRef()
         assert collection_ref == db.collection("EasyGames")
 
     # Test getRoundCollectionRef method
     def test_get_round_collection_ref(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         easy_game = EasyGame(mock_player)
         collection_ref = easy_game.getRoundCollectionRef()
         assert collection_ref == db.collection("EasyRounds")
 
     # Test scoreRounds method for easy game WITHOUT rounding (2 round)
     def test_score_easyrounds_worounding(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         easy_game = EasyGame(mock_player)
         easy_game.yearGuesses = [2010, 2000] # second in list should account for easy rounding
         easy_game.targetGuesses = [[5,5], [10,10]] # second in list should account for easy rounding
@@ -52,7 +52,7 @@ class TestEasyGame:
 
     # Test scoreRounds method for easy game WITH rounding (2 round)
     def test_score_easyrounds_wrounding(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         easy_game = EasyGame(mock_player)
         easy_game.yearGuesses = [1961, 2051] # second in list should account for easy rounding
         easy_game.targetGuesses = [[40,40], [45,45]] # second in list should account for easy rounding
@@ -70,7 +70,7 @@ class TestEasyGame:
 
     # Test scoreRounds method for easy game edge cases (1 round)
     def test_score_easyrounds_edgecases(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         easy_game = EasyGame(mock_player)
         easy_game.yearGuesses = [2000] # second in list should account for easy rounding
         easy_game.targetGuesses = [[10000,10000]] # second in list should account for easy rounding
@@ -90,28 +90,28 @@ class TestEasyGame:
 class TestMediumGame:
     # Test initialization of MediumGame class
     def test_init(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         medium_game = MediumGame(mock_player)
         assert medium_game.player == mock_player
         assert medium_game.difficulty == "Medium"
 
     # Test getGameCollectionRef method
     def test_get_game_collection_ref(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         medium_game = MediumGame(mock_player)
         collection_ref = medium_game.getGameCollectionRef()
         assert collection_ref == db.collection("MediumGames")
 
     # Test getRoundCollectionRef method
     def test_get_round_collection_ref(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         medium_game = MediumGame(mock_player)
         collection_ref = medium_game.getRoundCollectionRef()
         assert collection_ref == db.collection("MediumRounds")
 
     # Test scoreRounds method for medium game without rounding
     def test_score_mediumrounds_worounding(self): 
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         medium_game = MediumGame(mock_player)
         medium_game.yearGuesses = [2010, 2000]
         medium_game.targetGuesses = [[5, 5], [10, 10]]
@@ -129,7 +129,7 @@ class TestMediumGame:
 
     # Test scoreRounds method for medium game with rounding
     def test_score_mediumrounds_wrounding(self): #with rounding
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         medium_game = MediumGame(mock_player)
         medium_game.yearGuesses = [1992, 2026]
         medium_game.targetGuesses = [[5, 5], [10, 10]]
@@ -147,7 +147,7 @@ class TestMediumGame:
 
     # Test scoreRounds method for medium game edge cases
     def test_score_mediumrounds_edgecases(self): #with rounding
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         medium_game = MediumGame(mock_player)
         medium_game.yearGuesses = [1000]
         medium_game.targetGuesses = [[10000,1000]]
@@ -168,28 +168,28 @@ class TestMediumGame:
 class TestHardGame:
     # Test initialization of HardGame class
     def test_init(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         hard_game = HardGame(mock_player)
         assert hard_game.player == mock_player
         assert hard_game.difficulty == "Hard"
 
     # Test getGameCollectionRef method
     def test_get_game_collection_ref(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         hard_game = HardGame(mock_player)
         collection_ref = hard_game.getGameCollectionRef()
         assert collection_ref == db.collection("HardGames")
 
     # Test getRoundCollectionRef method
     def test_get_round_collection_ref(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         hard_game = HardGame(mock_player)
         collection_ref = hard_game.getRoundCollectionRef()
         assert collection_ref == db.collection("HardRounds")
 
     # Test scoreRounds method for hard game without rounding
     def test_score_hardrounds_worounding(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         hard_game = HardGame(mock_player)
         hard_game.yearGuesses = [2000, 2011]
         hard_game.targetGuesses = [[5, 5], [10, 10]]
@@ -207,7 +207,7 @@ class TestHardGame:
 
     # Test scoreRounds method for hard game edge cases
     def test_score_hardrounds_edgecases(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         hard_game = HardGame(mock_player)
         hard_game.yearGuesses = [1000]
         hard_game.targetGuesses = [[10000,10000]]
@@ -227,13 +227,13 @@ class TestHardGame:
 class TestGameFactory:
     # Test initialization of GameFactory class
     def test_init(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         game_factory = GameFactory(mock_player)
         assert game_factory.player == mock_player
 
     # Test create_game method for Easy difficulty
     def test_create_game_easy(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         game_factory = GameFactory(mock_player)
         game = game_factory.create_game("Easy")
         assert isinstance(game, EasyGame)
@@ -242,7 +242,7 @@ class TestGameFactory:
 
     # Test create_game method for Medium difficulty
     def test_create_game_medium(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         game_factory = GameFactory(mock_player)
         game = game_factory.create_game("Medium")
         assert isinstance(game, MediumGame)
@@ -251,7 +251,7 @@ class TestGameFactory:
 
     # Test create_game method for Hard difficulty
     def test_create_game_hard(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         game_factory = GameFactory(mock_player)
         game = game_factory.create_game("Hard")
         assert isinstance(game, HardGame)
@@ -260,7 +260,7 @@ class TestGameFactory:
 
     # Test create_game method for invalid difficulty
     def test_create_game_invalid_difficulty(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         game_factory = GameFactory(mock_player)
         with pytest.raises(ValueError):
             game_factory.create_game("InvalidDifficulty")
@@ -270,7 +270,7 @@ class TestGameFactory:
 class TestCreateGameForPlayer:
     # Test creating game for player with valid parameters
     def test_create_game_for_player_valid(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         game_difficulty = "Easy"
         # factory = GameFactory(mock_player)
         createGameForPlayer(mock_player, game_difficulty)
@@ -280,7 +280,7 @@ class TestCreateGameForPlayer:
 
     # Test creating game for player with invalid difficulty
     def test_create_game_for_player_invalid_difficulty(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         game_difficulty = "InvalidDifficulty"
         # factory = GameFactory(mock_player)
         with pytest.raises(ValueError):
@@ -289,7 +289,7 @@ class TestCreateGameForPlayer:
 
     # # Test creating game for player when gameID is None
     # def test_create_game_for_player_none_gameID(self):
-    #     mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+    #     mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
     #     game_difficulty = "Easy"
     #     factory = GameFactory(mock_player)
     #     createGameForPlayer(mock_player, game_difficulty)
@@ -299,7 +299,7 @@ class TestCreateGameForPlayer:
 
 class TestGame:
     def test_get_array_of_round_dictionaries(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         game = EasyGame(mock_player)
         
         # Mocking a Round object and appending it to the rounds list
@@ -319,7 +319,7 @@ class TestGame:
 
     def test_storeRound(self):
         # Mock player and game
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         game = EasyGame(mock_player)
         
         # Mock input values
@@ -335,7 +335,7 @@ class TestGame:
         assert game.currentRoundNumber == 2  # Check if current round number is updated
 
     def test_startGame(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         game = EasyGame(mock_player)
         
         # Mocking gameID and rounds data
@@ -359,7 +359,7 @@ class TestGame:
 
 
     def test_endGame(self):
-        mock_player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
+        mock_player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
         game = EasyGame(mock_player)
         game.gameID = "test_game_id"
         game.player.gameIDsPlayed = []
@@ -379,7 +379,7 @@ class TestGame:
     def test_endGame_exception_handling(self):
         # Mocking player
         mock_player = MagicMock()
-        mock_player.userID = "mRafsYCe9zWbCFNIcIIZhJoHSFn2"
+        mock_player.userID = "67uyaACVSvh0o8iGiLpwNmFIy0n2"
         mock_player.gameIDsPlayed = []
         mock_player.name = "Test Player"
 
@@ -454,21 +454,21 @@ class TestPlayer:
         mock_player.signIn("email@example.com", "password")
         # Add assertions for the expected behavior
 
-    def test_update_info_existing_document(self):
-        # Mocking the case where the player document exists
-        mock_player = Player("mock_user_id")
-        mock_player.get = MagicMock(return_value=self.FirestoreCollectionReferenceMock)
-        # Add more setup if needed
-        mock_player.updateInfo()
-        # Add assertions for the expected behavior
+    # def test_update_info_existing_document(self):
+    #     # Mocking the case where the player document exists
+    #     mock_player = Player("mock_user_id")
+    #     mock_player.get = MagicMock(return_value=self.FirestoreCollectionReferenceMock)
+    #     # Add more setup if needed
+    #     mock_player.updateInfo()
+    #     # Add assertions for the expected behavior
 
-    def test_update_info_non_existing_document(self):
-        # Mocking the case where the player document does not exist
-        mock_player = Player("mock_user_id")
-        mock_player.get = MagicMock(return_value=None)
-        # Add more setup if needed
-        mock_player.updateInfo()
-        # Add assertions for the expected behavior
+    # def test_update_info_non_existing_document(self):
+    #     # Mocking the case where the player document does not exist
+    #     mock_player = Player("mock_user_id")
+    #     mock_player.get = MagicMock(return_value=None)
+    #     # Add more setup if needed
+    #     mock_player.updateInfo()
+    #     # Add assertions for the expected behavior
 
     def test_change_password(self):
         # Test the logic to change the password
@@ -562,33 +562,33 @@ class TestPlayerAppend:
         }
 
 
-    # def test_update_info_existing_document(self):
-    #     # Mocking Firestore document with data
-    #     mock_document = MagicMock()
-    #     mock_document.exists = True
-    #     mock_document.to_dict.return_value = {
-    #         "name": "Test Player",
-    #         "email": "test@example.com",
-    #         "EasyScore": 100,
-    #         "MediumScore": 200,
-    #         "HardScore": 300,
-    #         "gamesPlayed": ["game1", "game2"]
-    #     }
+    def test_update_info_existing_document(self):
+        # Mocking Firestore document with data
+        mock_document = MagicMock()
+        mock_document.exists = True
+        mock_document.to_dict.return_value = {
+            "name": "Test Player",
+            "email": "test@example.com",
+            "EasyScore": 100,
+            "MediumScore": 200,
+            "HardScore": 300,
+            "gamesPlayed": ["game1", "game2"]
+        }
 
-    #     # Mocking Firestore collection and document reference
-    #     mock_players_ref = MagicMock()
-    #     mock_players_ref.document.return_value.get.return_value = mock_document
+        # Mocking Firestore collection and document reference
+        mock_players_ref = MagicMock()
+        mock_players_ref.document.return_value.get.return_value = mock_document
 
-    #     # Creating Player instance with the mocked Firestore reference
-    #     player = Player("mRafsYCe9zWbCFNIcIIZhJoHSFn2")
-    #     player.players_ref = mock_players_ref
+        # Creating Player instance with the mocked Firestore reference
+        player = Player("67uyaACVSvh0o8iGiLpwNmFIy0n2")
+        player.players_ref = mock_players_ref
 
-    #     # Calling the updateInfo method
-    #     player.updateInfo()
+        # Calling the updateInfo method
+        player.updateInfo()
 
-    #     # Assertions
-    #     # assert player.name == "ryannnlee"
-    #     assert player.email == "rlee204@ucr.edu"
+        # Assertions
+        # assert player.name == "ryannnlee"
+        assert player.email == "test@gmail.com"
 
     def test_update_info_non_existing_document(self):
         # Mocking Firestore document that does not exist
