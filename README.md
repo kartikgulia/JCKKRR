@@ -22,6 +22,10 @@ Weekly Progress Report: https://docs.google.com/presentation/d/1QRMTpv0JVfkXvvcT
   
 # Testing
 
+PyTest Testing Suite File Location
+
+- `backend/test_B.py`
+
 Pytest Framework
    1. Open the file "firebase.py" located with this relative path: `backend/FirebaseAccess/firebase.py`
    2. Ensure that line 24 is commented out and line 25 is not commented out.
