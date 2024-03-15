@@ -17,14 +17,6 @@ CORS(app)
 # Initialize Firebase with credentials from environment variable
 EasyGames_ref = db.collection('EasyGames')
 EasyRounds_ref = db.collection('EasyRounds')
-
-"""
-MediumGames_ref = db.collection('MediumGames')
-MediumRounds_ref = db.collection('MediumRounds')
-HardGames_ref = db.collection('HardGames')
-HardRounds_ref = db.collection('HardRounds')
-"""
-
 images_ref = db.collection('images')
 easyleaderboard_ref = db.collection('EasyLeaderboard')
 mediumleaderboard_ref = db.collection('MediumLeaderboard')
@@ -152,35 +144,26 @@ def signup():
 
 
 @app.route('/getProfileInfo', methods=["GET"])
-
 def getProfileInfo():
 
     userID = request.args.get('userID')
 
-    
-
     try:
 
-        currentPlayer : Player = playerManager.getPlayer(playerID=userID)
+        currentPlayer: Player = playerManager.getPlayer(playerID=userID)
 
         currentPlayer.updateInfo()
-    
+
         name = currentPlayer.name
         email = currentPlayer.email
         easyScore = currentPlayer.easyScore
         mediumScore = currentPlayer.mediumScore
         hardScore = currentPlayer.hardScore
 
-        return jsonify({"message" : "Success", "name" : name, "email": email, "easyScore" : easyScore, "mediumScore":mediumScore, "hardScore" : hardScore}), 200
+        return jsonify({"message": "Success", "name": name, "email": email, "easyScore": easyScore, "mediumScore": mediumScore, "hardScore": hardScore}), 200
 
-    
     except Exception as e:
-        return jsonify({"message" : "Failed", "description": f"{e}"}), 401
-    
-
-
-
-
+        return jsonify({"message": "Failed", "description": f"{e}"}), 401
 
 
 @app.route('/getExistingGameInfo', methods=['GET'])
@@ -330,16 +313,6 @@ if __name__ == '__main__':
 
 
 # Example Functions using firebase
-
-EasyGames_ref = db.collection('EasyGames')
-EasyRounds_ref = db.collection('EasyRounds')
-images_ref = db.collection('images')
-easyleaderboard_ref = db.collection('EasyLeaderboard')
-mediumleaderboard_ref = db.collection('MediumLeaderboard')
-hardleaderboard_ref = db.collection('HardLeaderboard')
-players_ref = db.collection('players')
-
-
 def get_randImage():  # gets random image from database
     docs = images_ref.get()
     documents_list = [doc.to_dict() for doc in docs]
@@ -348,15 +321,6 @@ def get_randImage():  # gets random image from database
         return random_image_data
     else:
         return None
-
-
-# difficulty -> EasyRounds, MediumRounds, HardRounds
-# call TargetBgImages to add data for each round
-# get 5 random document ids from rounds collection and add them to rounds array
-# send array of document IDs to game collection with corresponding difficulty.
-def getImageSet(difficulty):
-    rounds = []
-    # TODO for Kap
 
 
 # Gets random image from image collection and sends target, background, date and target coordinates to one of the rounds
