@@ -5,7 +5,7 @@ import LogoutButton from "./LogoutButton";
 function ConditionalLogoutButton() {
   const location = useLocation();
   // Determine if the current location is one of the screens where the logout button should be hidden
-  const hideLogoutButton = ["/signIn", "/signUp", "/"].includes(
+  const hideLogoutButton = ["/signIn", "/signUp", "/signup", "signin"].includes(
     location.pathname
   );
 
